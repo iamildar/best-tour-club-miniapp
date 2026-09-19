@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Алиса — Best Tour Club</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --tg-bg: var(--tg-theme-bg-color, #0f1115);
+    --tg-text: var(--tg-theme-text-color, #ffffff);
+    --tg-hint: var(--tg-theme-hint-color, #8a8f98);
+    --tg-link: var(--tg-theme-link-color, #6ab7ff);
+    --tg-button: var(--tg-theme-button-color, #d4af37);
+    --tg-button-text: var(--tg-theme-button-text-color, #0f1115);
+    --tg-secondary-bg: var(--tg-theme-secondary-bg-color, #1a1d24);
+    --accent: #d4af37;
+    --accent-soft: #e8c568;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--tg-bg);
+    color: var(--tg-text);
+    padding-bottom: 90px;
+  }
+  header {
+    padding: 24px 16px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  header .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #8a6d1f);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 10px;
+  }
+  header h1 { font-size: 20px; margin: 0 0 4px; }
+  header p { font-size: 13px; color: var(--tg-hint); margin: 0; }
+
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 12px 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: var(--tg-secondary-bg);
+    color: var(--tg-text);
+    border: 1px solid transparent;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: var(--tg-button-text);
+    font-weight: 600;
+  }
+
+  .panel { display: none; padding: 4px 16px 16px; }
+  .panel.active { display: block; }
+
+  .card {
+    background: var(--tg-secondary-bg);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card h3 { margin: 0 0 10px; font-size: 15px; }
+  .card p { font-size: 13px; line-height: 1.55; color: var(--tg-text); margin: 0 0 8px; }
+  .card p.hint { color: var(--tg-hint); }
+  .card ul { margin: 0 0 8px; padding-left: 20px; font-size: 13px; line-height: 1.6; }
+  .card ul li { margin-bottom: 4px; }
+
+  .cmd-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .cmd-row:last-child { border-bottom: none; }
+  .cmd-row .cmd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: rgba(212,175,55,0.12);
+    color: var(--accent-soft);
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 12.5px;
+    flex: none;
+  }
+  .cmd-row .desc { font-size: 13px; color: var(--tg-text); }
+
+  .example {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    margin-bottom: 6px;
+    font-style: italic;
+    color: var(--tg-text);
+  }
+
+  .rule-row {
+    display: flex;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  .rule-row:last-child { border-bottom: none; }
+  .rule-row .num {
+    flex: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--tg-button-text);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item .box {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--tg-hint);
+    flex: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .checklist-item.done .box {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--tg-button-text);
+  }
+  .checklist-item.done span.label { text-decoration: line-through; color: var(--tg-hint); }
+  .checklist-item .label { font-size: 14px; }
+
+  .reset-btn {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--tg-hint);
+    color: var(--tg-hint);
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  .prompt-card textarea {
+    width: 100%;
+    min-height: 90px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: var(--tg-text);
+    padding: 10px;
+    font-size: 13px;
+    resize: vertical;
+    font-family: inherit;
+  }
+  .copy-btn {
+    margin-top: 8px;
+    background: var(--tg-button);
+    color: var(--tg-button-text);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .copy-btn.copied { background: #4caf50; color: #fff; }
+
+  .link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .link-row:last-child { border-bottom: none; }
+  .link-row a {
+    color: var(--tg-link);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .link-row .icon { font-size: 18px; margin-right: 8px; }
+
+  .idea-item {
+    padding: 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .idea-item b { color: var(--accent-soft); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--tg-hint);
+    padding: 10px 16px 20px;
+  }
+
+  .bottom-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--tg-secondary-bg);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    gap: 2px;
+  }
+  .bottom-bar button {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--tg-hint);
+    font-size: 10px;
+    padding: 8px 2px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .bottom-bar button.active {
+    color: var(--accent);
+    background: rgba(212,175,55,0.1);
+  }
+  .bottom-bar .ic { font-size: 18px; }
+
+  .name-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: var(--tg-text);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="avatar" id="botAvatar">🐴</div>
+  <h1 id="botNameHeading">Алиса — рабочее место Лены</h1>
+  <p>BeSt туры — контент и продвижение, день за днём</p>
+</header>
+
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="checklist">📋 Чек-лист</button>
+  <button class="tab-btn" data-tab="cheatsheet">📖 Шпаргалка</button>
+  <button class="tab-btn" data-tab="ideas">💡 Идеи</button>
+  <button class="tab-btn" data-tab="prompts">🎨 Промпты</button>
+  <button class="tab-btn" data-tab="links">🔗 Ссылки</button>
+  <button class="tab-btn" data-tab="settings">⚙️ Ещё</button>
+</div>
+
+<!-- ЧЕК-ЛИСТ -->
+<div class="panel active" id="panel-checklist">
+  <div class="card">
+    <h3>Чек-лист на сегодня</h3>
+    <div id="checklistItems"></div>
+    <button class="reset-btn" id="resetChecklist">Сбросить на завтра</button>
+  </div>
+</div>
+
+<!-- ШПАРГАЛКА -->
+<div class="panel" id="panel-cheatsheet">
+  <div class="card">
+    <h3>🐴 Кто такая Алиса</h3>
+    <p>Твоя личная помощница по контенту Best Tour Club. Ей можно написать
+    в чат обычными словами — команды из списка ниже нужны только как
+    короткие ярлыки, если так удобнее. Она помнит все правила бизнеса и
+    все туры — не нужно ничего объяснять заново.</p>
+  </div>
+
+  <div class="card">
+    <h3>⌨️ Команды-ярлыки</h3>
+    <div class="cmd-row"><span class="cmd">/checklist</span><span class="desc">Чек-лист дня (тот же, что на первой вкладке)</span></div>
+    <div class="cmd-row"><span class="cmd">/idei</span><span class="desc">3-5 готовых идей контента по ближайшим турам</span></div>
+    <div class="cmd-row"><span class="cmd">/help</span><span class="desc">Короткое напоминание, что Алиса умеет</span></div>
+    <p class="hint" style="margin-top:8px;">Можно просто написать словами — «нужны идеи», «сделай чек-лист» — сработает так же.</p>
+  </div>
+
+  <div class="card">
+    <h3>💬 Как попросить — примеры</h3>
+    <div class="example">«Сделай карусель про тур в Абхазию»</div>
+    <div class="example">«Напиши объявление для Авито про Дигорию»</div>
+    <div class="example">«Разбери вот этот рилс на идеи: [ссылка]»</div>
+    <div class="example">«Адаптируй этот текст под ВК и Телеграм»</div>
+    <div class="example">«Придумай сценарий для рилса про Грузию»</div>
+    <p class="hint">Не знаешь, с чего начать — просто скинь мысль одним словом, Алиса переспросит сама, что с этим сделать.</p>
+  </div>
+
+  <div class="card">
+    <h3>🖼️ Картинки и видео — как это устроено</h3>
+    <p>Алиса сама не рисует и не монтирует. Она составляет готовый
+    текстовый промпт (описание) — ты просто копируешь его и вставляешь в
+    другое приложение:</p>
+    <ul>
+      <li><b>Фото/обложки</b> → промпт вставляешь в ChatGPT или Gemini</li>
+      <li><b>Рилсы/видео</b> → сценарий монтируешь в Instagram Edits или CapCut</li>
+    </ul>
+    <p class="hint">Готовые примеры промптов — вкладка «🎨 Промпты».</p>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ Правила, которые нельзя нарушать</h3>
+    <div class="rule-row"><span class="num">1</span><span>Цена в постах/каруселях — «до X ₽» (максимальная). В Avito и списках — «от X ₽» (минимальная).</span></div>
+    <div class="rule-row"><span class="num">2</span><span>Никогда не писать слова «Инстаграм»/«соцсети» в готовом тексте — заменять на «у нас», «в наших публикациях».</span></div>
+    <div class="rule-row"><span class="num">3</span><span>Только реальные факты — цены, даты, отзывы. Если данных нет — честно «[уточнить]», не выдумывать.</span></div>
+    <div class="rule-row"><span class="num">4</span><span>Чужие фото/видео с отметками — публиковать только после согласия автора (скриншот переписки).</span></div>
+    <div class="rule-row"><span class="num">5</span><span>4 тура в каталоге помечены «сверить цену» — перед их публикацией уточнить на сайте.</span></div>
+    <p class="hint" style="margin-top:8px;">Алиса сама следит за этими правилами в готовых текстах — здесь просто на всякий случай, если сомневаешься.</p>
+  </div>
+</div>
+
+<!-- ИДЕИ -->
+<div class="panel" id="panel-ideas">
+  <div class="card">
+    <h3>Идеи по реальным турам</h3>
+    <p style="font-size:13px;color:var(--tg-hint);margin-top:-4px;">
+      Открой чат с Алисой и напиши /idei — она подберёт 3-5 идей
+      по турам с ближайшими датами прямо из справочника.
+    </p>
+    <div class="idea-item">
+      <b>Быстрый способ:</b> просто напиши в чат "нужны идеи" — Алиса
+      посмотрит актуальные даты заездов и накидает конкретные зацепки,
+      а не абстрактные советы.
+    </div>
+  </div>
+</div>
+
+<!-- ПРОМПТЫ -->
+<div class="panel" id="panel-prompts">
+  <div class="card prompt-card">
+    <h3>🖼️ Промпт для обложки/карусели</h3>
+    <textarea readonly id="promptCover">Фотореалистичное фото [название тура/локации], [время года], тёплый естественный свет, широкий пейзажный кадр без людей на переднем плане, горизонтальная ориентация для карусели в соцсетях, без текста на изображении.</textarea>
+    <button class="copy-btn" onclick="copyPrompt('promptCover', this)">Копировать</button>
+  </div>
+  <div class="card prompt-card">
+    <h3>🎬 Промпт для рилса (раскадровка)</h3>
+    <textarea readonly id="promptReel">Сценарий короткого видео 15-30 сек по туру [название]: хук в первые 2-3 секунды с текстом на экране, 3-4 кадра с локациями тура, тёплая эмоциональная музыка без слов, финал с ценой и призывом написать.</textarea>
+    <button class="copy-btn" onclick="copyPrompt('promptReel', this)">Копировать</button>
+  </div>
+  <p style="font-size:12px;color:var(--tg-hint);text-align:center;">
+    Попроси Алису в чате составить точный промпт под конкретный тур —
+    она подставит реальные детали и даты.
+  </p>
+</div>
+
+<!-- ССЫЛКИ -->
+<div class="panel" id="panel-links">
+  <div class="card">
+    <h3>Рабочие ссылки</h3>
+    <div class="link-row">
+      <span><span class="icon">💬</span>Написать Алисе</span>
+      <a href="https://t.me/TheBest_TourBot" target="_blank">Открыть чат →</a>
+    </div>
+    <div class="link-row">
+      <span><span class="icon">🌐</span>Сайт Best Tour Club</span>
+      <a href="https://best-tour-club.ru" target="_blank">Открыть →</a>
+    </div>
+    <div class="link-row">
+      <span><span class="icon">💬</span>ChatGPT (картинки/видео)</span>
+      <a href="https://chat.openai.com" target="_blank">Открыть →</a>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Файлы с фактами (на компьютере)</h3>
+    <p style="font-size:12px;color:var(--tg-hint);">
+      Эти файлы открываются на рабочем компьютере, не с телефона —
+      находятся в папке "Best Tour Club → Правила и факты".
+    </p>
+  </div>
+</div>
+
+<!-- НАСТРОЙКИ -->
+<div class="panel" id="panel-settings">
+  <div class="card">
+    <h3>Имя помощницы</h3>
+    <input class="name-input" id="nameInput" placeholder="Например: Алиса, Аня, Марго...">
+    <button class="copy-btn" id="saveNameBtn">Сохранить</button>
+    <p style="font-size:12px;color:var(--tg-hint);margin-top:8px;">
+      После сохранения напиши в чат "теперь тебя зовут [имя]" — Алиса
+      подхватит новое имя.
+    </p>
+  </div>
+</div>
+
+<div class="footer-note">BeSt туры · обновляется вручную · сентябрь 2026</div>
+
+<div class="bottom-bar">
+  <button class="active" data-tab="checklist"><span class="ic">📋</span>Чек-лист</button>
+  <button data-tab="cheatsheet"><span class="ic">📖</span>Шпаргалка</button>
+  <button data-tab="ideas"><span class="ic">💡</span>Идеи</button>
+  <button data-tab="prompts"><span class="ic">🎨</span>Промпты</button>
+  <button data-tab="settings"><span class="ic">⚙️</span>Ещё</button>
+</div>
+
+<script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
+
+  // ---- Tabs ----
+  function switchTab(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.bottom-bar button').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    document.querySelectorAll(`[data-tab="${name}"]`).forEach(el => el.classList.add('active'));
+  }
+  document.querySelectorAll('[data-tab]').forEach(el => {
+    el.addEventListener('click', () => switchTab(el.dataset.tab));
+  });
+
+  // ---- Checklist (persisted per-day in localStorage) ----
+  const CHECKLIST_DEFAULT = [
+    "Табличка/чат — какие туры на неделе, сколько записано",
+    "Яндекс.Диск — посмотреть и забрать контент (не создавать/не удалять там)",
+    "Отметки в публикациях — запросить согласие, если есть чужой контент",
+    "Текст — накидать идеи/подписи с Алисой",
+    "Оформление — собрать пост/карусель в Recur/Garny",
+    "Рилс — смонтировать, если сегодня видео",
+    "Публикация — VK, ОК, Telegram, Threads"
+  ];
+
+  function todayKey() {
+    const d = new Date();
+    return `checklist_${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  }
+
+  function loadChecklistState() {
+    try {
+      return JSON.parse(localStorage.getItem(todayKey()) || "{}");
+    } catch (e) { return {}; }
+  }
+
+  function saveChecklistState(state) {
+    localStorage.setItem(todayKey(), JSON.stringify(state));
+  }
+
+  function renderChecklist() {
+    const state = loadChecklistState();
+    const container = document.getElementById('checklistItems');
+    container.innerHTML = '';
+    CHECKLIST_DEFAULT.forEach((label, i) => {
+      const done = !!state[i];
+      const row = document.createElement('div');
+      row.className = 'checklist-item' + (done ? ' done' : '');
+      row.innerHTML = `<div class="box">${done ? '✓' : ''}</div><span class="label">${label}</span>`;
+      row.addEventListener('click', () => {
+        const s = loadChecklistState();
+        s[i] = !s[i];
+        saveChecklistState(s);
+        renderChecklist();
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      });
+      container.appendChild(row);
+    });
+  }
+  renderChecklist();
+
+  document.getElementById('resetChecklist').addEventListener('click', () => {
+    saveChecklistState({});
+    renderChecklist();
+  });
+
+  // ---- Copy prompt ----
+  function copyPrompt(id, btn) {
+    const text = document.getElementById(id).value;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Скопировано ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Копировать'; btn.classList.remove('copied'); }, 1500);
+    });
+  }
+
+  // ---- Name settings ----
+  const NAME_KEY = 'bot_display_name';
+  const nameInput = document.getElementById('nameInput');
+  const savedName = localStorage.getItem(NAME_KEY) || 'Алиса';
+  nameInput.value = savedName;
+  document.getElementById('botNameHeading').textContent = savedName + ' — рабочее место Лены';
+
+  document.getElementById('saveNameBtn').addEventListener('click', () => {
+    const newName = nameInput.value.trim() || 'Алиса';
+    localStorage.setItem(NAME_KEY, newName);
+    document.getElementById('botNameHeading').textContent = newName + ' — рабочее место Лены';
+    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+  });
+</script>
+
+</body>
+</html>
