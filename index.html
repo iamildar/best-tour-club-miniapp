@@ -4,20 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Контент.Компаньон — Бестик</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   @font-face{
     font-family:"HIbiny";
-    src: url("../assets/fonts/HIbiny%20Bold.ttf") format("truetype");
+    src: url("assets/fonts/HIbiny%20Bold.ttf") format("truetype");
     font-weight:700; font-style:normal; font-display:swap;
   }
   @font-face{
     font-family:"HIbiny";
-    src: url("../assets/fonts/HIbiny%20Regular.ttf") format("truetype");
+    src: url("assets/fonts/HIbiny%20Regular.ttf") format("truetype");
     font-weight:400; font-style:normal; font-display:swap;
   }
   @font-face{
     font-family:"HIbiny";
-    src: url("../assets/fonts/HIbiny%20Light.ttf") format("truetype");
+    src: url("assets/fonts/HIbiny%20Light.ttf") format("truetype");
     font-weight:300; font-style:normal; font-display:swap;
   }
   :root{
@@ -108,8 +109,9 @@
   }
 
   .app-header{flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
-  .mascot-avatar{width:34px;height:34px;flex:none;border-radius:50%;overflow:hidden;}
-  .mascot-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .mascot-avatar{width:34px;height:34px;flex:none;}
+  .mascot-avatar img{width:100%;height:100%;object-fit:contain;display:block;animation:mascotBob 2.6s ease-in-out infinite;}
+  @keyframes mascotBob{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-2px) rotate(-2deg);}}
   .app-header .htext{flex:1;min-width:0;}
   .app-header .htext b{font-family:var(--font-display);font-weight:800;font-size:14.5px;display:flex;align-items:baseline;gap:2px;}
   .app-header .htext b .sep{color:var(--accent);}
@@ -745,6 +747,17 @@
 </div>
 
 <script>
+var tg = window.Telegram ? window.Telegram.WebApp : null;
+if(tg){
+  tg.ready();
+  tg.expand();
+  if(typeof tg.requestFullscreen === 'function'){
+    try { tg.requestFullscreen(); } catch(e){}
+  }
+  if(typeof tg.disableVerticalSwipes === 'function'){
+    try { tg.disableVerticalSwipes(); } catch(e){}
+  }
+}
 function bullterrierSVG(mood){
   var brows = {
     happy:    {l:'M 124 108 Q 132 105 140 109', r:'M 180 109 Q 188 105 196 108'},
@@ -852,8 +865,14 @@ var catFur = localStorage.getItem('cc_cat_fur') || 'sphynx'; // sphynx | furry
 function mascotSVG(mood){
   if(characterId==='cat') return catSVG(mood, catFur==='furry');
   if(characterId==='neutral') return neutralSVG(mood);
-  var photo = mood==='happy' ? 'assets/mascot/bullterrier-happy.jpg' : 'assets/mascot/bullterrier-neutral.jpg';
-  return '<img src="'+photo+'" alt="Бестик">';
+  var stickers = {
+    happy:    'assets/stickers/happy-smile.webp',
+    neutral:  'assets/stickers/neutral-front.webp',
+    worried:  'assets/stickers/portrait-thinking.webp',
+    thinking: 'assets/stickers/portrait-thinking.webp'
+  };
+  var src = stickers[mood] || stickers.neutral;
+  return '<img src="'+src+'" alt="Бестик">';
 }
 function paintMascots(mood){
   document.querySelectorAll('.mascot-avatar').forEach(function(el){ el.innerHTML = mascotSVG(mood); });
@@ -861,7 +880,7 @@ function paintMascots(mood){
 function renderCharGrid(){
   document.getElementById('charGrid').innerHTML = CHARACTERS.map(function(c){
     var thumbMood = 'neutral';
-    var thumb = c.id==='cat' ? catSVG(thumbMood, catFur==='furry') : (c.id==='neutral' ? neutralSVG(thumbMood) : '<img src="assets/mascot/bullterrier-neutral.jpg" alt="Бультерьер" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">');
+    var thumb = c.id==='cat' ? catSVG(thumbMood, catFur==='furry') : (c.id==='neutral' ? neutralSVG(thumbMood) : '<img src="assets/stickers/neutral-front.webp" alt="Бультерьер" style="width:100%;height:100%;object-fit:contain;">');
     return '<div class="char-card '+(c.id===characterId?'active':'')+'" data-char="'+c.id+'"><div class="char-thumb">'+thumb+'</div><b>'+c.name+'</b></div>';
   }).join('');
   var furRow = document.getElementById('catFurRow');
