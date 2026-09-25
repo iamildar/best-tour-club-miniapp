@@ -119,7 +119,7 @@
   .gear-btn{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;}
   .gear-btn svg{width:16px;height:16px;}
 
-  .client-row{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none;flex:none;}
+  .client-row{display:none;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none;flex:none;}
   .client-row::-webkit-scrollbar{display:none;}
   .client-row.hide{display:none;}
   .client-chip{flex:none;display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:6px 12px 6px 6px;cursor:pointer;}
@@ -462,6 +462,7 @@
       <section class="screen" id="screen-queue">
         <h1 class="page-title">Очередь публикаций</h1>
         <p class="page-sub">Все клиенты и площадки в одном списке. Нажмите на публикацию, чтобы сдвинуть статус.</p>
+        <p id="liveUpdatedAt" style="font-size:10.5px;color:var(--ink-faint);margin:-8px 0 10px;"></p>
         <div class="chip-row" id="platformFilterChips"></div>
         <button class="cta-btn teal" id="btnAddQueue" style="margin-bottom:13px;">+ Новый черновик в очередь</button>
         <div id="queueList"></div>
@@ -989,24 +990,11 @@ var PLATFORMS = {
   vkmarket:{label:'VK Маркетплейс', mono:'VM', color:'#3F63E0', auto:true}
 };
 var CLIENTS = [
-  {id:'besttour', name:'Best Tour Club', niche:'Турагентство · Краснодар', color:'#146B69', logo:'assets/logos/besttour-icon.svg', platforms:['vk','ok','instagram','threads','avito']},
-  {id:'coastal', name:'Coastal Nest', niche:'Аренда жилья · Нячанг', color:'#EF5C6E', platforms:['vk','ok','instagram','avito','vkmarket']},
-  {id:'fitzone', name:'FitZone', niche:'Фитнес-клуб · Дананг', color:'#ff5a36', platforms:['vk','ok','instagram','threads']}
+  {id:'besttour', name:'Best Tour Club', niche:'Турагентство · Краснодар', color:'#146B69', logo:'assets/logos/besttour-icon.svg', platforms:['vk','ok','instagram','threads','avito']}
 ];
 var state = { client:'besttour' };
 
-var QUEUE = [
-  {id:1, client:'besttour', pf:'vk', title:'Карусель «5 туров осени»', when:'Сегодня, 12:00', status:'scheduled'},
-  {id:2, client:'besttour', pf:'avito', title:'Объявление: тур в Дагестан, от 32 900 ₽', when:'Сегодня, 14:00', status:'review'},
-  {id:3, client:'besttour', pf:'instagram', title:'Сторис: отзыв группы из Абхазии', when:'Сегодня, 18:00', status:'draft'},
-  {id:4, client:'besttour', pf:'threads', title:'Пост: 3 ошибки при выборе тура', when:'Завтра, 10:00', status:'draft'},
-  {id:5, client:'besttour', pf:'vk', title:'Пост: тур дня — Грузия', when:'Сегодня, 9:00', status:'published'},
-  {id:6, client:'besttour', pf:'ok', title:'Карусель отзывов', when:'Завтра, 11:00', status:'scheduled'},
-  {id:7, client:'coastal', pf:'vk', title:'Карусель «5 вещей в каждой квартире»', when:'Сегодня, 12:00', status:'scheduled'},
-  {id:8, client:'coastal', pf:'avito', title:'Объявление: студия у моря', when:'Сегодня, 14:00', status:'review'},
-  {id:9, client:'fitzone', pf:'vk', title:'Пост: расписание групповых', when:'Сегодня, 9:00', status:'published'},
-  {id:10, client:'fitzone', pf:'threads', title:'Тред: 3 мифа про кардио', when:'Завтра, 15:00', status:'draft'}
-];
+var QUEUE = [];
 var queueFilter = 'all';
 var STATUS_ORDER = ['draft','review','scheduled','published'];
 var STATUS_LABEL = {draft:'Черновик', review:'На проверке', scheduled:'Запланировано', published:'Опубликовано'};
@@ -1014,33 +1002,19 @@ var STATUS_LABEL = {draft:'Черновик', review:'На проверке', sc
 var IDEA_CATS = ['Все','Продукт','Отзывы','Закулисье','Вопрос-ответ','Акция'];
 var IDEAS = {
   besttour: [
-    {cat:'Продукт', fmt:'Карусель', title:'5 туров, которые заканчиваются в этом месяце', outline:'Слайд 1 — цепляющий вопрос. Слайды 2–4 — конкретные туры с датами заездов. Слайд 5 — призыв уточнить места.', cta:'CTA: «Свободные места — уточняйте в сообщениях»'},
-    {cat:'Отзывы', fmt:'Пост', title:'Группа вернулась из Дагестана в восторге', outline:'Цитата из отзыва + фото группы (с согласия). Тёплый комментарий от имени компании.', cta:'CTA: «А куда собираетесь вы этой осенью?»'},
-    {cat:'Закулисье', fmt:'Рилс', title:'Как собирается тур-пакет за кулисами', outline:'Короткий влог: подбор маршрута → бронирование → инструктаж группы.', cta:'CTA: «Сохраните — пригодится при выборе тура»'},
-    {cat:'Вопрос-ответ', fmt:'Пост', title:'Что входит в стоимость тура, а что нет', outline:'Частый вопрос клиентов. Отвечаете честно и по пунктам.', cta:'CTA: «Уточняйте детали в сообщениях»'},
-    {cat:'Акция', fmt:'Карусель', title:'Скидка за раннее бронирование', outline:'Слайд 1 — цифра скидки. Слайд 2 — даты. Слайд 3 — как забронировать.', cta:'CTA: «Бронируйте до конца месяца»'}
-  ],
-  coastal: [
-    {cat:'Продукт', fmt:'Карусель', title:'5 вещей, которые есть в каждой нашей квартире', outline:'Слайд 1 — цепляющий вопрос. Слайды 2–4 — кондиционер, вайфай, вид из окна.', cta:'CTA: «Свободные даты — в шапке профиля»'},
-    {cat:'Отзывы', fmt:'Пост', title:'Гостья призналась, что чуть не осталась насовсем', outline:'Цитата из отзыва + фото гостьи на балконе.', cta:'CTA: «А как вам такой вид по утрам?»'}
-  ],
-  fitzone: [
-    {cat:'Продукт', fmt:'Карусель', title:'Расписание групповых на неделю', outline:'Слайд с сеткой занятий по дням.', cta:'CTA: «Пробное занятие — бесплатно»'},
-    {cat:'Отзывы', fmt:'Карусель', title:'Три истории участников марафона похудения', outline:'Каждый слайд — фото + цитата.', cta:'CTA: «Следующий поток стартует в понедельник»'}
+    {cat:'Продукт', fmt:'Карусель', title:'КЧР: озеро Шабайдак + Махарское и Гондарайское ущелье — заезд 31 октября', outline:'Слайд 1 — хук+название+цена до 14 500 ₽. Слайды 2-3 — локации (озеро Шабайдак, ущелья). Слайд 4 — что включено. Слайд 5 — даты (31 октября — 1 ноября) + цена. Слайд 6 — эмоция/отзыв. Слайд 7 — призыв написать.', cta:'CTA: «Свободные места — уточняйте в сообщениях»'},
+    {cat:'Продукт', fmt:'Карусель', title:'Грузия: Тбилиси, Батуми, Кахетия — заезд 10-16 октября', outline:'Слайд 1 — хук+цена до 46 000 ₽. Слайды 2-4 — Тбилиси/Батуми/Кахетия. Слайд 5 — даты+цена. Слайд 6 — эмоция. Слайд 7 — призыв.', cta:'CTA: «Уточняйте детали в сообщениях»'},
+    {cat:'Отзывы', fmt:'Пост', title:'Отзыв Татьяны Тагановой — тур по Северной Осетии, Дигория', outline:'Реальная цитата из блока отзывов сайта: «Ездили с мужем в тур 12-13.10 С.Осетия Дигория... огромную благодарность за незабываемые 2 дня». Указать имя автора.', cta:'CTA: «А куда собираетесь вы этой осенью?»'},
+    {cat:'Продукт', fmt:'Объявление Avito', title:'КБР: плато Канжол, урочище Гижгит — заезд 26-27 сентября / 10-11 октября', outline:'Один абзац, цена от 12 300 ₽, конкретные даты, тёплый тон, призыв написать.', cta:'CTA + эмодзи 🖤'},
+    {cat:'Вопрос-ответ', fmt:'Пост', title:'Что входит в стоимость тура, а что нет', outline:'Частый вопрос клиентов. Отвечать честно и по пунктам — по фактам из best_tour_ai_brain.md, не выдумывать состав.', cta:'CTA: «Уточняйте детали в сообщениях»'}
   ]
 };
 var ideaState = {filter:'Все', idx:0, saved:[]};
 
 var MARKET_IDEAS = {
   besttour: [
-    {title:'Тур в Дагестан, 4 дня', price:'от 32 900 ₽', points:['Трансфер и проживание включены','Сопровождение гида','Группа до 12 человек'], tip:'Совет: укажите точные даты заезда в заголовке — так объявление чаще находят.'},
-    {title:'Тур в Абхазию, выходные', price:'от 18 500 ₽', points:['Выезд из Краснодара','Питание по программе','Свободные места на октябрь'], tip:'Совет: добавьте «выходные» в заголовок — частый поисковый запрос.'}
-  ],
-  coastal: [
-    {title:'Студия у моря, 32 м²', price:'от 800 000 ₫/сутки', points:['5 минут пешком до пляжа','Кондиционер и стиральная машина'], tip:'Совет: первое фото — вид с балкона, увеличивает число откликов.'}
-  ],
-  fitzone: [
-    {title:'Абонемент безлимит на месяц', price:'1 500 000 ₫', points:['Все групповые программы','Тренажёрный зал 24/7'], tip:'Совет: фото зала в первом слоте хорошо заходит.'}
+    {title:'Тур в КЧР: озеро Шабайдак + Махарское и Гондарайское ущелье', price:'от 12 400 ₽', points:['Заезд 31 октября — 1 ноября','Сопровождение гида','Трансфер включён'], tip:'Совет: укажите точные даты заезда в заголовке — так объявление чаще находят.'},
+    {title:'Плато Канжол, урочище Гижгит + перевал Актопрак', price:'от 12 300 ₽', points:['Заезды 26-27 сентября и 10-11 октября','2 дня, выезд из Краснодара'], tip:'Совет: добавьте ближайшую дату заезда в заголовок — частый поисковый запрос.'}
   ]
 };
 var marketState = {idx:0};
@@ -1048,21 +1022,9 @@ var marketState = {idx:0};
 var BRAND = {
   besttour:{
     tones:['Дружелюбный','Живой','Заботливый','Деловой'], activeTone:'Живой',
-    forbidden:['дёшево','не пожалеете','супер-пупер','гарантированно'],
-    prices:[{name:'Тур в Дагестан, 4 дня', val:'до 32 900 ₽'},{name:'Тур в Абхазию, выходные', val:'до 18 500 ₽'},{name:'Тур в Грузию, 7 дней', val:'до 54 000 ₽'}],
-    sample:'Дешёвый тур в горы — не пожалеете!! Пишите скорее, бронируйте за 35 000 ₽ гарантированно с местами'
-  },
-  coastal:{
-    tones:['Дружелюбный','Строгий','Заботливый'], activeTone:'Дружелюбный',
-    forbidden:['дешёвый','элитный','не пожалеете'],
-    prices:[{name:'Студия', val:'от 800 000 ₫/сутки'}],
-    sample:'Дешёвая студия у моря, элитный вид — не пожалеете!!'
-  },
-  fitzone:{
-    tones:['Дерзкий','Заботливый'], activeTone:'Дерзкий',
-    forbidden:['похудей за неделю','без усилий'],
-    prices:[{name:'Безлимит на месяц', val:'1 500 000 ₫'}],
-    sample:'Похудей за неделю без усилий — чудо-результат уже завтра!'
+    forbidden:['дёшево','не пожалеете','супер-пупер','гарантированно','Инстаграм','соцсети'],
+    prices:[{name:'Тур в КЧР: озеро Шабайдак + ущелья', val:'до 14 500 ₽'},{name:'Плато Канжол, урочище Гижгит', val:'до 14 900 ₽'},{name:'Грузия: Тбилиси, Батуми, Кахетия', val:'до 46 000 ₽'}],
+    sample:'Дешёвый тур в горы — не пожалеете!! Пишите скорее, бронируйте гарантированно с местами'
   }
 };
 
@@ -1724,6 +1686,26 @@ renderWizardChips();
 renderLibCatChips(); renderLibraryList(); renderNewTplCatChips();
 renderAnalyticsCatChips(); renderAnalytics();
 renderHome();
+
+// ---- Живые данные из status.json (публикует агент Бестик после решений в чате) ----
+function loadLiveStatus(){
+  fetch('./status.json?t=' + Date.now())
+    .then(function(res){ if(!res.ok) throw new Error('no status.json'); return res.json(); })
+    .then(function(data){
+      if(Array.isArray(data.queue)){
+        QUEUE = data.queue.map(function(q){ return Object.assign({client:'besttour'}, q); });
+      }
+      if(Array.isArray(data.ideas) && data.ideas.length){
+        IDEAS.besttour = data.ideas;
+      }
+      renderQueueList(); renderHome(); renderIdeaChips(); renderIdeaCard(); renderAnalytics();
+      var upd = document.getElementById('liveUpdatedAt');
+      if(upd && data.updated_at){ upd.textContent = 'Обновлено: ' + data.updated_at; }
+    })
+    .catch(function(){ /* тихо остаёмся на текущих данных, приложение не должно падать без интернета */ });
+}
+loadLiveStatus();
+
 </script>
 </body>
 </html>
