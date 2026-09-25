@@ -2,522 +2,1709 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Алиса — Best Tour Club</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контент.Компаньон — Бестик</title>
 <style>
-  :root {
-    --tg-bg: var(--tg-theme-bg-color, #0f1115);
-    --tg-text: var(--tg-theme-text-color, #ffffff);
-    --tg-hint: var(--tg-theme-hint-color, #8a8f98);
-    --tg-link: var(--tg-theme-link-color, #6ab7ff);
-    --tg-button: var(--tg-theme-button-color, #d4af37);
-    --tg-button-text: var(--tg-theme-button-text-color, #0f1115);
-    --tg-secondary-bg: var(--tg-theme-secondary-bg-color, #1a1d24);
-    --accent: #d4af37;
-    --accent-soft: #e8c568;
+  @font-face{
+    font-family:"HIbiny";
+    src: url("../assets/fonts/HIbiny%20Bold.ttf") format("truetype");
+    font-weight:700; font-style:normal; font-display:swap;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--tg-bg);
-    color: var(--tg-text);
-    padding-bottom: 90px;
+  @font-face{
+    font-family:"HIbiny";
+    src: url("../assets/fonts/HIbiny%20Regular.ttf") format("truetype");
+    font-weight:400; font-style:normal; font-display:swap;
   }
-  header {
-    padding: 24px 16px 16px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+  @font-face{
+    font-family:"HIbiny";
+    src: url("../assets/fonts/HIbiny%20Light.ttf") format("truetype");
+    font-weight:300; font-style:normal; font-display:swap;
   }
-  header .avatar {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), #8a6d1f);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-    margin: 0 auto 10px;
+  :root{
+    --radius-lg:26px; --radius-md:18px; --radius-sm:13px;
+    --font-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
   }
-  header h1 { font-size: 20px; margin: 0 0 4px; }
-  header p { font-size: 13px; color: var(--tg-hint); margin: 0; }
-
-  .tabs {
-    display: flex;
-    overflow-x: auto;
-    gap: 8px;
-    padding: 12px 16px;
-    -webkit-overflow-scrolling: touch;
+  [data-theme="bestour"]{
+    --font-display:"HIbiny",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
   }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab-btn {
-    flex: none;
-    padding: 8px 14px;
-    border-radius: 20px;
-    background: var(--tg-secondary-bg);
-    color: var(--tg-text);
-    border: 1px solid transparent;
-    font-size: 13px;
-    white-space: nowrap;
-    cursor: pointer;
+  [data-theme="companion"]{
+    --bg:#f4f5f7; --surface:#ffffff; --surface-2:#eceef1; --surface-3:#e4e6ea;
+    --ink:#16181d; --ink-soft:#7b808a; --ink-faint:#a7abb3;
+    --accent:#ff5a36; --accent2:#ff815f; --accent-ink:#ffffff;
+    --teal:#28a66f; --teal-soft:#e2f5ec;
+    --coral:#d94a2b; --coral-soft:#fdeae5;
+    --blue:#4f7cff; --blue-soft:#e8edff;
+    --line:rgba(22,24,29,.1); --shadow:0 10px 28px -14px rgba(20,22,30,.18);
+    --chrome-bg:#0f1014;
   }
-  .tab-btn.active {
-    background: var(--accent);
-    color: var(--tg-button-text);
-    font-weight: 600;
+  [data-theme="companion"].dark{
+    --bg:#121317; --surface:#23262e; --surface-2:#1a1c22; --surface-3:#2d3039;
+    --ink:#f5f6f8; --ink-soft:#9da2ad; --ink-faint:#666b76;
+    --accent:#ff7a52; --accent2:#ff9a72; --accent-ink:#1c0f09;
+    --teal:#3ecf8e; --teal-soft:#143226;
+    --coral:#ff8a76; --coral-soft:#34191a;
+    --blue:#8ea6ff; --blue-soft:#1b2340;
+    --line:rgba(255,255,255,.15); --shadow:0 14px 34px -16px rgba(0,0,0,.75);
+    --chrome-bg:#2b2d31;
   }
-
-  .panel { display: none; padding: 4px 16px 16px; }
-  .panel.active { display: block; }
-
-  .card {
-    background: var(--tg-secondary-bg);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
+  [data-theme="teal"]{
+    --bg:#FBF3E6; --surface:#ffffff; --surface-2:#F4EAD9; --surface-3:#EDE0C9;
+    --ink:#21302B; --ink-soft:#5B6B62; --ink-faint:#93A199;
+    --accent:#146B69; --accent2:#1C8480; --accent-ink:#ffffff;
+    --teal:#146B69; --teal-soft:#DCEDEA;
+    --coral:#EF5C6E; --coral-soft:#FCE1E3;
+    --blue:#3F63E0; --blue-soft:#E4E9FB;
+    --line:rgba(33,48,43,.12); --shadow:0 10px 24px -12px rgba(20,107,105,.28);
+    --chrome-bg:#0F1613;
   }
-  .card h3 { margin: 0 0 10px; font-size: 15px; }
-  .card p { font-size: 13px; line-height: 1.55; color: var(--tg-text); margin: 0 0 8px; }
-  .card p.hint { color: var(--tg-hint); }
-  .card ul { margin: 0 0 8px; padding-left: 20px; font-size: 13px; line-height: 1.6; }
-  .card ul li { margin-bottom: 4px; }
-
-  .cmd-row {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    padding: 9px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+  [data-theme="teal"].dark{
+    --bg:#0B100E; --surface:#1B2823; --surface-2:#131C19; --surface-3:#243530;
+    --ink:#EFF8F5; --ink-soft:#9CB2AB; --ink-faint:#5C7A72;
+    --accent:#3FC2BC; --accent2:#54D9D3; --accent-ink:#04120F;
+    --teal:#3FC2BC; --teal-soft:#132D2A;
+    --coral:#FF8FA0; --coral-soft:#331E24;
+    --blue:#8FA3FF; --blue-soft:#181E38;
+    --line:rgba(255,255,255,.14); --shadow:0 14px 34px -16px rgba(0,0,0,.8);
+    --chrome-bg:#2b2d31;
   }
-  .cmd-row:last-child { border-bottom: none; }
-  .cmd-row .cmd {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    background: rgba(212,175,55,0.12);
-    color: var(--accent-soft);
-    border-radius: 6px;
-    padding: 2px 7px;
-    font-size: 12.5px;
-    flex: none;
+  [data-theme="bestour"]{
+    --bg:#F9EED8; --surface:#ffffff; --surface-2:#F1E4C8; --surface-3:#E9D9B8;
+    --ink:#171717; --ink-soft:#5B5A55; --ink-faint:#8A8880;
+    --accent:#123322; --accent2:#1E4A34; --accent-ink:#F9EED8;
+    --teal:#123322; --teal-soft:#DCE6DE;
+    --coral:#8A8880; --coral-soft:#EDEBE6;
+    --blue:#3F63E0; --blue-soft:#E4E9FB;
+    --line:rgba(18,51,34,.14); --shadow:0 10px 24px -12px rgba(18,51,34,.28);
+    --chrome-bg:#0A1C13;
   }
-  .cmd-row .desc { font-size: 13px; color: var(--tg-text); }
-
-  .example {
-    background: rgba(255,255,255,0.04);
-    border-left: 3px solid var(--accent);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 12.5px;
-    margin-bottom: 6px;
-    font-style: italic;
-    color: var(--tg-text);
+  [data-theme="bestour"].dark{
+    --bg:#0E241A; --surface:#123322; --surface-2:#0C2419; --surface-3:#1A3F2C;
+    --ink:#F9EED8; --ink-soft:#B9C7BD; --ink-faint:#7C8C81;
+    --accent:#F9EED8; --accent2:#EFE0BC; --accent-ink:#123322;
+    --teal:#F9EED8; --teal-soft:#1E4A34;
+    --coral:#8A8880; --coral-soft:#26352C;
+    --blue:#8FA3FF; --blue-soft:#181E38;
+    --line:rgba(249,238,216,.14); --shadow:0 14px 34px -16px rgba(0,0,0,.75);
+    --chrome-bg:#2b2d31;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--chrome-bg); font-family:var(--font-body); color:var(--ink); min-height:100vh;
+    display:flex; align-items:flex-start; justify-content:center; -webkit-tap-highlight-color:transparent;
+  }
+  button{font-family:inherit;color:inherit;}
+  .stage{width:100%;min-height:100vh;display:flex;justify-content:center;}
+  .device{
+    position:relative;width:100%;max-width:430px;min-height:100vh;background:var(--bg);
+    color:var(--ink);
+    overflow:hidden;display:flex;flex-direction:column;transition:background .2s ease,color .2s ease;
+  }
+  @media (min-width:560px){
+    body{padding:36px 16px;}
+    .stage{min-height:auto;}
+    .device{min-height:880px;max-height:880px;border-radius:40px;box-shadow:0 40px 90px -30px rgba(0,0,0,.6);}
   }
 
-  .rule-row {
-    display: flex;
-    gap: 8px;
-    padding: 7px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    font-size: 12.5px;
-    line-height: 1.5;
-  }
-  .rule-row:last-child { border-bottom: none; }
-  .rule-row .num {
-    flex: none;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: var(--tg-button-text);
-    font-size: 11px;
-    font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .app-header{flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
+  .mascot-avatar{width:34px;height:34px;flex:none;border-radius:50%;overflow:hidden;}
+  .mascot-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .app-header .htext{flex:1;min-width:0;}
+  .app-header .htext b{font-family:var(--font-display);font-weight:800;font-size:14.5px;display:flex;align-items:baseline;gap:2px;}
+  .app-header .htext b .sep{color:var(--accent);}
+  .app-header .htext small{font-size:11px;color:var(--ink-soft);}
+  .gear-btn{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;}
+  .gear-btn svg{width:16px;height:16px;}
 
-  .checklist-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    cursor: pointer;
-  }
-  .checklist-item:last-child { border-bottom: none; }
-  .checklist-item .box {
-    width: 22px; height: 22px;
-    border-radius: 6px;
-    border: 2px solid var(--tg-hint);
-    flex: none;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    transition: all 0.15s;
-  }
-  .checklist-item.done .box {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--tg-button-text);
-  }
-  .checklist-item.done span.label { text-decoration: line-through; color: var(--tg-hint); }
-  .checklist-item .label { font-size: 14px; }
+  .client-row{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none;flex:none;}
+  .client-row::-webkit-scrollbar{display:none;}
+  .client-row.hide{display:none;}
+  .client-chip{flex:none;display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:6px 12px 6px 6px;cursor:pointer;}
+  .client-chip .dot{width:19px;height:19px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8.5px;font-weight:800;}
+  .client-chip span{font-size:12px;font-weight:700;color:var(--ink-soft);white-space:nowrap;}
+  .client-chip.active{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 12%, transparent);}
+  .client-chip.active span{color:var(--accent);}
 
-  .reset-btn {
-    display: block;
-    width: 100%;
-    margin-top: 8px;
-    padding: 10px;
-    background: transparent;
-    border: 1px solid var(--tg-hint);
-    color: var(--tg-hint);
-    border-radius: 10px;
-    font-size: 13px;
-  }
+  .app-body{flex:1;overflow-y:auto;padding:2px 16px 14px;scrollbar-width:none;}
+  .app-body::-webkit-scrollbar{display:none;}
+  .screen{display:none;animation:fade .22s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
-  .prompt-card textarea {
-    width: 100%;
-    min-height: 90px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    color: var(--tg-text);
-    padding: 10px;
-    font-size: 13px;
-    resize: vertical;
-    font-family: inherit;
-  }
-  .copy-btn {
-    margin-top: 8px;
-    background: var(--tg-button);
-    color: var(--tg-button-text);
-    border: none;
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .copy-btn.copied { background: #4caf50; color: #fff; }
+  h1.page-title{font-family:var(--font-display);font-weight:800;font-size:19px;line-height:1.25;margin:6px 0 4px;}
+  p.page-sub{margin:0 0 14px;color:var(--ink-soft);font-size:12.8px;line-height:1.5;}
+  .card{background:var(--surface);border-radius:var(--radius-md);padding:15px;box-shadow:var(--shadow);margin-bottom:11px;}
+  .card h3{margin:0 0 9px;font-size:14.5px;font-family:var(--font-display);font-weight:700;}
+  .card p{font-size:12.6px;line-height:1.55;color:var(--ink);margin:0 0 8px;}
+  .card p.hint{color:var(--ink-soft);}
 
-  .link-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .link-row:last-child { border-bottom: none; }
-  .link-row a {
-    color: var(--tg-link);
-    text-decoration: none;
-    font-size: 14px;
-  }
-  .link-row .icon { font-size: 18px; margin-right: 8px; }
+  .hero-card{background:linear-gradient(150deg,var(--surface-3),var(--surface-2));border-radius:var(--radius-lg);padding:17px 17px 15px;margin:6px 0 14px;position:relative;overflow:hidden;}
+  .hero-card:after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;right:-50px;top:-50px;background:color-mix(in srgb, var(--accent) 18%, transparent);}
+  .hero-card .greet-label{font-size:11.5px;color:var(--ink-soft);font-weight:700;position:relative;}
+  .hero-card .greet-line{font-family:var(--font-display);font-weight:700;font-size:15.5px;line-height:1.4;margin:6px 0 14px;position:relative;}
+  .hero-stats{display:flex;gap:9px;position:relative;}
+  .hero-stat{flex:1;background:var(--surface);border-radius:14px;padding:9px 8px;box-shadow:var(--shadow);}
+  .hero-stat b{display:block;font-family:var(--font-display);font-size:16px;color:var(--accent);}
+  .hero-stat span{font-size:10.3px;color:var(--ink-soft);}
 
-  .idea-item {
-    padding: 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 10px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-  .idea-item b { color: var(--accent-soft); }
+  .focus-card{background:var(--surface);border:1.5px solid color-mix(in srgb, var(--accent) 35%, var(--line));border-radius:var(--radius-lg);padding:15px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .focus-card .tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--accent-ink);background:var(--accent);padding:3px 9px;border-radius:99px;margin-bottom:8px;}
+  .focus-card h2{font-family:var(--font-display);font-size:15px;margin:0 0 5px;}
+  .focus-card p{font-size:12.3px;color:var(--ink-soft);margin:0 0 11px;line-height:1.5;}
+  .focus-card.done{border-color:color-mix(in srgb, var(--teal) 45%, var(--line));}
+  .focus-card.done .tag{background:var(--teal);}
 
-  .footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: var(--tg-hint);
-    padding: 10px 16px 20px;
-  }
+  .section-label{font-size:11.5px;font-weight:800;color:var(--ink-soft);margin:16px 2px 8px;display:flex;align-items:center;justify-content:space-between;text-transform:uppercase;letter-spacing:.03em;}
+  .section-label small{font-weight:600;color:var(--ink-faint);text-transform:none;letter-spacing:0;}
 
-  .bottom-bar {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: var(--tg-secondary-bg);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
-    gap: 2px;
-  }
-  .bottom-bar button {
-    flex: 1;
-    background: none;
-    border: none;
-    color: var(--tg-hint);
-    font-size: 10px;
-    padding: 8px 2px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-  .bottom-bar button.active {
-    color: var(--accent);
-    background: rgba(212,175,55,0.1);
-  }
-  .bottom-bar .ic { font-size: 18px; }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .qa-card{background:var(--surface);border-radius:var(--radius-md);padding:13px;box-shadow:var(--shadow);min-height:92px;display:flex;flex-direction:column;justify-content:space-between;border:none;cursor:pointer;text-align:left;}
+  .qa-card .ic{width:20px;height:20px;color:var(--accent);display:block;}
+  .qa-card .ic svg{width:100%;height:100%;display:block;}
+  .qa-card b{display:block;font-size:12.8px;font-family:var(--font-display);margin-top:6px;}
+  .qa-card small{display:block;color:var(--ink-soft);font-size:10.6px;margin-top:3px;line-height:1.3;}
 
-  .name-input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: var(--tg-text);
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
+  .cta-btn{width:100%;border:none;cursor:pointer;background:var(--accent);color:var(--accent-ink);font-family:var(--font-display);font-weight:700;font-size:13.6px;padding:13px 15px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:7px;}
+  .cta-btn:active{transform:scale(.98);}
+  .cta-btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);border:1px solid var(--line);}
+  .cta-btn.teal{background:var(--teal);color:var(--accent-ink);}
+  .cta-btn.sm{padding:9px 12px;font-size:12px;border-radius:12px;width:auto;}
+
+  .tip-card{display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border-radius:var(--radius-md);padding:13px;margin-top:12px;}
+  .tip-card .mascot-avatar{width:32px;height:32px;flex:none;}
+  .tip-card b{display:block;font-size:11.5px;color:var(--accent);margin-bottom:2px;}
+  .tip-card p{margin:0;font-size:12.2px;line-height:1.5;color:var(--ink);}
+
+  .chip-row{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none;}
+  .chip-row::-webkit-scrollbar{display:none;}
+  .chip{flex:none;border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:99px;font-size:11.8px;font-weight:700;color:var(--ink-soft);cursor:pointer;white-space:nowrap;}
+  .chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+  .seg{display:flex;background:var(--surface-2);border-radius:13px;padding:4px;gap:4px;margin-bottom:13px;}
+  .seg button{flex:1;border:none;background:transparent;padding:8px 0;border-radius:10px;font-size:12.2px;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+  .seg button.active{background:var(--surface);color:var(--ink);box-shadow:0 4px 10px -4px rgba(0,0,0,.15);}
+
+  .pf-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;color:#fff;font-size:9px;font-weight:800;flex:none;}
+  .queue-item{display:flex;gap:10px;background:var(--surface);border-radius:var(--radius-sm);padding:11px;margin-bottom:8px;box-shadow:var(--shadow);align-items:center;cursor:pointer;}
+  .queue-item .pf-badge{width:32px;height:32px;border-radius:10px;font-size:10.5px;}
+  .queue-info{flex:1;min-width:0;}
+  .queue-info b{display:block;font-size:12.6px;line-height:1.3;margin-bottom:2px;}
+  .queue-info .meta{font-size:10.6px;color:var(--ink-soft);display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  .status-pill{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:99px;flex:none;white-space:nowrap;}
+  .status-draft{background:var(--surface-3);color:var(--ink-soft);}
+  .status-review{background:var(--coral-soft);color:var(--coral);}
+  .status-scheduled{background:var(--blue-soft);color:var(--blue);}
+  .status-published{background:var(--teal-soft);color:var(--teal);}
+  .auto-tag{font-size:9.6px;color:var(--ink-faint);}
+
+  .idea-progress{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--ink-soft);font-weight:700;margin:2px 2px 10px;}
+  .idea-card{background:var(--surface);border-radius:var(--radius-lg);padding:17px;box-shadow:var(--shadow);min-height:210px;display:flex;flex-direction:column;}
+  .idea-badges{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+  .badge{font-size:10.2px;font-weight:800;padding:4px 9px;border-radius:8px;}
+  .badge.format{background:var(--surface-3);color:var(--ink-soft);}
+  .badge.cat{background:var(--teal-soft);color:var(--teal);}
+  .idea-card h3{font-family:var(--font-display);font-size:15px;line-height:1.35;margin:0 0 9px;}
+  .idea-card .outline{font-size:12.6px;line-height:1.6;color:var(--ink-soft);margin:0 0 11px;flex:1;}
+  .idea-card .cta-line{font-size:11.6px;font-weight:700;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:8px 10px;}
+  .idea-actions{display:flex;gap:8px;margin-top:11px;}
+  .icon-btn{flex:none;width:48px;height:48px;border-radius:15px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);}
+  .icon-btn.save{background:var(--accent);border-color:var(--accent);}
+  .icon-btn.next{flex:1;width:auto;background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700;font-size:12.5px;gap:6px;}
+  .icon-btn svg{width:18px;height:18px;}
+
+  .market-card{background:var(--surface);border-radius:var(--radius-lg);padding:17px;box-shadow:var(--shadow);}
+  .market-card h3{font-family:var(--font-display);font-size:14.8px;margin:0 0 4px;}
+  .market-price{font-size:18px;font-weight:800;color:var(--teal);font-family:var(--font-display);margin-bottom:10px;}
+  .market-points{margin:0 0 12px;padding-left:18px;font-size:12.3px;color:var(--ink-soft);line-height:1.7;}
+  .market-tip{font-size:11.6px;background:var(--surface-2);border-radius:10px;padding:9px 11px;color:var(--ink);}
+
+  .saved-toggle{display:flex;align-items:center;justify-content:space-between;margin-top:15px;padding:11px 4px;border-top:1px solid var(--line);cursor:pointer;}
+  .saved-toggle b{font-size:12.6px;}
+  .saved-list{display:none;}
+  .saved-list.open{display:block;}
+  .saved-item{background:var(--surface);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:7px;box-shadow:var(--shadow);font-size:12.5px;}
+  .saved-item b{display:block;font-size:12.5px;margin-bottom:2px;}
+  .saved-item span{color:var(--ink-soft);font-size:10.8px;}
+
+  textarea.brand-input{width:100%;min-height:96px;border-radius:var(--radius-md);border:1px solid var(--line);background:var(--surface);padding:12px;font-family:var(--font-body);font-size:12.8px;resize:vertical;color:var(--ink);line-height:1.5;}
+  textarea.brand-input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .result-card{display:none;margin-top:12px;}
+  .result-card.show{display:block;}
+  .verdict-row{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
+  .verdict-row .mascot-avatar{width:40px;height:40px;flex:none;}
+  .verdict-row b{font-family:var(--font-display);font-size:13.5px;display:block;}
+  .verdict-row span{font-size:11px;color:var(--ink-soft);}
+  .check-line{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line);}
+  .check-line:first-of-type{border-top:none;}
+  .check-line .dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;}
+  .check-line.ok .dot{background:var(--teal);}
+  .check-line.warn .dot{background:var(--accent);}
+  .check-line.bad .dot{background:var(--coral);}
+  .check-line b{display:block;font-size:12.2px;}
+  .check-line span{font-size:11.3px;color:var(--ink-soft);}
+  mark.flag{background:var(--coral-soft);color:var(--coral);border-radius:4px;padding:0 2px;text-decoration:line-through;font-weight:700;}
+  .rules-block{margin-top:17px;}
+  .rules-block h4{font-size:11.8px;color:var(--ink-soft);margin:0 0 8px;font-weight:800;}
+  .tone-set{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px;}
+  .tag{display:flex;align-items:center;gap:6px;background:var(--coral-soft);color:var(--coral);font-size:11.4px;font-weight:700;padding:6px 6px 6px 11px;border-radius:99px;}
+  .tag button{border:none;background:rgba(0,0,0,.08);color:inherit;width:16px;height:16px;border-radius:50%;cursor:pointer;font-size:11px;}
+  .add-row{display:flex;gap:7px;margin-top:4px;}
+  .add-row input{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:11px;padding:9px 11px;font-size:12.2px;color:var(--ink);font-family:inherit;}
+  .add-row button{flex:none;background:var(--accent);color:var(--accent-ink);border:none;border-radius:11px;padding:0 14px;font-weight:800;font-size:13px;cursor:pointer;}
+  .price-table{background:var(--surface);border-radius:var(--radius-sm);box-shadow:var(--shadow);overflow:hidden;}
+  .price-row{display:flex;justify-content:space-between;padding:10px 13px;font-size:12.2px;border-top:1px solid var(--line);}
+  .price-row:first-child{border-top:none;}
+  .price-row span:last-child{font-weight:700;}
+  .chat-note{display:flex;gap:10px;background:var(--surface-2);border-radius:var(--radius-md);padding:13px;margin-top:14px;align-items:flex-start;}
+  .chat-note .mascot-avatar{width:30px;height:30px;flex:none;}
+  .chat-note p{margin:0;font-size:11.8px;line-height:1.55;color:var(--ink-soft);}
+  .chat-note b{color:var(--ink);}
+
+  .hermes-banner{display:flex;align-items:center;gap:10px;background:var(--surface-3);color:var(--ink);border-radius:var(--radius-md);padding:12px 13px;margin-bottom:13px;}
+  .hermes-mark{width:32px;height:32px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:12px;flex:none;}
+  .hermes-banner b{display:block;font-size:12px;}
+  .hermes-banner span{font-size:10.6px;color:var(--ink-soft);}
+
+  .model-card{background:var(--surface);border-radius:var(--radius-md);padding:13px;margin-bottom:9px;box-shadow:var(--shadow);}
+  .model-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .model-mark{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-display);font-weight:800;font-size:12px;flex:none;}
+  .model-name{flex:1;min-width:0;}
+  .model-name b{display:block;font-size:13px;}
+  .model-name span{font-size:10.6px;color:var(--ink-soft);}
+  .conn-dot{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;flex:none;}
+  .conn-dot i{width:7px;height:7px;border-radius:50%;background:var(--teal);}
+  .conn-dot.off i{background:var(--ink-faint);}
+  .conn-dot.off{color:var(--ink-faint);}
+  .model-strength{font-size:11.8px;color:var(--ink-soft);line-height:1.5;margin-bottom:9px;}
+  .task-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .task-chip{font-size:10.4px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--surface-2);color:var(--ink-soft);cursor:pointer;border:1px solid transparent;}
+  .task-chip.on{background:var(--teal-soft);color:var(--teal);border-color:var(--teal);}
+  .model-card.disabled{opacity:.6;}
+  .connect-btn{margin-top:7px;font-size:11px;font-weight:700;color:var(--teal);background:none;border:1px dashed var(--teal);border-radius:99px;padding:6px 12px;cursor:pointer;}
+
+  .field-label{font-size:11.5px;font-weight:800;color:var(--ink-soft);margin:13px 2px 7px;}
+  .field-label:first-child{margin-top:0;}
+  input.topic-input{width:100%;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);padding:11px 12px;font-size:12.8px;font-family:inherit;color:var(--ink);}
+  .prompt-out{display:none;margin-top:15px;background:var(--surface-3);color:var(--ink);border-radius:var(--radius-md);padding:14px;font-size:12.3px;line-height:1.6;position:relative;white-space:pre-wrap;}
+  .prompt-out.show{display:block;}
+  .prompt-out .copy-btn{position:absolute;top:10px;right:10px;background:var(--accent);border:none;color:var(--accent-ink);font-size:10.5px;font-weight:700;padding:6px 10px;border-radius:8px;cursor:pointer;}
+  .prompt-hint{font-size:10.8px;color:var(--ink-faint);margin-top:7px;display:none;}
+  .prompt-hint.show{display:block;}
+
+  .lib-item{background:var(--surface);border-radius:var(--radius-sm);padding:12px 13px;margin-bottom:8px;box-shadow:var(--shadow);}
+  .lib-item .lib-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;}
+  .lib-item b{font-size:12.8px;display:block;}
+  .lib-item .lib-body{font-size:11.8px;color:var(--ink-soft);line-height:1.5;margin:5px 0 9px;}
+  .lib-item .lib-actions{display:flex;gap:7px;}
+  .lib-item .lib-actions button{border:none;background:var(--surface-2);color:var(--ink-soft);font-size:10.8px;font-weight:700;padding:6px 11px;border-radius:9px;cursor:pointer;}
+  .lib-item .lib-actions button.primary{background:var(--accent);color:var(--accent-ink);}
+  .lib-item .lib-actions button.danger{color:var(--coral);}
+  .wizard-row{display:flex;flex-direction:column;gap:5px;margin-bottom:11px;}
+  .wizard-row .wlabel{font-size:11px;font-weight:800;color:var(--ink-soft);}
+  textarea.new-tpl{width:100%;min-height:70px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);padding:10px;font-size:12.4px;resize:vertical;color:var(--ink);font-family:inherit;}
+  input.new-tpl-title{width:100%;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);padding:10px 11px;font-size:12.6px;color:var(--ink);font-family:inherit;margin-bottom:8px;}
+
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+  .stat-box{background:var(--surface);border-radius:var(--radius-sm);padding:11px 8px;text-align:center;box-shadow:var(--shadow);}
+  .stat-box b{display:block;font-family:var(--font-display);font-size:17px;color:var(--accent);}
+  .stat-box span{font-size:9.8px;color:var(--ink-soft);}
+  .insight-row{display:flex;gap:9px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);}
+  .insight-row:first-child{border-top:none;}
+  .insight-row .ic{width:16px;height:16px;flex:none;color:var(--accent);}
+  .insight-row .ic svg{width:100%;height:100%;display:block;}
+  .insight-row p{margin:0;font-size:12.2px;line-height:1.5;color:var(--ink);}
+  .demo-note{font-size:10.8px;color:var(--ink-faint);text-align:center;padding:8px 4px;}
+
+  .overlay{position:absolute;inset:0;background:rgba(10,12,10,.4);z-index:60;display:none;}
+  .overlay.show{display:block;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-radius:24px 24px 0 0;max-height:88%;overflow-y:auto;padding:13px 16px calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .26s ease;}
+  .overlay.show .sheet{transform:translateY(0);}
+  .sheet-handle{display:flex;justify-content:center;padding:6px 0 10px;}
+  .sheet-handle span{width:34px;height:4px;border-radius:4px;background:var(--ink-faint);opacity:.5;}
+  .sheet-close{position:absolute;right:15px;top:13px;width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:var(--ink-soft);}
+  .row-toggle{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:var(--radius-sm);padding:11px 12px;margin-bottom:8px;box-shadow:var(--shadow);}
+  .row-toggle b{font-size:12.2px;display:block;}
+  .row-toggle span{font-size:10.8px;color:var(--ink-soft);}
+  .switch{width:40px;height:24px;border-radius:99px;background:var(--surface-3);position:relative;cursor:pointer;flex:none;}
+  .switch::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.18s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  .switch.on{background:var(--teal);}
+  .switch.on::after{left:19px;}
+  .profile-card{display:flex;align-items:center;gap:12px;padding:6px 2px 14px;}
+  .profile-card .mascot-avatar{width:46px;height:46px;}
+  .profile-card b{display:block;font-family:var(--font-display);font-size:14px;}
+  .profile-card span{font-size:11.3px;color:var(--ink-soft);}
+  .name-pick-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+  .name-pick{flex:none;border:1px solid var(--line);background:var(--surface);padding:8px 13px;border-radius:99px;font-size:12px;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+  .name-pick.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+  input.custom-name{width:100%;border-radius:11px;border:1px solid var(--line);background:var(--surface);padding:9px 11px;font-size:12.6px;color:var(--ink);font-family:inherit;margin-bottom:10px;}
+  .char-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:9px;}
+  .char-card{border-radius:15px;padding:10px 6px 9px;cursor:pointer;border:2px solid var(--line);background:var(--surface);text-align:center;}
+  .char-card.active{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 10%, var(--surface));}
+  .char-card .char-thumb{width:42px;height:42px;margin:0 auto 6px;}
+  .char-card b{font-size:11px;display:block;}
+  .char-sub-row{display:flex;gap:7px;margin-bottom:9px;}
+  .char-sub-row .chip{flex:1;text-align:center;}
+  .char-habits{background:var(--surface-2);border-radius:var(--radius-md);padding:11px 12px;font-size:11.6px;line-height:1.55;color:var(--ink-soft);margin-bottom:14px;}
+  .char-habits b{color:var(--ink);}
+  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px;}
+  .theme-swatch{border-radius:15px;padding:11px;cursor:pointer;border:2px solid var(--line);position:relative;overflow:hidden;}
+  .theme-swatch.active{border-color:var(--accent);}
+  .theme-swatch .sw-dots{display:flex;gap:5px;margin-bottom:8px;}
+  .theme-swatch .sw-dots i{width:14px;height:14px;border-radius:50%;display:block;}
+  .theme-swatch b{font-size:11.6px;display:block;}
+  .theme-swatch.soon{opacity:.45;cursor:default;}
+  .theme-swatch.soon:after{content:'скоро';position:absolute;top:8px;right:10px;font-size:9px;font-weight:800;color:var(--ink-faint);}
+  .mode-seg{display:flex;background:var(--surface-2);border-radius:12px;padding:3px;gap:3px;margin-bottom:14px;}
+  .mode-seg button{flex:1;border:none;background:transparent;padding:8px 0;border-radius:9px;font-size:11.6px;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+  .mode-seg button.active{background:var(--surface);color:var(--ink);}
+  .pf-row{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:7px;box-shadow:var(--shadow);}
+  .pf-row .pf-badge{width:28px;height:28px;border-radius:9px;}
+  .pf-row .pf-name{flex:1;font-size:12.2px;font-weight:700;}
+  .pf-row .pf-mode{font-size:10.3px;color:var(--ink-soft);}
+  .fact-card{background:var(--surface-2);border-radius:var(--radius-md);padding:13px;font-size:11.9px;line-height:1.55;color:var(--ink-soft);margin-top:9px;}
+  .fact-card b{color:var(--ink);}
+
+  .back-row{margin:0 0 9px;}
+  .back-btn{display:inline-flex;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 2px;color:var(--accent);font-size:13px;font-weight:700;}
+  .back-btn svg{width:17px;height:17px;}
+
+  .more-list{background:var(--surface);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow);}
+  .more-row{width:100%;display:flex;align-items:center;gap:11px;background:var(--surface);border:none;border-bottom:1px solid var(--line);padding:13px 14px;cursor:pointer;text-align:left;}
+  .more-list .more-row:last-child{border-bottom:none;}
+  .more-row .more-ic{flex:none;width:22px;height:22px;color:var(--accent);}
+  .more-row .more-ic svg{width:100%;height:100%;display:block;}
+  .more-row .more-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+  .more-row .more-text b{font-size:13.4px;color:var(--ink);}
+  .more-row .more-text small{font-size:11.4px;color:var(--ink-soft);}
+  .more-row .more-chev{flex:none;width:16px;height:16px;color:var(--ink-faint);}
+  #btnOpenSettings{margin-top:0;background:var(--surface);border-radius:var(--radius-md);box-shadow:var(--shadow);}
+
+  .kk-logo-row{display:flex;align-items:center;gap:12px;margin:2px 0 16px;}
+  .kk-logo{flex:none;width:46px;height:46px;border-radius:14px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:16px;letter-spacing:-.5px;}
+  .kk-logo .kk-dot{font-size:11px;margin:0 .5px;opacity:.85;}
+  .kk-logo-text b{display:block;font-family:var(--font-display);font-weight:800;font-size:14.5px;}
+  .kk-logo-text b .sep{color:var(--accent);}
+  .kk-logo-text small{font-size:11.3px;color:var(--ink-soft);}
+
+  .tab-bar{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:7px 3px calc(7px + env(safe-area-inset-bottom,0px));overflow-x:auto;scrollbar-width:none;}
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .tab-btn{flex:1;min-width:52px;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:5px 2px;color:var(--ink-faint);}
+  .tab-btn svg{width:19px;height:19px;}
+  .tab-btn span{font-size:9px;font-weight:700;white-space:nowrap;}
+  .tab-btn.active{color:var(--accent);}
+
+  .toast{position:absolute;left:50%;bottom:82px;transform:translateX(-50%) translateY(10px);background:var(--ink);color:var(--bg);font-size:12px;font-weight:600;padding:10px 15px;border-radius:99px;opacity:0;pointer-events:none;transition:.22s;z-index:70;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="avatar" id="botAvatar">🐴</div>
-  <h1 id="botNameHeading">Алиса — рабочее место Лены</h1>
-  <p>BeSt туры — контент и продвижение, день за днём</p>
-</header>
+<div class="stage">
+  <div class="device" id="device">
 
-<div class="tabs" id="tabs">
-  <button class="tab-btn active" data-tab="checklist">📋 Чек-лист</button>
-  <button class="tab-btn" data-tab="cheatsheet">📖 Шпаргалка</button>
-  <button class="tab-btn" data-tab="ideas">💡 Идеи</button>
-  <button class="tab-btn" data-tab="prompts">🎨 Промпты</button>
-  <button class="tab-btn" data-tab="links">🔗 Ссылки</button>
-  <button class="tab-btn" data-tab="settings">⚙️ Ещё</button>
-</div>
+    <header class="app-header">
+      <div class="mascot-avatar" id="headerMascot"></div>
+      <div class="htext">
+        <b><span id="assistantNameLabel">Бестик</span></b>
+        <small>Контент<span class="sep">•</span>Компаньон · SMM на несколько клиентов</small>
+      </div>
+      <div class="gear-btn" id="btnSettings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.7 7.7 0 0 0 0-3L21 9l-2-3.4-1.9.7a7.6 7.6 0 0 0-2.6-1.5L14 3h-4l-.5 1.8a7.6 7.6 0 0 0-2.6 1.5l-1.9-.7L3 9l1.6 1.5a7.7 7.7 0 0 0 0 3L3 15l2 3.4 1.9-.7a7.6 7.6 0 0 0 2.6 1.5L10 21h4l.5-1.8a7.6 7.6 0 0 0 2.6-1.5l1.9.7L21 15l-1.6-1.5Z"/></svg>
+      </div>
+    </header>
 
-<!-- ЧЕК-ЛИСТ -->
-<div class="panel active" id="panel-checklist">
-  <div class="card">
-    <h3>Чек-лист на сегодня</h3>
-    <div id="checklistItems"></div>
-    <button class="reset-btn" id="resetChecklist">Сбросить на завтра</button>
-  </div>
-</div>
+    <div class="client-row" id="clientRow"></div>
 
-<!-- ШПАРГАЛКА -->
-<div class="panel" id="panel-cheatsheet">
-  <div class="card">
-    <h3>🐴 Кто такая Алиса</h3>
-    <p>Твоя личная помощница по контенту Best Tour Club. Ей можно написать
-    в чат обычными словами — команды из списка ниже нужны только как
-    короткие ярлыки, если так удобнее. Она помнит все правила бизнеса и
-    все туры — не нужно ничего объяснять заново.</p>
-  </div>
+    <main class="app-body">
 
-  <div class="card">
-    <h3>⌨️ Команды-ярлыки</h3>
-    <div class="cmd-row"><span class="cmd">/checklist</span><span class="desc">Чек-лист дня (тот же, что на первой вкладке)</span></div>
-    <div class="cmd-row"><span class="cmd">/idei</span><span class="desc">3-5 готовых идей контента по ближайшим турам</span></div>
-    <div class="cmd-row"><span class="cmd">/help</span><span class="desc">Короткое напоминание, что Алиса умеет</span></div>
-    <p class="hint" style="margin-top:8px;">Можно просто написать словами — «нужны идеи», «сделай чек-лист» — сработает так же.</p>
-  </div>
+      <!-- ============ HOME ============ -->
+      <section class="screen active" id="screen-home">
+        <div class="hero-card">
+          <div class="greet-label" id="greetLabel">Доброе утро</div>
+          <div class="greet-line" id="greetLine">—</div>
+          <div class="hero-stats">
+            <div class="hero-stat"><b id="statQueue">0</b><span>в очереди</span></div>
+            <div class="hero-stat"><b id="statAuto">0</b><span>опубликует сам</span></div>
+            <div class="hero-stat"><b id="statManual">0</b><span>нужны руки</span></div>
+          </div>
+        </div>
 
-  <div class="card">
-    <h3>💬 Как попросить — примеры</h3>
-    <div class="example">«Сделай карусель про тур в Абхазию»</div>
-    <div class="example">«Напиши объявление для Авито про Дигорию»</div>
-    <div class="example">«Разбери вот этот рилс на идеи: [ссылка]»</div>
-    <div class="example">«Адаптируй этот текст под ВК и Телеграм»</div>
-    <div class="example">«Придумай сценарий для рилса про Грузию»</div>
-    <p class="hint">Не знаешь, с чего начать — просто скинь мысль одним словом, Алиса переспросит сама, что с этим сделать.</p>
-  </div>
+        <div class="focus-card" id="focusCard">
+          <span class="tag">Фокус сейчас</span>
+          <h2 id="focusTitle">—</h2>
+          <p id="focusHint">—</p>
+          <button class="cta-btn sm" id="focusBtn" style="width:100%;">Открыть</button>
+        </div>
 
-  <div class="card">
-    <h3>🖼️ Картинки и видео — как это устроено</h3>
-    <p>Алиса сама не рисует и не монтирует. Она составляет готовый
-    текстовый промпт (описание) — ты просто копируешь его и вставляешь в
-    другое приложение:</p>
-    <ul>
-      <li><b>Фото/обложки</b> → промпт вставляешь в ChatGPT или Gemini</li>
-      <li><b>Рилсы/видео</b> → сценарий монтируешь в Instagram Edits или CapCut</li>
-    </ul>
-    <p class="hint">Готовые примеры промптов — вкладка «🎨 Промпты».</p>
-  </div>
+        <div class="section-label">Быстрые действия</div>
+        <div class="grid2">
+          <button class="qa-card" id="qaIdeas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M17.5 15.5 15 17"/><circle cx="12" cy="12" r="3.3"/></svg></span><b>Придумать пост</b><small>Идея + текст за минуту</small></button>
+          <button class="qa-card" id="qaAvito"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7"/><path d="M3 8l2-5h14l2 5"/><path d="M3 8h18"/><path d="M9 12v3M15 12v3"/></svg></span><b>Объявление Avito</b><small>Заголовок, цена, текст</small></button>
+          <button class="qa-card" id="qaBrand"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Проверить текст</b><small>Перед публикацией</small></button>
+          <button class="qa-card" id="qaLibrary"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><b>Библиотека</b><small>Готовые шаблоны</small></button>
+        </div>
 
-  <div class="card">
-    <h3>⚠️ Правила, которые нельзя нарушать</h3>
-    <div class="rule-row"><span class="num">1</span><span>Цена в постах/каруселях — «до X ₽» (максимальная). В Avito и списках — «от X ₽» (минимальная).</span></div>
-    <div class="rule-row"><span class="num">2</span><span>Никогда не писать слова «Инстаграм»/«соцсети» в готовом тексте — заменять на «у нас», «в наших публикациях».</span></div>
-    <div class="rule-row"><span class="num">3</span><span>Только реальные факты — цены, даты, отзывы. Если данных нет — честно «[уточнить]», не выдумывать.</span></div>
-    <div class="rule-row"><span class="num">4</span><span>Чужие фото/видео с отметками — публиковать только после согласия автора (скриншот переписки).</span></div>
-    <div class="rule-row"><span class="num">5</span><span>4 тура в каталоге помечены «сверить цену» — перед их публикацией уточнить на сайте.</span></div>
-    <p class="hint" style="margin-top:8px;">Алиса сама следит за этими правилами в готовых текстах — здесь просто на всякий случай, если сомневаешься.</p>
-  </div>
-</div>
+        <div class="section-label">Очередь на сегодня <small id="homeQueueLabel"></small></div>
+        <div id="homeQueue"></div>
 
-<!-- ИДЕИ -->
-<div class="panel" id="panel-ideas">
-  <div class="card">
-    <h3>Идеи по реальным турам</h3>
-    <p style="font-size:13px;color:var(--tg-hint);margin-top:-4px;">
-      Открой чат с Алисой и напиши /idei — она подберёт 3-5 идей
-      по турам с ближайшими датами прямо из справочника.
-    </p>
-    <div class="idea-item">
-      <b>Быстрый способ:</b> просто напиши в чат "нужны идеи" — Алиса
-      посмотрит актуальные даты заездов и накидает конкретные зацепки,
-      а не абстрактные советы.
+        <div class="tip-card">
+          <div class="mascot-avatar" id="tipMascot"></div>
+          <div>
+            <b id="tipLabel">Заметил</b>
+            <p id="tipText">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ QUEUE ============ -->
+      <section class="screen" id="screen-queue">
+        <h1 class="page-title">Очередь публикаций</h1>
+        <p class="page-sub">Все клиенты и площадки в одном списке. Нажмите на публикацию, чтобы сдвинуть статус.</p>
+        <div class="chip-row" id="platformFilterChips"></div>
+        <button class="cta-btn teal" id="btnAddQueue" style="margin-bottom:13px;">+ Новый черновик в очередь</button>
+        <div id="queueList"></div>
+      </section>
+
+      <!-- ============ CONTENT (Ideas + Library merged) ============ -->
+      <section class="screen" id="screen-content">
+        <h1 class="page-title">Контент</h1>
+        <p class="page-sub">Идеи для новых постов или готовые шаблоны — переключите вкладку.</p>
+        <div class="seg" id="contentModeSeg">
+          <button class="active" data-cmode="ideas">Идеи</button>
+          <button data-cmode="library">Шаблоны</button>
+        </div>
+
+        <div id="contentIdeasWrap">
+          <div class="seg" id="ideaModeSeg">
+            <button class="active" data-mode="social">Соцсети</button>
+            <button data-mode="market">Маркетплейс</button>
+          </div>
+          <div id="socialIdeasWrap">
+            <div class="chip-row" id="ideaChips"></div>
+            <div class="idea-progress"><span id="ideaCounter">Идея 1 из 12</span><span id="ideaSavedCount">Сохранено: 0</span></div>
+            <div class="idea-card" id="ideaCard"></div>
+            <div class="idea-actions">
+              <div class="icon-btn skip" id="btnSkip" title="Пропустить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+              <div class="icon-btn save" id="btnSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.2L6 21V3z"/></svg></div>
+              <div class="icon-btn next" id="btnNextIdea">Следующая<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="saved-toggle" id="savedToggle"><b>Сохранённые идеи (<span id="savedCountInline">0</span>)</b><span>▾</span></div>
+            <div class="saved-list" id="savedList"></div>
+          </div>
+          <div id="marketIdeasWrap" style="display:none;">
+            <div class="idea-progress"><span id="marketCounter">Объявление 1 из 4</span><span></span></div>
+            <div class="market-card" id="marketCard"></div>
+            <div class="idea-actions">
+              <div class="icon-btn skip" id="btnMarketSkip" title="Пропустить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+              <div class="icon-btn next" id="btnMarketNext" style="flex:1;">Собрать объявление<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="contentLibraryWrap" style="display:none;">
+          <div class="card">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:-2px;margin-right:4px;"><path d="M12 21c4-3 8-6.5 8-11a8 8 0 1 0-16 0c0 4.5 4 8 8 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>Подобрать шаблон по параметрам</h3>
+            <div class="wizard-row">
+              <span class="wlabel">Страна / направление</span>
+              <div class="chip-row" id="wizCountry" style="padding-bottom:2px;"></div>
+            </div>
+            <div class="wizard-row">
+              <span class="wlabel">Тип тура</span>
+              <div class="chip-row" id="wizType" style="padding-bottom:2px;"></div>
+            </div>
+            <div class="wizard-row">
+              <span class="wlabel">Сезон</span>
+              <div class="chip-row" id="wizSeason" style="padding-bottom:2px;"></div>
+            </div>
+            <div class="wizard-row">
+              <span class="wlabel">Город отправления</span>
+              <div class="chip-row" id="wizCity" style="padding-bottom:2px;"></div>
+            </div>
+            <div class="wizard-row">
+              <span class="wlabel">Транспорт</span>
+              <div class="chip-row" id="wizTransport" style="padding-bottom:2px;"></div>
+            </div>
+            <button class="cta-btn" id="btnWizardBuild"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M5 21 19 7M15 3l1.5 1.5M19 7l1.5 1.5M3 10l1 1M8 4l1 1"/></svg> Собрать шаблон</button>
+            <div class="prompt-out" id="wizardOut">
+              <button class="copy-btn" id="btnWizardCopy">Копировать</button>
+              <span id="wizardText"></span>
+            </div>
+            <button class="cta-btn ghost sm" id="btnWizardSave" style="display:none;margin-top:9px;">+ Сохранить в библиотеку</button>
+          </div>
+
+          <div class="section-label">Категории <small id="libCountLabel"></small></div>
+          <div class="chip-row" id="libCatChips"></div>
+
+          <button class="cta-btn ghost sm" id="btnNewTemplate" style="margin-bottom:11px;">+ Новый шаблон вручную</button>
+          <div id="libraryList"></div>
+        </div>
+      </section>
+
+      <!-- ============ BRAND ============ -->
+      <section class="screen" id="screen-brand">
+        <div class="back-row"><button class="back-btn" data-back="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>Ещё</button></div>
+        <h1 class="page-title">Бренд и правила</h1>
+
+        <p class="page-sub" id="brandSub">Вставьте текст поста — сверим с тоном, ценами и списком запрещённых слов клиента.</p>
+
+        <textarea class="brand-input" id="brandInput"></textarea>
+        <button class="cta-btn teal" id="btnCheckBrand" style="margin-top:10px;">Проверить текст</button>
+
+        <div class="result-card" id="brandResult">
+          <div class="verdict-row">
+            <div class="mascot-avatar" id="verdictMascot"></div>
+            <div><b id="verdictTitle">Есть на что посмотреть</b><span id="verdictSub">Нашёл пару моментов ниже</span></div>
+          </div>
+          <div id="checkLines"></div>
+        </div>
+
+        <div class="rules-block">
+          <h4>Тон общения</h4>
+          <div class="chip-row" id="toneChips" style="padding-bottom:2px;"></div>
+
+          <h4 style="margin-top:15px;">Запрещённые слова и фразы</h4>
+          <div class="tone-set" id="forbiddenTags"></div>
+          <div class="add-row"><input id="newForbiddenInput" placeholder="Добавить слово/фразу"><button id="btnAddForbidden">+</button></div>
+
+          <h4>Актуальные цены (для сверки)</h4>
+          <div class="price-table" id="priceTable"></div>
+
+          <div class="chat-note">
+            <div class="mascot-avatar" id="chatNoteMascot"></div>
+            <p><b>Правило устарело?</b> Не обязательно лезть в настройки — если правило (например, про конкретную цену или упоминание площадки) больше не актуально, просто напишите об этом Бестику в чате: он уберёт или дополнит правило по итогам разговора. Список выше можно редактировать и здесь вручную.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ANALYTICS (NEW) ============ -->
+      <section class="screen" id="screen-analytics">
+        <div class="back-row"><button class="back-btn" data-back="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>Ещё</button></div>
+        <h1 class="page-title">Аналитика</h1>
+        <p class="page-sub">Отчёт по публикациям с фильтром по категориям. Данные ниже — демонстрационные, подключение реальной статистики площадок впереди.</p>
+
+        <div class="seg" id="periodSeg">
+          <button class="active" data-period="week">Неделя</button>
+          <button data-period="month">Месяц</button>
+        </div>
+
+        <div class="chip-row" id="analyticsCatChips"></div>
+
+        <div class="stat-grid" id="analyticsStats"></div>
+
+        <div class="card">
+          <h3><span id="insightsHeaderName">Бестик</span> заметил</h3>
+          <div id="insightsList"></div>
+        </div>
+
+        <div class="demo-note">Демо-данные на основе текущей очереди клиента. Реальная статистика площадок — следующий шаг.</div>
+      </section>
+
+      <!-- ============ AI MODELS / PROMPTS ============ -->
+      <section class="screen" id="screen-ai">
+        <div class="back-row"><button class="back-btn" data-back="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>Ещё</button></div>
+        <h1 class="page-title">ИИ-модели</h1>
+        <p class="page-sub">Бестик сам решает, какую модель дёрнуть под задачу — можно переназначить вручную.</p>
+
+        <div class="hermes-banner">
+          <div class="hermes-mark">H</div>
+          <div><b>Маршрутизация через Hermes</b><span>Движок работает у вас на компьютере и опрашивает подключённые модели</span></div>
+        </div>
+
+        <div class="seg" id="aiModeSeg">
+          <button class="active" data-aim="models">Модели</button>
+          <button data-aim="prompts">Промпты</button>
+        </div>
+
+        <div id="modelsWrap"></div>
+
+        <div id="promptsWrap" style="display:none;">
+          <div class="field-label">Тема</div>
+          <input class="topic-input" id="topicInput" value="Тур в горы, вид на закате">
+          <div class="field-label">Формат</div>
+          <div class="seg" id="mediaSeg">
+            <button class="active" data-media="photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px;"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.4"/><path d="M8 6l1.5-2h5L16 6"/></svg>Фото</button>
+            <button data-media="video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px;"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3Z"/></svg>Видео / Reels</button>
+          </div>
+          <div class="field-label">Модель для рендера</div>
+          <div class="chip-row" id="renderModelChips"></div>
+          <div class="field-label">Стиль</div>
+          <div class="chip-row" id="styleChips"></div>
+          <button class="cta-btn" id="btnGenPrompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M5 21 19 7M15 3l1.5 1.5M19 7l1.5 1.5M3 10l1 1M8 4l1 1"/></svg> Сгенерировать промпт</button>
+          <div class="prompt-out" id="promptOut">
+            <button class="copy-btn" id="btnCopyPrompt">Копировать</button>
+            <span id="promptText"></span>
+          </div>
+          <div class="prompt-hint" id="promptHint"></div>
+        </div>
+      </section>
+
+      <!-- ============ MORE (settings hub) ============ -->
+      <section class="screen" id="screen-more">
+        <div class="kk-logo-row">
+          <div class="kk-logo">К<span class="kk-dot">•</span>К</div>
+          <div class="kk-logo-text"><b>Контент<span class="sep">•</span>Компаньон</b><small>Движок для нескольких клиентов</small></div>
+        </div>
+        <h1 class="page-title">Ещё</h1>
+        <p class="page-sub">Бренд, отчёты, ИИ-модели и настройки студии.</p>
+
+        <div class="more-list">
+          <button class="more-row" data-open="brand">
+            <span class="more-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/></svg></span>
+            <span class="more-text"><b>Бренд и правила</b><small>Тон, цены, запрещённые слова</small></span>
+            <svg class="more-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <button class="more-row" data-open="analytics">
+            <span class="more-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span>
+            <span class="more-text"><b>Аналитика</b><small>Отчёт за неделю/месяц</small></span>
+            <svg class="more-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <button class="more-row" data-open="ai">
+            <span class="more-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="4"/><circle cx="9.3" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="14.7" cy="11" r="1.1" fill="currentColor" stroke="none"/><path d="M9 14.5c.9.7 1.9 1 3 1s2.1-.3 3-1"/></svg></span>
+            <span class="more-text"><b>ИИ-модели</b><small>Промпты, маршрутизация Hermes</small></span>
+            <svg class="more-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+
+        <div class="section-label" style="margin-top:18px;">Студия</div>
+        <button class="more-row" id="btnOpenSettings">
+          <span class="more-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.7 7.7 0 0 0 0-3L21 9l-2-3.4-1.9.7a7.6 7.6 0 0 0-2.6-1.5L14 3h-4l-.5 1.8a7.6 7.6 0 0 0-2.6 1.5l-1.9-.7L3 9l1.6 1.5a7.7 7.7 0 0 0 0 3L3 15l2 3.4 1.9-.7a7.6 7.6 0 0 0 2.6 1.5L10 21h4l.5-1.8a7.6 7.6 0 0 0 2.6-1.5l1.9.7L21 15l-1.6-1.5Z"/></svg></span>
+          <span class="more-text"><b>Имя, персонаж, тема</b><small>Настройки Бестика и оформления</small></span>
+          <svg class="more-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </section>
+
+    </main>
+
+    <nav class="tab-bar" id="tabBar">
+      <button class="tab-btn active" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg><span>Сегодня</span></button>
+      <button class="tab-btn" data-tab="queue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.4"/><path d="M4 10h16M8 3v4M16 3v4"/></svg><span>Очередь</span></button>
+      <button class="tab-btn" data-tab="content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.4.3.5.7.5 1.1v.5h6v-.5c0-.4.1-.8.5-1.1A6 6 0 0 0 12 3Z"/></svg><span>Контент</span></button>
+      <button class="tab-btn" data-tab="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg><span>Ещё</span></button>
+    </nav>
+
+    <!-- ===== settings overlay ===== -->
+    <div class="overlay" id="overlay">
+      <div class="sheet">
+        <div class="sheet-handle"><span></span></div>
+        <div class="sheet-close" id="sheetClose">✕</div>
+        <div class="profile-card">
+          <div class="mascot-avatar" id="moreMascot"></div>
+          <div><b>Студия «<span id="settingsNameLabel">Бестик</span>»</b><span>Контент.Компаньон · гибридный режим</span></div>
+        </div>
+
+        <div class="section-label">Имя ассистента</div>
+        <div class="name-pick-row" id="namePickRow"></div>
+        <input class="custom-name" id="customNameInput" placeholder="Своё имя…">
+        <button class="cta-btn ghost sm" id="btnSaveCustomName" style="margin-bottom:14px;">Использовать своё имя</button>
+
+        <div class="section-label">Персонаж</div>
+        <div class="char-grid" id="charGrid"></div>
+        <div class="char-sub-row" id="catFurRow" style="display:none;"></div>
+        <div class="char-habits" id="charHabits"></div>
+
+        <div class="section-label">Тема оформления</div>
+        <div class="theme-grid" id="themeGrid"></div>
+
+        <div class="section-label">Светлая / тёмная</div>
+        <div class="mode-seg" id="colorModeSeg">
+          <button data-mode="auto" class="active">Как в системе</button>
+          <button data-mode="light">Светлая</button>
+          <button data-mode="dark">Тёмная</button>
+        </div>
+
+        <div class="section-label">Площадки</div>
+        <div id="platformStatusList"></div>
+
+        <div class="section-label" style="margin-top:14px;">Напоминания</div>
+        <div class="row-toggle"><div><b>Утренний план по клиентам</b><span>Каждый день в 8:30</span></div><div class="switch on" data-switch></div></div>
+        <div class="row-toggle"><div><b>Пинг, если ручная публикация зависла</b><span>Instagram / Threads</span></div><div class="switch on" data-switch></div></div>
+        <div class="row-toggle"><div><b>Дайджест от Hermes</b><span>Что сгенерировано за ночь</span></div><div class="switch" data-switch></div></div>
+
+        <div class="fact-card">
+          <b>Почему бультерьер?</b><br>
+          Живой белый бультерьер — будущий талисман проекта. Сейчас в приложении статичный аватар с эмоциями; полноценное «живое» поведение (бегает, прыгает, реагирует по-настоящему) — в разработке, см. ROADMAP.
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ПРОМПТЫ -->
-<div class="panel" id="panel-prompts">
-  <div class="card prompt-card">
-    <h3>🖼️ Промпт для обложки/карусели</h3>
-    <textarea readonly id="promptCover">Фотореалистичное фото [название тура/локации], [время года], тёплый естественный свет, широкий пейзажный кадр без людей на переднем плане, горизонтальная ориентация для карусели в соцсетях, без текста на изображении.</textarea>
-    <button class="copy-btn" onclick="copyPrompt('promptCover', this)">Копировать</button>
-  </div>
-  <div class="card prompt-card">
-    <h3>🎬 Промпт для рилса (раскадровка)</h3>
-    <textarea readonly id="promptReel">Сценарий короткого видео 15-30 сек по туру [название]: хук в первые 2-3 секунды с текстом на экране, 3-4 кадра с локациями тура, тёплая эмоциональная музыка без слов, финал с ценой и призывом написать.</textarea>
-    <button class="copy-btn" onclick="copyPrompt('promptReel', this)">Копировать</button>
-  </div>
-  <p style="font-size:12px;color:var(--tg-hint);text-align:center;">
-    Попроси Алису в чате составить точный промпт под конкретный тур —
-    она подставит реальные детали и даты.
-  </p>
-</div>
-
-<!-- ССЫЛКИ -->
-<div class="panel" id="panel-links">
-  <div class="card">
-    <h3>Рабочие ссылки</h3>
-    <div class="link-row">
-      <span><span class="icon">💬</span>Написать Алисе</span>
-      <a href="https://t.me/TheBest_TourBot" target="_blank">Открыть чат →</a>
+    <!-- ===== new template sheet ===== -->
+    <div class="overlay" id="tplOverlay">
+      <div class="sheet">
+        <div class="sheet-handle"><span></span></div>
+        <div class="sheet-close" id="tplSheetClose">✕</div>
+        <div class="section-label" style="margin-top:2px;">Новый шаблон</div>
+        <input class="new-tpl-title" id="newTplTitle" placeholder="Название шаблона">
+        <div class="chip-row" id="newTplCatChips" style="padding-bottom:8px;"></div>
+        <textarea class="new-tpl" id="newTplBody" placeholder="Текст шаблона, с плейсхолдерами в квадратных скобках…"></textarea>
+        <button class="cta-btn teal" id="btnSaveNewTpl" style="margin-top:11px;">Сохранить в библиотеку</button>
+      </div>
     </div>
-    <div class="link-row">
-      <span><span class="icon">🌐</span>Сайт Best Tour Club</span>
-      <a href="https://best-tour-club.ru" target="_blank">Открыть →</a>
-    </div>
-    <div class="link-row">
-      <span><span class="icon">💬</span>ChatGPT (картинки/видео)</span>
-      <a href="https://chat.openai.com" target="_blank">Открыть →</a>
-    </div>
-  </div>
-  <div class="card">
-    <h3>Файлы с фактами (на компьютере)</h3>
-    <p style="font-size:12px;color:var(--tg-hint);">
-      Эти файлы открываются на рабочем компьютере, не с телефона —
-      находятся в папке "Best Tour Club → Правила и факты".
-    </p>
-  </div>
-</div>
 
-<!-- НАСТРОЙКИ -->
-<div class="panel" id="panel-settings">
-  <div class="card">
-    <h3>Имя помощницы</h3>
-    <input class="name-input" id="nameInput" placeholder="Например: Алиса, Аня, Марго...">
-    <button class="copy-btn" id="saveNameBtn">Сохранить</button>
-    <p style="font-size:12px;color:var(--tg-hint);margin-top:8px;">
-      После сохранения напиши в чат "теперь тебя зовут [имя]" — Алиса
-      подхватит новое имя.
-    </p>
+    <div class="toast" id="toast"></div>
   </div>
-</div>
-
-<div class="footer-note">BeSt туры · обновляется вручную · сентябрь 2026</div>
-
-<div class="bottom-bar">
-  <button class="active" data-tab="checklist"><span class="ic">📋</span>Чек-лист</button>
-  <button data-tab="cheatsheet"><span class="ic">📖</span>Шпаргалка</button>
-  <button data-tab="ideas"><span class="ic">💡</span>Идеи</button>
-  <button data-tab="prompts"><span class="ic">🎨</span>Промпты</button>
-  <button data-tab="settings"><span class="ic">⚙️</span>Ещё</button>
 </div>
 
 <script>
-  const tg = window.Telegram?.WebApp;
-  if (tg) { tg.ready(); tg.expand(); }
+function bullterrierSVG(mood){
+  var brows = {
+    happy:    {l:'M 124 108 Q 132 105 140 109', r:'M 180 109 Q 188 105 196 108'},
+    neutral:  {l:'M 124 108 Q 132 105 140 109', r:'M 180 109 Q 188 105 196 108'},
+    worried:  {l:'M 124 100 Q 132 95 140 100',  r:'M 180 100 Q 188 95 196 100'},
+    thinking: {l:'M 124 104 Q 132 112 140 108', r:'M 180 100 Q 188 95 196 102'}
+  };
+  var b = brows[mood] || brows.neutral;
+  var tongue = mood==='happy' ? '<path d="M 152 198 C 150 220, 170 220, 168 198 Z" fill="#ff477e"/><path d="M 160 198 L 160 214" stroke="#e60049" stroke-width="1.5"/>' : '';
+  return '<svg viewBox="65 15 190 210" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">'
+    + '<defs>'
+    + '<linearGradient id="bt-body" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f0f2f5"/><stop offset="100%" stop-color="#dbe0e6"/></linearGradient>'
+    + '<linearGradient id="bt-ear" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffb6c1"/><stop offset="100%" stop-color="#ffa0b0"/></linearGradient>'
+    + '<linearGradient id="bt-patch" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2c2c2e"/><stop offset="100%" stop-color="#1c1c1e"/></linearGradient>'
+    + '<linearGradient id="bt-nose" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#3a3a3c"/><stop offset="100%" stop-color="#1c1c1e"/></linearGradient>'
+    + '</defs>'
+    + '<path d="M 120 95 L 75 30 C 70 20, 85 20, 100 45 L 132 90 Z" fill="url(#bt-body)"/>'
+    + '<path d="M 116 90 L 80 38 C 77 30, 88 32, 98 50 L 126 88 Z" fill="url(#bt-ear)"/>'
+    + '<path d="M 200 95 L 245 30 C 250 20, 235 20, 220 45 L 188 90 Z" fill="url(#bt-body)"/>'
+    + '<path d="M 204 90 L 240 38 C 243 30, 232 32, 222 50 L 194 88 Z" fill="url(#bt-ear)"/>'
+    + '<path d="M 110 110 C 110 50, 210 50, 210 110 C 210 160, 205 215, 160 215 C 115 215, 110 160, 110 110 Z" fill="url(#bt-body)"/>'
+    + '<path d="M 115 120 C 110 95, 150 95, 148 125 C 145 145, 115 145, 115 120 Z" fill="url(#bt-patch)"/>'
+    + '<ellipse cx="132" cy="122" rx="7" ry="9" fill="#1e293b"/>'
+    + '<ellipse cx="132" cy="122" rx="3.5" ry="4.5" fill="#ffffff"/>'
+    + '<circle cx="130" cy="119" r="1.5" fill="#ffffff"/>'
+    + '<ellipse cx="188" cy="122" rx="7" ry="9" fill="#1e293b"/>'
+    + '<ellipse cx="188" cy="122" rx="3.5" ry="4.5" fill="#ffffff"/>'
+    + '<circle cx="186" cy="119" r="1.5" fill="#ffffff"/>'
+    + '<path d="'+b.l+'" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>'
+    + '<path d="'+b.r+'" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>'
+    + '<path d="M 152 110 Q 160 108 168 110 L 172 180 Q 160 185 148 180 Z" fill="#ffffff" opacity="0.3"/>'
+    + '<path d="M 142 182 C 142 172, 178 172, 178 182 C 178 198, 142 198, 142 182 Z" fill="url(#bt-nose)"/>'
+    + '<ellipse cx="160" cy="180" rx="6" ry="3" fill="#ffb6c1" opacity="0.8"/>'
+    + '<circle cx="150" cy="188" r="2" fill="#000000"/>'
+    + '<circle cx="170" cy="188" r="2" fill="#000000"/>'
+    + tongue
+    + '<path d="M 148 195 Q 160 202 172 195" stroke="#334155" stroke-width="3" stroke-linecap="round" fill="none"/>'
+    + '</svg>';
+}
+function catSVG(mood, furry){
+  var mouths = {
+    happy:    'M 138 190 Q 148 200 160 191 Q 172 200 182 190',
+    neutral:  'M 140 192 Q 160 186 180 192',
+    worried:  'M 138 196 Q 160 188 182 196',
+    thinking: 'M 142 192h36'
+  };
+  var earTip = furry ? '<path d="M 108 55 l-6 -10 M 118 48 l-4 -11 M 202 48 l4 -11 M 212 55 l6 -10" stroke="#dbe0e6" stroke-width="2" stroke-linecap="round"/>' : '';
+  var whiskers = '<path d="M 118 178 h-24 M 118 186 h-24 M 202 178 h24 M 202 186 h24" stroke="#c7ccd3" stroke-width="1.4" stroke-linecap="round"/>';
+  return '<svg viewBox="65 15 190 210" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">'
+    + '<defs>'
+    + '<linearGradient id="ct-body" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f0f2f5"/><stop offset="100%" stop-color="#dbe0e6"/></linearGradient>'
+    + '<linearGradient id="ct-ear" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffb6c1"/><stop offset="100%" stop-color="#ffa0b0"/></linearGradient>'
+    + '</defs>'
+    + '<path d="M 118 90 L 95 32 C 92 24, 108 24, 120 44 L 134 86 Z" fill="url(#ct-body)"/>'
+    + '<path d="M 120 84 L 102 40 C 100 35, 111 35, 119 50 L 128 84 Z" fill="url(#ct-ear)"/>'
+    + '<path d="M 202 90 L 225 32 C 228 24, 212 24, 200 44 L 186 86 Z" fill="url(#ct-body)"/>'
+    + '<path d="M 200 84 L 218 40 C 220 35, 209 35, 201 50 L 192 84 Z" fill="url(#ct-ear)"/>'
+    + earTip
+    + '<path d="M 112 112 C 112 55, 208 55, 208 112 C 208 158, 200 205, 160 205 C 120 205, 112 158, 112 112 Z" fill="url(#ct-body)"/>'
+    + '<ellipse cx="134" cy="120" rx="7" ry="9" fill="#1e293b"/>'
+    + '<ellipse cx="134" cy="120" rx="3.5" ry="4.5" fill="#ffffff"/>'
+    + '<circle cx="132" cy="117" r="1.5" fill="#ffffff"/>'
+    + '<ellipse cx="186" cy="120" rx="7" ry="9" fill="#1e293b"/>'
+    + '<ellipse cx="186" cy="120" rx="3.5" ry="4.5" fill="#ffffff"/>'
+    + '<circle cx="184" cy="117" r="1.5" fill="#ffffff"/>'
+    + '<path d="M 155 168 L 165 168 L 160 176 Z" fill="#ffb6c1"/>'
+    + whiskers
+    + '<path d="'+mouths[mood]+'" stroke="#334155" stroke-width="2.4" stroke-linecap="round" fill="none"/>'
+    + '</svg>';
+}
+function neutralSVG(mood){
+  var mouths = {
+    happy:    'M 138 188 Q 160 202 182 188',
+    neutral:  'M 142 192h36',
+    worried:  'M 138 196 Q 160 186 182 196',
+    thinking: 'M 144 192h32'
+  };
+  var browShift = mood==='thinking' ? -4 : 0;
+  return '<svg viewBox="65 15 190 210" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">'
+    + '<defs>'
+    + '<linearGradient id="nt-body" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#cdbdfb"/><stop offset="70%" stop-color="#b9a2f5"/><stop offset="100%" stop-color="#9c82e8"/></linearGradient>'
+    + '<linearGradient id="nt-ear" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e4d9ff"/><stop offset="100%" stop-color="#cdbdfb"/></linearGradient>'
+    + '</defs>'
+    + '<circle cx="98" cy="42" r="15" fill="url(#nt-ear)"/>'
+    + '<circle cx="222" cy="42" r="15" fill="url(#nt-ear)"/>'
+    + '<path d="M 112 112 C 112 55, 208 55, 208 112 C 208 158, 200 205, 160 205 C 120 205, 112 158, 112 112 Z" fill="url(#nt-body)"/>'
+    + '<ellipse cx="134" cy="'+(122+browShift)+'" rx="8" ry="10" fill="#2b2144"/>'
+    + '<ellipse cx="134" cy="'+(122+browShift)+'" rx="3.6" ry="4.6" fill="#ffffff"/>'
+    + '<circle cx="132" cy="'+(119+browShift)+'" r="1.5" fill="#ffffff"/>'
+    + '<ellipse cx="186" cy="122" rx="8" ry="10" fill="#2b2144"/>'
+    + '<ellipse cx="186" cy="122" rx="3.6" ry="4.6" fill="#ffffff"/>'
+    + '<circle cx="184" cy="119" r="1.5" fill="#ffffff"/>'
+    + '<path d="'+mouths[mood]+'" stroke="#2b2144" stroke-width="2.6" stroke-linecap="round" fill="none"/>'
+    + '</svg>';
+}
 
-  // ---- Tabs ----
-  function switchTab(name) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.bottom-bar button').forEach(b => b.classList.remove('active'));
-    document.getElementById('panel-' + name).classList.add('active');
-    document.querySelectorAll(`[data-tab="${name}"]`).forEach(el => el.classList.add('active'));
+var CHARACTERS = [
+  {id:'bullterrier', name:'Бультерьер', habits:'Энергичный и прямолинейный: бурно радуется хорошим новостям, коротко и честно сообщает о проблемах, не любит долгих раздумий — сразу предлагает действие.'},
+  {id:'cat', name:'Кошка', habits:'Независимая и наблюдательная: не суетится по мелочам, но замечает важные детали первой; спокойные, сдержанные реакции, ирония вместо паники.'},
+  {id:'neutral', name:'Нейтральный', habits:'Ровный и дружелюбный компаньон без привязки к виду животного — для тех, кто не любит котиков-собачек. Спокойные, ясные реплики без лишних эмоций.'}
+];
+var characterId = localStorage.getItem('cc_character') || 'bullterrier';
+var catFur = localStorage.getItem('cc_cat_fur') || 'sphynx'; // sphynx | furry
+
+function mascotSVG(mood){
+  if(characterId==='cat') return catSVG(mood, catFur==='furry');
+  if(characterId==='neutral') return neutralSVG(mood);
+  var photo = mood==='happy' ? 'assets/mascot/bullterrier-happy.jpg' : 'assets/mascot/bullterrier-neutral.jpg';
+  return '<img src="'+photo+'" alt="Бестик">';
+}
+function paintMascots(mood){
+  document.querySelectorAll('.mascot-avatar').forEach(function(el){ el.innerHTML = mascotSVG(mood); });
+}
+function renderCharGrid(){
+  document.getElementById('charGrid').innerHTML = CHARACTERS.map(function(c){
+    var thumbMood = 'neutral';
+    var thumb = c.id==='cat' ? catSVG(thumbMood, catFur==='furry') : (c.id==='neutral' ? neutralSVG(thumbMood) : '<img src="assets/mascot/bullterrier-neutral.jpg" alt="Бультерьер" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">');
+    return '<div class="char-card '+(c.id===characterId?'active':'')+'" data-char="'+c.id+'"><div class="char-thumb">'+thumb+'</div><b>'+c.name+'</b></div>';
+  }).join('');
+  var furRow = document.getElementById('catFurRow');
+  if(characterId==='cat'){
+    furRow.style.display = 'flex';
+    furRow.innerHTML = ''
+      + '<div class="chip '+(catFur==='sphynx'?'active':'')+'" data-fur="sphynx">Лысая (сфинкс)</div>'
+      + '<div class="chip '+(catFur==='furry'?'active':'')+'" data-fur="furry">Пушистая (британская/шотландская)</div>';
+  } else {
+    furRow.style.display = 'none';
   }
-  document.querySelectorAll('[data-tab]').forEach(el => {
-    el.addEventListener('click', () => switchTab(el.dataset.tab));
+  var current = CHARACTERS.find(function(c){return c.id===characterId;});
+  document.getElementById('charHabits').innerHTML = '<b>Повадки:</b> '+current.habits;
+}
+document.getElementById('charGrid').addEventListener('click', function(e){
+  var card = e.target.closest('.char-card'); if(!card) return;
+  characterId = card.dataset.char; localStorage.setItem('cc_character', characterId);
+  renderCharGrid(); paintMascots('neutral');
+  toast('Персонаж: '+CHARACTERS.find(function(c){return c.id===characterId;}).name);
+});
+document.getElementById('catFurRow').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  catFur = chip.dataset.fur; localStorage.setItem('cc_cat_fur', catFur);
+  renderCharGrid(); paintMascots('neutral');
+});
+
+var ASSISTANT_NAMES = ['Бестик','Постик','Сап','Ася'];
+var assistantName = localStorage.getItem('cc_assistant_name') || 'Бестик';
+function applyAssistantName(){
+  document.getElementById('assistantNameLabel').textContent = assistantName;
+  document.getElementById('settingsNameLabel').textContent = assistantName;
+  var insightsName = document.getElementById('insightsHeaderName');
+  if(insightsName) insightsName.textContent = assistantName;
+  document.title = assistantName + ' — Контент.Компаньон';
+}
+function renderNamePicker(){
+  document.getElementById('namePickRow').innerHTML = ASSISTANT_NAMES.map(function(n){
+    return '<div class="name-pick '+(n===assistantName?'active':'')+'" data-name="'+n+'">'+n+'</div>';
+  }).join('');
+}
+document.getElementById('namePickRow').addEventListener('click', function(e){
+  var el = e.target.closest('.name-pick'); if(!el) return;
+  assistantName = el.dataset.name; localStorage.setItem('cc_assistant_name', assistantName);
+  applyAssistantName(); renderNamePicker(); renderHome();
+  toast('Теперь ассистента зовут '+assistantName);
+});
+document.getElementById('btnSaveCustomName').addEventListener('click', function(){
+  var v = document.getElementById('customNameInput').value.trim();
+  if(!v) return;
+  assistantName = v; localStorage.setItem('cc_assistant_name', assistantName);
+  applyAssistantName(); renderNamePicker(); renderHome();
+  toast('Теперь ассистента зовут '+assistantName);
+});
+
+var THEMES = [
+  {id:'companion', name:'Контент.Компаньон', colors:['#ff5a36','#16181d','#f4f5f7'], soon:false},
+  {id:'teal',      name:'Спокойная',          colors:['#146B69','#EF5C6E','#FBF3E6'], soon:false},
+  {id:'bestour',   name:'Бест-Тур (бренд)',   colors:['#123322','#8A8880','#F9EED8'], soon:false},
+  {id:'sunset',    name:'Закат',              colors:['#e0762e','#3a2a4d','#fff2e3'], soon:true},
+  {id:'midnight',  name:'Полночь',            colors:['#5b7cff','#0d1020','#1b2036'], soon:true},
+  {id:'forest',    name:'Лес',                colors:['#3f8f5e','#1c2b22','#eef4ec'], soon:true}
+];
+var themeId = localStorage.getItem('cc_theme') || 'teal';
+var colorMode = localStorage.getItem('cc_color_mode') || 'auto';
+
+function systemPrefersDark(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+function applyTheme(){
+  var device = document.getElementById('device');
+  device.setAttribute('data-theme', themeId);
+  var dark = colorMode==='dark' || (colorMode==='auto' && systemPrefersDark());
+  device.classList.toggle('dark', dark);
+}
+if(window.matchMedia){
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+    if(colorMode==='auto') applyTheme();
+  });
+}
+function renderThemeGrid(){
+  document.getElementById('themeGrid').innerHTML = THEMES.map(function(t){
+    return '<div class="theme-swatch '+(t.id===themeId?'active':'')+' '+(t.soon?'soon':'')+'" data-theme-pick="'+t.id+'">'
+      + '<div class="sw-dots">'+t.colors.map(function(c){return '<i style="background:'+c+'"></i>';}).join('')+'</div>'
+      + '<b>'+t.name+'</b></div>';
+  }).join('');
+}
+document.getElementById('themeGrid').addEventListener('click', function(e){
+  var el = e.target.closest('.theme-swatch'); if(!el) return;
+  var t = THEMES.find(function(x){return x.id===el.dataset.themePick;});
+  if(t.soon){ toast('Эта тема ещё в разработке'); return; }
+  themeId = t.id; localStorage.setItem('cc_theme', themeId);
+  applyTheme(); renderThemeGrid();
+  toast('Тема: '+t.name);
+});
+document.getElementById('colorModeSeg').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  colorMode = btn.dataset.mode; localStorage.setItem('cc_color_mode', colorMode);
+  this.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b===btn); });
+  applyTheme();
+});
+
+var PLATFORMS = {
+  vk:{label:'ВКонтакте', mono:'VK', color:'#0077FF', auto:true},
+  ok:{label:'Одноклассники', mono:'ОК', color:'#F7900A', auto:true},
+  instagram:{label:'Instagram', mono:'IG', color:'#C1387E', auto:false},
+  threads:{label:'Threads', mono:'Th', color:'#2B2B2B', auto:false},
+  avito:{label:'Avito', mono:'Av', color:'#3FA9F5', auto:true},
+  vkmarket:{label:'VK Маркетплейс', mono:'VM', color:'#3F63E0', auto:true}
+};
+var CLIENTS = [
+  {id:'besttour', name:'Best Tour Club', niche:'Турагентство · Краснодар', color:'#146B69', logo:'assets/logos/besttour-icon.svg', platforms:['vk','ok','instagram','threads','avito']},
+  {id:'coastal', name:'Coastal Nest', niche:'Аренда жилья · Нячанг', color:'#EF5C6E', platforms:['vk','ok','instagram','avito','vkmarket']},
+  {id:'fitzone', name:'FitZone', niche:'Фитнес-клуб · Дананг', color:'#ff5a36', platforms:['vk','ok','instagram','threads']}
+];
+var state = { client:'besttour' };
+
+var QUEUE = [
+  {id:1, client:'besttour', pf:'vk', title:'Карусель «5 туров осени»', when:'Сегодня, 12:00', status:'scheduled'},
+  {id:2, client:'besttour', pf:'avito', title:'Объявление: тур в Дагестан, от 32 900 ₽', when:'Сегодня, 14:00', status:'review'},
+  {id:3, client:'besttour', pf:'instagram', title:'Сторис: отзыв группы из Абхазии', when:'Сегодня, 18:00', status:'draft'},
+  {id:4, client:'besttour', pf:'threads', title:'Пост: 3 ошибки при выборе тура', when:'Завтра, 10:00', status:'draft'},
+  {id:5, client:'besttour', pf:'vk', title:'Пост: тур дня — Грузия', when:'Сегодня, 9:00', status:'published'},
+  {id:6, client:'besttour', pf:'ok', title:'Карусель отзывов', when:'Завтра, 11:00', status:'scheduled'},
+  {id:7, client:'coastal', pf:'vk', title:'Карусель «5 вещей в каждой квартире»', when:'Сегодня, 12:00', status:'scheduled'},
+  {id:8, client:'coastal', pf:'avito', title:'Объявление: студия у моря', when:'Сегодня, 14:00', status:'review'},
+  {id:9, client:'fitzone', pf:'vk', title:'Пост: расписание групповых', when:'Сегодня, 9:00', status:'published'},
+  {id:10, client:'fitzone', pf:'threads', title:'Тред: 3 мифа про кардио', when:'Завтра, 15:00', status:'draft'}
+];
+var queueFilter = 'all';
+var STATUS_ORDER = ['draft','review','scheduled','published'];
+var STATUS_LABEL = {draft:'Черновик', review:'На проверке', scheduled:'Запланировано', published:'Опубликовано'};
+
+var IDEA_CATS = ['Все','Продукт','Отзывы','Закулисье','Вопрос-ответ','Акция'];
+var IDEAS = {
+  besttour: [
+    {cat:'Продукт', fmt:'Карусель', title:'5 туров, которые заканчиваются в этом месяце', outline:'Слайд 1 — цепляющий вопрос. Слайды 2–4 — конкретные туры с датами заездов. Слайд 5 — призыв уточнить места.', cta:'CTA: «Свободные места — уточняйте в сообщениях»'},
+    {cat:'Отзывы', fmt:'Пост', title:'Группа вернулась из Дагестана в восторге', outline:'Цитата из отзыва + фото группы (с согласия). Тёплый комментарий от имени компании.', cta:'CTA: «А куда собираетесь вы этой осенью?»'},
+    {cat:'Закулисье', fmt:'Рилс', title:'Как собирается тур-пакет за кулисами', outline:'Короткий влог: подбор маршрута → бронирование → инструктаж группы.', cta:'CTA: «Сохраните — пригодится при выборе тура»'},
+    {cat:'Вопрос-ответ', fmt:'Пост', title:'Что входит в стоимость тура, а что нет', outline:'Частый вопрос клиентов. Отвечаете честно и по пунктам.', cta:'CTA: «Уточняйте детали в сообщениях»'},
+    {cat:'Акция', fmt:'Карусель', title:'Скидка за раннее бронирование', outline:'Слайд 1 — цифра скидки. Слайд 2 — даты. Слайд 3 — как забронировать.', cta:'CTA: «Бронируйте до конца месяца»'}
+  ],
+  coastal: [
+    {cat:'Продукт', fmt:'Карусель', title:'5 вещей, которые есть в каждой нашей квартире', outline:'Слайд 1 — цепляющий вопрос. Слайды 2–4 — кондиционер, вайфай, вид из окна.', cta:'CTA: «Свободные даты — в шапке профиля»'},
+    {cat:'Отзывы', fmt:'Пост', title:'Гостья призналась, что чуть не осталась насовсем', outline:'Цитата из отзыва + фото гостьи на балконе.', cta:'CTA: «А как вам такой вид по утрам?»'}
+  ],
+  fitzone: [
+    {cat:'Продукт', fmt:'Карусель', title:'Расписание групповых на неделю', outline:'Слайд с сеткой занятий по дням.', cta:'CTA: «Пробное занятие — бесплатно»'},
+    {cat:'Отзывы', fmt:'Карусель', title:'Три истории участников марафона похудения', outline:'Каждый слайд — фото + цитата.', cta:'CTA: «Следующий поток стартует в понедельник»'}
+  ]
+};
+var ideaState = {filter:'Все', idx:0, saved:[]};
+
+var MARKET_IDEAS = {
+  besttour: [
+    {title:'Тур в Дагестан, 4 дня', price:'от 32 900 ₽', points:['Трансфер и проживание включены','Сопровождение гида','Группа до 12 человек'], tip:'Совет: укажите точные даты заезда в заголовке — так объявление чаще находят.'},
+    {title:'Тур в Абхазию, выходные', price:'от 18 500 ₽', points:['Выезд из Краснодара','Питание по программе','Свободные места на октябрь'], tip:'Совет: добавьте «выходные» в заголовок — частый поисковый запрос.'}
+  ],
+  coastal: [
+    {title:'Студия у моря, 32 м²', price:'от 800 000 ₫/сутки', points:['5 минут пешком до пляжа','Кондиционер и стиральная машина'], tip:'Совет: первое фото — вид с балкона, увеличивает число откликов.'}
+  ],
+  fitzone: [
+    {title:'Абонемент безлимит на месяц', price:'1 500 000 ₫', points:['Все групповые программы','Тренажёрный зал 24/7'], tip:'Совет: фото зала в первом слоте хорошо заходит.'}
+  ]
+};
+var marketState = {idx:0};
+
+var BRAND = {
+  besttour:{
+    tones:['Дружелюбный','Живой','Заботливый','Деловой'], activeTone:'Живой',
+    forbidden:['дёшево','не пожалеете','супер-пупер','гарантированно'],
+    prices:[{name:'Тур в Дагестан, 4 дня', val:'до 32 900 ₽'},{name:'Тур в Абхазию, выходные', val:'до 18 500 ₽'},{name:'Тур в Грузию, 7 дней', val:'до 54 000 ₽'}],
+    sample:'Дешёвый тур в горы — не пожалеете!! Пишите скорее, бронируйте за 35 000 ₽ гарантированно с местами'
+  },
+  coastal:{
+    tones:['Дружелюбный','Строгий','Заботливый'], activeTone:'Дружелюбный',
+    forbidden:['дешёвый','элитный','не пожалеете'],
+    prices:[{name:'Студия', val:'от 800 000 ₫/сутки'}],
+    sample:'Дешёвая студия у моря, элитный вид — не пожалеете!!'
+  },
+  fitzone:{
+    tones:['Дерзкий','Заботливый'], activeTone:'Дерзкий',
+    forbidden:['похудей за неделю','без усилий'],
+    prices:[{name:'Безлимит на месяц', val:'1 500 000 ₫'}],
+    sample:'Похудей за неделю без усилий — чудо-результат уже завтра!'
+  }
+};
+
+var MODELS = [
+  {id:'claude', name:'Claude', color:'#D97757', connected:true, strength:'Тексты постов, тон бренда, точные формулировки — финальная проверка.', tasks:['Тексты','Проверка бренда'], on:['Тексты','Проверка бренда']},
+  {id:'gemini', name:'Gemini', color:'#4285F4', connected:true, strength:'Мультимодальность: разбирает фото и собирает промпты под них.', tasks:['Промпты фото','Разбор фото'], on:['Промпты фото']},
+  {id:'grok', name:'Grok', color:'#111111', connected:true, strength:'Держит руку на пульсе трендов и инфоповодов в реальном времени.', tasks:['Тренды','Идеи на злобу дня'], on:['Тренды']},
+  {id:'deepseek', name:'DeepSeek', color:'#4C6FFF', connected:true, strength:'Дёшево и быстро — черновые варианты текста пачками.', tasks:['Черновики','Массовая генерация'], on:['Черновики']},
+  {id:'kimi', name:'Kimi', color:'#7C3AED', connected:false, strength:'Огромный контекст — разбор больших брендбуков и архивов переписки.', tasks:['Разбор брендбука'], on:[]}
+];
+
+var LIB_CATS = ['Все','Пляжный отдых','Горы/треккинг','Экскурсионный','Городской','Avito'];
+var TEMPLATES = [
+  {id:1, cat:'Горы/треккинг', title:'Тур в горы — карусель', body:'[Название тура], [даты заезда]. Маршрут: [ключевые точки]. Формат: [автобус/поезд/самолёт] из [город]. Что включено: [список]. Цена: до [X] ₽.'},
+  {id:2, cat:'Пляжный отдых', title:'Пляжный тур — пост', body:'[Направление] ждёт: [даты]. [X] дней у моря, [что включено]. Выезд из [город] на [транспорт]. Цена: до [X] ₽. Места ограничены — уточняйте.'},
+  {id:3, cat:'Avito', title:'Объявление Avito — тур', body:'[Название тура] ([даты заезда])\\n\\nЧто входит: [список]\\nТрансфер: [город] → [направление]\\nГруппа: до [N] человек\\n\\nЦена: от [X] ₽\\nПишите/звоните — ответим быстро.'}
+];
+var libFilter = 'Все';
+
+var WIZ = {
+  country: ['Дагестан','Абхазия','Грузия','Северная Осетия','Крым'],
+  typeByCountry: {
+    'Дагестан':['Экскурсионный','Горы/треккинг'], 'Абхазия':['Пляжный отдых','Экскурсионный'],
+    'Грузия':['Экскурсионный','Горы/треккинг'], 'Северная Осетия':['Горы/треккинг'], 'Крым':['Пляжный отдых','Городской']
+  },
+  season: ['Зима','Весна','Лето','Осень'],
+  city: ['Краснодар','Армавир','Минеральные Воды','Пятигорск'],
+  transport: ['Автобус','Поезд','Самолёт']
+};
+var wizState = {country:'Дагестан', type:null, season:'Осень', city:'Краснодар', transport:'Автобус'};
+
+function showTab(name){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('screen-'+name).classList.add('active');
+  var tabForBtn = {home:'home', queue:'queue', content:'content', more:'more', brand:'more', analytics:'more', ai:'more'}[name] || name;
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab===tabForBtn); });
+  document.getElementById('clientRow').classList.toggle('hide', name==='ai');
+  document.querySelector('.app-body').scrollTop = 0;
+}
+document.getElementById('tabBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.tab-btn'); if(!btn) return;
+  showTab(btn.dataset.tab);
+});
+document.querySelectorAll('.back-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){ showTab(btn.dataset.back); });
+});
+document.querySelectorAll('.more-row[data-open]').forEach(function(btn){
+  btn.addEventListener('click', function(){ showTab(btn.dataset.open); });
+});
+
+function setContentMode(mode){
+  document.getElementById('contentIdeasWrap').style.display = mode==='ideas' ? '' : 'none';
+  document.getElementById('contentLibraryWrap').style.display = mode==='library' ? '' : 'none';
+  document.querySelectorAll('#contentModeSeg button').forEach(function(b){ b.classList.toggle('active', b.dataset.cmode===mode); });
+}
+document.getElementById('contentModeSeg').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  setContentMode(btn.dataset.cmode);
+});
+function openContent(mode){ showTab('content'); setContentMode(mode || 'ideas'); }
+
+document.getElementById('qaIdeas').addEventListener('click', function(){ openContent('ideas'); });
+document.getElementById('qaBrand').addEventListener('click', function(){ showTab('brand'); });
+document.getElementById('qaLibrary').addEventListener('click', function(){ openContent('library'); });
+document.getElementById('qaAvito').addEventListener('click', function(){
+  openContent('ideas');
+  document.querySelector('#ideaModeSeg button[data-mode="market"]').click();
+});
+
+var overlay = document.getElementById('overlay');
+document.getElementById('btnSettings').addEventListener('click', function(){ overlay.classList.add('show'); });
+document.getElementById('btnOpenSettings').addEventListener('click', function(){ overlay.classList.add('show'); });
+document.getElementById('sheetClose').addEventListener('click', function(){ overlay.classList.remove('show'); });
+overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.classList.remove('show'); });
+
+var tplOverlay = document.getElementById('tplOverlay');
+document.getElementById('btnNewTemplate').addEventListener('click', function(){ tplOverlay.classList.add('show'); });
+document.getElementById('tplSheetClose').addEventListener('click', function(){ tplOverlay.classList.remove('show'); });
+tplOverlay.addEventListener('click', function(e){ if(e.target===tplOverlay) tplOverlay.classList.remove('show'); });
+
+function renderPlatformStatus(){
+  var ICON_AUTO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:-1px;margin-right:3px;"><rect x="5" y="9" width="14" height="11" rx="2.5"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/><circle cx="9.5" cy="14.5" r="1"/><circle cx="14.5" cy="14.5" r="1"/></svg>';
+  var ICON_MANUAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:-1px;margin-right:3px;"><path d="M8 12V6a1.5 1.5 0 0 1 3 0v4M11 11V5a1.5 1.5 0 0 1 3 0v5M14 11V6.5a1.5 1.5 0 0 1 3 0V12M17 13v-1a1.5 1.5 0 0 1 3 0v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-4-2l-3-4a1.4 1.4 0 0 1 2-2l1 1"/></svg>';
+  document.getElementById('platformStatusList').innerHTML = Object.keys(PLATFORMS).map(function(k){
+    var p = PLATFORMS[k];
+    return '<div class="pf-row"><div class="pf-badge" style="background:'+p.color+'">'+p.mono+'</div>'
+      + '<div class="pf-name">'+p.label+'</div>'
+      + '<div class="pf-mode">'+(p.auto?ICON_AUTO+'автопубликация':ICON_MANUAL+'вручную')+'</div></div>';
+  }).join('');
+}
+
+function renderClientRow(){
+  document.getElementById('clientRow').innerHTML = CLIENTS.map(function(c){
+    var initial = c.name.slice(0,2).toUpperCase();
+    var dotInner = c.logo ? '<img src="'+c.logo+'" alt="" style="width:65%;height:65%;object-fit:contain;">' : initial;
+    return '<div class="client-chip '+(c.id===state.client?'active':'')+'" data-client="'+c.id+'">'
+      + '<div class="dot" style="background:'+c.color+'">'+dotInner+'</div><span>'+c.name+'</span></div>';
+  }).join('');
+}
+document.getElementById('clientRow').addEventListener('click', function(e){
+  var chip = e.target.closest('.client-chip'); if(!chip) return;
+  state.client = chip.dataset.client;
+  ideaState.idx = 0; marketState.idx = 0;
+  onClientChange();
+});
+function activeClient(){ return CLIENTS.find(function(c){return c.id===state.client;}); }
+
+function onClientChange(){
+  renderClientRow(); renderHome();
+  renderIdeaChips(); renderIdeaCard(); renderMarketCard();
+  renderToneChips(); renderForbidden(); renderPrices(); resetBrandInput();
+  document.getElementById('brandResult').classList.remove('show');
+  renderAnalytics();
+}
+
+var toastTimer;
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1700);
+}
+
+function updateGreeting(){
+  var h = new Date().getHours();
+  var label = h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер';
+  document.getElementById('greetLabel').textContent = label;
+}
+
+function nextFocusItem(){
+  var items = QUEUE.filter(function(q){ return q.client===state.client && q.status!=='published'; });
+  var order = {draft:0, review:1, scheduled:2};
+  items.sort(function(a,b){ return order[a.status]-order[b.status]; });
+  return items[0];
+}
+function renderFocus(){
+  var item = nextFocusItem();
+  var card = document.getElementById('focusCard');
+  var title = document.getElementById('focusTitle');
+  var hint = document.getElementById('focusHint');
+  var btn = document.getElementById('focusBtn');
+  if(!item){
+    card.classList.add('done');
+    title.textContent = 'Всё готово у «'+activeClient().name+'»';
+    hint.textContent = 'Очередь пуста. Можно заранее накидать идеи в библиотеке.';
+    btn.textContent = 'Открыть библиотеку';
+    btn.onclick = function(){ openContent('library'); };
+  } else {
+    card.classList.remove('done');
+    var p = PLATFORMS[item.pf];
+    title.textContent = item.title;
+    hint.textContent = STATUS_LABEL[item.status]+' · '+p.label+' · '+item.when;
+    btn.textContent = item.status==='draft' ? 'Довести до готовности' : 'Открыть в очереди';
+    btn.onclick = function(){ showTab('queue'); };
+  }
+}
+var HOME_TIPS = [
+  'Instagram и Threads всё ещё публикуются вручную — Бестик пришлёт готовый текст и напомнит, а кнопку жмёте вы.',
+  'У вас есть шаблоны в библиотеке для этого направления — можно не писать с нуля.',
+  'На следующей неделе заканчиваются места на 2 тура — стоит напомнить об этом в постах.'
+];
+function renderHome(){
+  updateGreeting();
+  var items = QUEUE.filter(function(q){ return q.client===state.client && q.status!=='published'; });
+  var auto = items.filter(function(q){ return PLATFORMS[q.pf].auto; }).length;
+  var manual = items.length - auto;
+  document.getElementById('statQueue').textContent = items.length;
+  document.getElementById('statAuto').textContent = auto;
+  document.getElementById('statManual').textContent = manual;
+  var c = activeClient();
+  document.getElementById('greetLine').textContent = 'По клиенту «'+c.name+'» сегодня: '+items.length+' публикаций в очереди'+(manual?', '+manual+' нужно выложить руками':'.');
+
+  var wrap = document.getElementById('homeQueue');
+  var today = items.slice(0,4);
+  wrap.innerHTML = today.map(queueItemHTML).join('') || '<div class="tip-card"><div style="font-size:12.5px;color:var(--ink-soft);">На сегодня всё чисто — можно готовить идеи заранее.</div></div>';
+  document.getElementById('homeQueueLabel').textContent = today.length+' шт.';
+
+  document.getElementById('tipText').textContent = HOME_TIPS[Math.floor(Math.random()*HOME_TIPS.length)];
+  renderFocus();
+}
+
+function queueItemHTML(q){
+  var p = PLATFORMS[q.pf];
+  var cl = CLIENTS.find(function(c){return c.id===q.client;});
+  return '<div class="queue-item" data-id="'+q.id+'">'
+    + '<div class="pf-badge" style="background:'+p.color+'">'+p.mono+'</div>'
+    + '<div class="queue-info"><b>'+q.title+'</b>'
+    + '<div class="meta"><span>'+cl.name+'</span>·<span>'+q.when+'</span>·<span class="auto-tag">'+(p.auto?'авто':'вручную')+'</span></div></div>'
+    + '<div class="status-pill status-'+q.status+'">'+STATUS_LABEL[q.status]+'</div>'
+    + '</div>';
+}
+function renderPlatformFilterChips(){
+  var all = ['all'].concat(Object.keys(PLATFORMS));
+  document.getElementById('platformFilterChips').innerHTML = all.map(function(k){
+    var label = k==='all' ? 'Все площадки' : PLATFORMS[k].label;
+    return '<div class="chip '+(k===queueFilter?'active':'')+'" data-pf="'+k+'">'+label+'</div>';
+  }).join('');
+}
+function renderQueueList(){
+  var list = QUEUE.filter(function(q){ return q.client===state.client && (queueFilter==='all' || q.pf===queueFilter); });
+  document.getElementById('queueList').innerHTML = list.map(queueItemHTML).join('') || '<p style="color:var(--ink-soft);font-size:12.5px;">Пусто по этому фильтру.</p>';
+}
+document.getElementById('platformFilterChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  queueFilter = chip.dataset.pf; renderPlatformFilterChips(); renderQueueList();
+});
+document.getElementById('queueList').addEventListener('click', function(e){
+  var item = e.target.closest('.queue-item'); if(!item) return;
+  var q = QUEUE.find(function(x){return x.id===(+item.dataset.id);});
+  var i = STATUS_ORDER.indexOf(q.status);
+  q.status = STATUS_ORDER[(i+1) % STATUS_ORDER.length];
+  renderQueueList(); renderHome(); renderAnalytics();
+  if(q.status==='published'){ toast('Отмечено как опубликовано'); }
+});
+document.getElementById('homeQueue').addEventListener('click', function(e){
+  var item = e.target.closest('.queue-item'); if(!item) return;
+  var q = QUEUE.find(function(x){return x.id===(+item.dataset.id);});
+  var i = STATUS_ORDER.indexOf(q.status);
+  q.status = STATUS_ORDER[(i+1) % STATUS_ORDER.length];
+  renderHome(); renderAnalytics();
+});
+document.getElementById('btnAddQueue').addEventListener('click', function(){
+  var c = activeClient();
+  var pf = c.platforms[Math.floor(Math.random()*c.platforms.length)];
+  var newId = Math.max.apply(null, QUEUE.map(function(q){return q.id;}))+1;
+  QUEUE.unshift({id:newId, client:c.id, pf:pf, title:'Новый черновик поста', when:'Без даты', status:'draft'});
+  renderQueueList(); renderHome();
+  toast('Черновик добавлен в очередь');
+});
+
+function renderIdeaChips(){
+  document.getElementById('ideaChips').innerHTML = IDEA_CATS.map(function(c){
+    return '<div class="chip '+(c===ideaState.filter?'active':'')+'" data-cat="'+c+'">'+c+'</div>';
+  }).join('');
+}
+function filteredIdeas(){
+  var list = IDEAS[state.client] || [];
+  return ideaState.filter==='Все' ? list : list.filter(function(i){return i.cat===ideaState.filter;});
+}
+function renderIdeaCard(){
+  var list = filteredIdeas();
+  if(ideaState.idx >= list.length) ideaState.idx = 0;
+  var idea = list[ideaState.idx];
+  var card = document.getElementById('ideaCard');
+  if(!idea){
+    card.innerHTML = '<p style="color:var(--ink-soft);font-size:12.8px;margin:auto;">В этой категории пока пусто — выберите другую 🙂</p>';
+  } else {
+    card.innerHTML = '<div class="idea-badges"><span class="badge format">'+idea.fmt+'</span><span class="badge cat">'+idea.cat+'</span></div>'
+      + '<h3>'+idea.title+'</h3><p class="outline">'+idea.outline+'</p><div class="cta-line">'+idea.cta+'</div>';
+  }
+  document.getElementById('ideaCounter').textContent = 'Идея '+(list.length?ideaState.idx+1:0)+' из '+list.length;
+}
+function renderSaved(){
+  document.getElementById('savedCountInline').textContent = ideaState.saved.length;
+  document.getElementById('ideaSavedCount').textContent = 'Сохранено: '+ideaState.saved.length;
+  document.getElementById('savedList').innerHTML = ideaState.saved.map(function(idea){
+    return '<div class="saved-item"><b>'+idea.title+'</b><span>'+idea.fmt+' · '+idea.cat+'</span></div>';
+  }).join('') || '<div class="saved-item"><span>Пока пусто — сохраните понравившиеся идеи выше.</span></div>';
+}
+document.getElementById('ideaChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  ideaState.filter = chip.dataset.cat; ideaState.idx = 0;
+  renderIdeaChips(); renderIdeaCard();
+});
+document.getElementById('btnNextIdea').addEventListener('click', function(){
+  var list = filteredIdeas();
+  ideaState.idx = (ideaState.idx+1) % Math.max(list.length,1);
+  renderIdeaCard();
+});
+document.getElementById('btnSkip').addEventListener('click', function(){ document.getElementById('btnNextIdea').click(); });
+document.getElementById('btnSave').addEventListener('click', function(){
+  var list = filteredIdeas(); var idea = list[ideaState.idx]; if(!idea) return;
+  if(ideaState.saved.indexOf(idea)===-1){
+    ideaState.saved.push(idea);
+    toast('Сохранено в список');
+    paintMascots('happy'); setTimeout(function(){paintMascots('neutral');}, 900);
+  }
+  renderSaved();
+  document.getElementById('btnNextIdea').click();
+});
+document.getElementById('savedToggle').addEventListener('click', function(){
+  document.getElementById('savedList').classList.toggle('open');
+  this.querySelector('span').textContent = document.getElementById('savedList').classList.contains('open') ? '▴' : '▾';
+});
+
+function renderMarketCard(){
+  var list = MARKET_IDEAS[state.client] || [];
+  if(marketState.idx >= list.length) marketState.idx = 0;
+  var item = list[marketState.idx];
+  var card = document.getElementById('marketCard');
+  if(!item){
+    card.innerHTML = '<p style="color:var(--ink-soft);font-size:12.8px;">Для этого клиента пока нет заготовок объявлений.</p>';
+  } else {
+    card.innerHTML = '<h3>'+item.title+'</h3><div class="market-price">'+item.price+'</div>'
+      + '<ul class="market-points">'+item.points.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>'
+      + '<div class="market-tip">'+item.tip+'</div>';
+  }
+  document.getElementById('marketCounter').textContent = 'Объявление '+(list.length?marketState.idx+1:0)+' из '+list.length;
+}
+document.getElementById('btnMarketSkip').addEventListener('click', function(){
+  var list = MARKET_IDEAS[state.client] || [];
+  marketState.idx = (marketState.idx+1) % Math.max(list.length,1);
+  renderMarketCard();
+});
+document.getElementById('btnMarketNext').addEventListener('click', function(){
+  toast('Черновик объявления добавлен в очередь');
+  var c = activeClient();
+  var pf = c.platforms.indexOf('avito')!==-1 ? 'avito' : (c.platforms.indexOf('vkmarket')!==-1 ? 'vkmarket' : c.platforms[0]);
+  var newId = Math.max.apply(null, QUEUE.map(function(q){return q.id;}))+1;
+  var list = MARKET_IDEAS[state.client] || [];
+  var item = list[marketState.idx];
+  QUEUE.unshift({id:newId, client:c.id, pf:pf, title:'Объявление: '+(item?item.title:'без названия'), when:'Без даты', status:'draft'});
+  renderHome();
+});
+document.getElementById('ideaModeSeg').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  this.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b===btn); });
+  var social = btn.dataset.mode==='social';
+  document.getElementById('socialIdeasWrap').style.display = social ? '' : 'none';
+  document.getElementById('marketIdeasWrap').style.display = social ? 'none' : '';
+});
+
+function renderWizardChips(){
+  document.getElementById('wizCountry').innerHTML = WIZ.country.map(function(c){
+    return '<div class="chip '+(c===wizState.country?'active':'')+'" data-wiz="country" data-val="'+c+'">'+c+'</div>';
+  }).join('');
+  var types = WIZ.typeByCountry[wizState.country] || [];
+  if(types.indexOf(wizState.type)===-1) wizState.type = types[0] || null;
+  document.getElementById('wizType').innerHTML = types.map(function(t){
+    return '<div class="chip '+(t===wizState.type?'active':'')+'" data-wiz="type" data-val="'+t+'">'+t+'</div>';
+  }).join('');
+  document.getElementById('wizSeason').innerHTML = WIZ.season.map(function(s){
+    return '<div class="chip '+(s===wizState.season?'active':'')+'" data-wiz="season" data-val="'+s+'">'+s+'</div>';
+  }).join('');
+  document.getElementById('wizCity').innerHTML = WIZ.city.map(function(c){
+    return '<div class="chip '+(c===wizState.city?'active':'')+'" data-wiz="city" data-val="'+c+'">'+c+'</div>';
+  }).join('');
+  document.getElementById('wizTransport').innerHTML = WIZ.transport.map(function(t){
+    return '<div class="chip '+(t===wizState.transport?'active':'')+'" data-wiz="transport" data-val="'+t+'">'+t+'</div>';
+  }).join('');
+}
+document.getElementById('screen-content').addEventListener('click', function(e){
+  var chip = e.target.closest('[data-wiz]'); if(!chip) return;
+  wizState[chip.dataset.wiz] = chip.dataset.val;
+  renderWizardChips();
+});
+document.getElementById('btnWizardBuild').addEventListener('click', function(){
+  var text = 'Тур в '+wizState.country+' ('+(wizState.type||'—')+', сезон: '+wizState.season+').\\n'
+    + 'Выезд из '+wizState.city+' на '+wizState.transport.toLowerCase()+'.\\n'
+    + 'Что входит: [список]. Даты заезда: [уточнить]. Цена: до [X] ₽.';
+  document.getElementById('wizardText').textContent = text;
+  document.getElementById('wizardOut').classList.add('show');
+  document.getElementById('btnWizardSave').style.display = '';
+});
+document.getElementById('btnWizardCopy').addEventListener('click', function(){
+  var text = document.getElementById('wizardText').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(text).catch(function(){});
+  toast('Шаблон скопирован');
+});
+document.getElementById('btnWizardSave').addEventListener('click', function(){
+  var cat = (WIZ.typeByCountry[wizState.country]||['Экскурсионный'])[0];
+  var newId = Math.max.apply(null, TEMPLATES.map(function(t){return t.id;}).concat([0]))+1;
+  TEMPLATES.unshift({id:newId, cat:cat, title:'Тур в '+wizState.country+' — '+wizState.season.toLowerCase(), body:document.getElementById('wizardText').textContent});
+  renderLibraryList(); toast('Сохранено в библиотеку');
+});
+
+function renderLibCatChips(){
+  document.getElementById('libCatChips').innerHTML = LIB_CATS.map(function(c){
+    return '<div class="chip '+(c===libFilter?'active':'')+'" data-libcat="'+c+'">'+c+'</div>';
+  }).join('');
+}
+function renderLibraryList(){
+  var list = libFilter==='Все' ? TEMPLATES : TEMPLATES.filter(function(t){return t.cat===libFilter;});
+  document.getElementById('libCountLabel').textContent = TEMPLATES.length+' шт.';
+  document.getElementById('libraryList').innerHTML = list.map(function(t){
+    return '<div class="lib-item" data-tid="'+t.id+'">'
+      + '<div class="lib-top"><b>'+t.title+'</b><span class="badge cat">'+t.cat+'</span></div>'
+      + '<div class="lib-body">'+t.body.replace(/\\n/g,'<br>')+'</div>'
+      + '<div class="lib-actions"><button data-act="use" class="primary">Использовать</button><button data-act="edit">Редактировать</button><button data-act="del" class="danger">Удалить</button></div>'
+      + '</div>';
+  }).join('') || '<p style="color:var(--ink-soft);font-size:12.5px;">В этой категории пока пусто.</p>';
+}
+document.getElementById('libCatChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  libFilter = chip.dataset.libcat; renderLibCatChips(); renderLibraryList();
+});
+document.getElementById('libraryList').addEventListener('click', function(e){
+  var item = e.target.closest('.lib-item'); if(!item) return;
+  var id = +item.dataset.tid;
+  var t = TEMPLATES.find(function(x){return x.id===id;});
+  var act = e.target.closest('button') && e.target.closest('button').dataset.act;
+  if(act==='use'){
+    if(navigator.clipboard) navigator.clipboard.writeText(t.body).catch(function(){});
+    toast('Шаблон скопирован — вставляйте и заполняйте плейсхолдеры');
+  } else if(act==='edit'){
+    var nv = prompt('Редактировать шаблон:', t.body);
+    if(nv!==null){ t.body = nv; renderLibraryList(); toast('Шаблон обновлён'); }
+  } else if(act==='del'){
+    TEMPLATES = TEMPLATES.filter(function(x){return x.id!==id;});
+    renderLibraryList(); toast('Шаблон удалён');
+  }
+});
+function renderNewTplCatChips(){
+  document.getElementById('newTplCatChips').innerHTML = LIB_CATS.filter(function(c){return c!=='Все';}).map(function(c,i){
+    return '<div class="chip '+(i===0?'active':'')+'" data-newcat="'+c+'">'+c+'</div>';
+  }).join('');
+}
+document.getElementById('newTplCatChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  this.querySelectorAll('.chip').forEach(function(c){ c.classList.toggle('active', c===chip); });
+});
+document.getElementById('btnSaveNewTpl').addEventListener('click', function(){
+  var title = document.getElementById('newTplTitle').value.trim();
+  var body = document.getElementById('newTplBody').value.trim();
+  var catEl = document.querySelector('#newTplCatChips .chip.active');
+  if(!title || !body){ toast('Заполните название и текст'); return; }
+  var newId = Math.max.apply(null, TEMPLATES.map(function(t){return t.id;}).concat([0]))+1;
+  TEMPLATES.unshift({id:newId, cat: catEl?catEl.dataset.newcat:LIB_CATS[1], title:title, body:body});
+  document.getElementById('newTplTitle').value=''; document.getElementById('newTplBody').value='';
+  renderLibraryList(); tplOverlay.classList.remove('show');
+  toast('Шаблон добавлен в библиотеку');
+});
+
+function renderToneChips(){
+  var b = BRAND[state.client];
+  document.getElementById('toneChips').innerHTML = b.tones.map(function(t){
+    return '<div class="chip '+(t===b.activeTone?'active':'')+'" data-tone="'+t+'">'+t+'</div>';
+  }).join('');
+}
+function renderForbidden(){
+  var b = BRAND[state.client];
+  document.getElementById('forbiddenTags').innerHTML = b.forbidden.map(function(w,i){
+    return '<span class="tag">'+w+'<button data-i="'+i+'">×</button></span>';
+  }).join('');
+}
+function renderPrices(){
+  var b = BRAND[state.client];
+  document.getElementById('priceTable').innerHTML = b.prices.map(function(p){
+    return '<div class="price-row"><span>'+p.name+'</span><span>'+p.val+'</span></div>';
+  }).join('');
+}
+function resetBrandInput(){
+  document.getElementById('brandInput').value = BRAND[state.client].sample;
+  document.getElementById('brandSub').textContent = 'Клиент «'+activeClient().name+'»: сверяем с тоном «'+BRAND[state.client].activeTone+'», ценами и запрещёнными словами.';
+}
+document.getElementById('toneChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  BRAND[state.client].activeTone = chip.dataset.tone; renderToneChips(); resetBrandInput();
+  toast('Тон общения обновлён');
+});
+document.getElementById('forbiddenTags').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  BRAND[state.client].forbidden.splice(+btn.dataset.i,1); renderForbidden();
+  toast('Правило удалено');
+});
+document.getElementById('btnAddForbidden').addEventListener('click', function(){
+  var input = document.getElementById('newForbiddenInput');
+  var v = input.value.trim(); if(!v) return;
+  BRAND[state.client].forbidden.push(v); input.value=''; renderForbidden();
+  toast('Правило добавлено');
+});
+function escapeHtml(s){ return s.replace(/[&<>]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+document.getElementById('btnCheckBrand').addEventListener('click', function(){
+  var b = BRAND[state.client];
+  var text = document.getElementById('brandInput').value;
+  var lower = text.toLowerCase();
+  var foundWords = b.forbidden.filter(function(w){ return lower.indexOf(w.toLowerCase())!==-1; });
+
+  var highlighted = escapeHtml(text);
+  foundWords.forEach(function(w){
+    var re = new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+    highlighted = highlighted.replace(re, '<mark class="flag">$1</mark>');
   });
 
-  // ---- Checklist (persisted per-day in localStorage) ----
-  const CHECKLIST_DEFAULT = [
-    "Табличка/чат — какие туры на неделе, сколько записано",
-    "Яндекс.Диск — посмотреть и забрать контент (не создавать/не удалять там)",
-    "Отметки в публикациях — запросить согласие, если есть чужой контент",
-    "Текст — накидать идеи/подписи с Алисой",
-    "Оформление — собрать пост/карусель в Recur/Garny",
-    "Рилс — смонтировать, если сегодня видео",
-    "Публикация — VK, ОК, Telegram, Threads"
-  ];
+  var exclaimCount = (text.match(/!/g)||[]).length;
+  var hasPrice = /\d[\d\s]{2,}\s?(₽|руб)/i.test(text);
 
-  function todayKey() {
-    const d = new Date();
-    return `checklist_${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  var lines = [];
+  lines.push({ ok: foundWords.length===0, label: foundWords.length===0 ? 'Запрещённых слов не найдено' : 'Найдены слова не по бренду', sub: foundWords.length===0 ? '' : 'Отмечено в тексте ниже' });
+  lines.push({ ok: exclaimCount<=1, label: exclaimCount<=1 ? 'Тон в норме' : 'Многовато восклицательных знаков ('+exclaimCount+')', sub: exclaimCount<=1 ? 'Похоже на «'+b.activeTone+'»' : 'Попробуйте оставить один' });
+  if(hasPrice){ lines.push({ok:null, label:'В тексте упомянута цена', sub:'Сверьте вручную с прайсом ниже'}); }
+
+  document.getElementById('checkLines').innerHTML = lines.map(function(l){
+    var cls = l.ok===null ? 'warn' : (l.ok ? 'ok' : 'bad');
+    return '<div class="check-line '+cls+'"><div class="dot"></div><div><b>'+l.label+'</b>'+(l.sub?'<span>'+l.sub+'</span>':'')+'</div></div>';
+  }).join('') + (foundWords.length ? '<div style="margin-top:10px;font-size:12.4px;line-height:1.6;padding:10px;background:var(--surface-2);border-radius:12px;">'+highlighted+'</div>' : '');
+
+  var mood = foundWords.length ? 'worried' : 'happy';
+  document.getElementById('verdictMascot').innerHTML = mascotSVG(mood);
+  document.getElementById('verdictTitle').textContent = foundWords.length ? 'Стоит подправить перед публикацией' : 'Можно публиковать';
+  document.getElementById('verdictSub').textContent = foundWords.length ? foundWords.length+' момент(а) ниже' : 'Тон и слова совпадают с брендом';
+  document.getElementById('brandResult').classList.add('show');
+});
+
+var analyticsPeriod = 'week';
+var analyticsCat = 'Все';
+document.getElementById('periodSeg').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  this.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b===btn); });
+  analyticsPeriod = btn.dataset.period; renderAnalytics();
+});
+function renderAnalyticsCatChips(){
+  document.getElementById('analyticsCatChips').innerHTML = IDEA_CATS.map(function(c){
+    return '<div class="chip '+(c===analyticsCat?'active':'')+'" data-anacat="'+c+'">'+c+'</div>';
+  }).join('');
+}
+document.getElementById('analyticsCatChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  analyticsCat = chip.dataset.anacat; renderAnalyticsCatChips(); renderAnalytics();
+});
+function renderAnalytics(){
+  var items = QUEUE.filter(function(q){ return q.client===state.client; });
+  var published = items.filter(function(q){ return q.status==='published'; });
+  var scheduled = items.filter(function(q){ return q.status==='scheduled'; });
+  var manualLeft = items.filter(function(q){ return q.status!=='published' && !PLATFORMS[q.pf].auto; });
+  var mult = analyticsPeriod==='week' ? 1 : 4;
+
+  document.getElementById('analyticsStats').innerHTML = ''
+    + '<div class="stat-box"><b>'+(published.length*mult)+'</b><span>опубликовано</span></div>'
+    + '<div class="stat-box"><b>'+(scheduled.length*mult)+'</b><span>запланировано</span></div>'
+    + '<div class="stat-box"><b>'+manualLeft.length+'</b><span>ждут рук</span></div>';
+
+  var byPf = {};
+  items.forEach(function(q){ byPf[q.pf] = (byPf[q.pf]||0)+1; });
+  var topPf = Object.keys(byPf).sort(function(a,b){return byPf[b]-byPf[a];})[0];
+
+  var ICON_TREND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>';
+  var ICON_HAND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 11V6a1.5 1.5 0 0 1 3 0v4M11 10V5a1.5 1.5 0 0 1 3 0v5M14 10.5V6a1.5 1.5 0 0 1 3 0v6M17 12v-1a1.5 1.5 0 0 1 3 0v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-4-2l-3-4a1.4 1.4 0 0 1 2-2l1 1"/></svg>';
+  var ICON_LOOP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>';
+  var insights = [];
+  if(topPf){ insights.push({ic:ICON_TREND, text:'Больше всего публикаций уходит в '+PLATFORMS[topPf].label+' ('+byPf[topPf]+') — остальные площадки стоит подтянуть.'}); }
+  if(manualLeft.length){ insights.push({ic:ICON_HAND, text:manualLeft.length+' публикаци'+(manualLeft.length===1?'я':'и')+' ждут ручной выкладки — в основном Instagram/Threads.'}); }
+  insights.push({ic:ICON_LOOP, text:'Контент цикличен по сезону — загляните в «Библиотеку», там уже есть шаблоны под текущие направления.'});
+
+  document.getElementById('insightsList').innerHTML = insights.map(function(i){
+    return '<div class="insight-row"><span class="ic">'+i.ic+'</span><p>'+i.text+'</p></div>';
+  }).join('');
+}
+
+function renderModels(){
+  document.getElementById('modelsWrap').innerHTML = MODELS.map(function(m){
+    var chips = m.tasks.map(function(t){
+      return '<span class="task-chip '+(m.on.indexOf(t)!==-1?'on':'')+'" data-model="'+m.id+'" data-task="'+t+'">'+t+'</span>';
+    }).join('');
+    return '<div class="model-card '+(m.connected?'':'disabled')+'">'
+      + '<div class="model-top"><div class="model-mark" style="background:'+m.color+'">'+m.name.slice(0,2).toUpperCase()+'</div>'
+      + '<div class="model-name"><b>'+m.name+'</b><span>'+(m.connected?'Подключено через Hermes':'Не подключено')+'</span></div>'
+      + '<div class="conn-dot '+(m.connected?'':'off')+'"><i></i>'+(m.connected?'online':'offline')+'</div></div>'
+      + '<div class="model-strength">'+m.strength+'</div>'
+      + (m.connected ? '<div class="task-chips">'+chips+'</div>' : '<button class="connect-btn" data-connect="'+m.id+'">Подключить через Hermes</button>')
+      + '</div>';
+  }).join('');
+}
+document.getElementById('modelsWrap').addEventListener('click', function(e){
+  var chip = e.target.closest('.task-chip');
+  if(chip){
+    var m = MODELS.find(function(x){return x.id===chip.dataset.model;});
+    var t = chip.dataset.task;
+    var i = m.on.indexOf(t);
+    if(i===-1){ m.on.push(t); } else { m.on.splice(i,1); }
+    renderModels();
+    toast(i===-1 ? '«'+t+'» назначено модели '+m.name : 'Снято с '+m.name);
+    return;
   }
-
-  function loadChecklistState() {
-    try {
-      return JSON.parse(localStorage.getItem(todayKey()) || "{}");
-    } catch (e) { return {}; }
+  var connectBtn = e.target.closest('[data-connect]');
+  if(connectBtn){
+    var mm = MODELS.find(function(x){return x.id===connectBtn.dataset.connect;});
+    mm.connected = true; renderModels();
+    toast(mm.name+' подключён через Hermes');
   }
+});
+document.getElementById('aiModeSeg').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  this.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b===btn); });
+  var models = btn.dataset.aim==='models';
+  document.getElementById('modelsWrap').style.display = models ? '' : 'none';
+  document.getElementById('promptsWrap').style.display = models ? 'none' : '';
+});
 
-  function saveChecklistState(state) {
-    localStorage.setItem(todayKey(), JSON.stringify(state));
-  }
+var mediaMode = 'photo';
+var promptStyles = ['Снято на телефон','Яркий flat lay','Тёплый вечерний свет','Панорама в движении'];
+var activeStyle = 'Снято на телефон';
+var renderModel = 'gemini';
+function renderRenderModelChips(){
+  document.getElementById('renderModelChips').innerHTML = MODELS.filter(function(m){return m.connected;}).map(function(m){
+    return '<div class="chip '+(m.id===renderModel?'active':'')+'" data-rm="'+m.id+'">'+m.name+'</div>';
+  }).join('');
+}
+document.getElementById('renderModelChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  renderModel = chip.dataset.rm; renderRenderModelChips();
+});
+function renderStyleChips(){
+  document.getElementById('styleChips').innerHTML = promptStyles.map(function(s){
+    return '<div class="chip '+(s===activeStyle?'active':'')+'" data-style="'+s+'">'+s+'</div>';
+  }).join('');
+}
+document.getElementById('styleChips').addEventListener('click', function(e){
+  var chip = e.target.closest('.chip'); if(!chip) return;
+  activeStyle = chip.dataset.style; renderStyleChips();
+});
+document.getElementById('mediaSeg').addEventListener('click', function(e){
+  var btn = e.target.closest('button'); if(!btn) return;
+  mediaMode = btn.dataset.media;
+  this.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b===btn); });
+});
+var styleDescriptors = {
+  'Снято на телефон':'лёгкая асимметрия кадра, естественный свет, без глянцевой ретуши, как будто снято на телефон между делом',
+  'Яркий flat lay':'вид сверху, чистый светлый фон, мягкие тени, аккуратная раскладка',
+  'Тёплый вечерний свет':'золотой час, тёплые оттенки заката, мягкий контровой свет',
+  'Панорама в движении':'плавное панорамирование камеры, лёгкое движение в кадре'
+};
+document.getElementById('btnGenPrompt').addEventListener('click', function(){
+  var btn = this; var topic = document.getElementById('topicInput').value.trim() || 'вид на горы на закате';
+  var out = document.getElementById('promptOut'); var hint = document.getElementById('promptHint');
+  var modelObj = MODELS.find(function(m){return m.id===renderModel;});
+  btn.textContent = (modelObj?modelObj.name:'Модель')+' думает…';
+  paintMascots('thinking');
+  out.classList.remove('show'); hint.classList.remove('show');
+  setTimeout(function(){
+    var text;
+    if(mediaMode==='photo'){
+      text = 'Фото: '+topic+'. Стиль — '+styleDescriptors[activeStyle]+'. Реалистичная фотография, без вотермарок и текста, вертикальный кадр 4:5.';
+    } else {
+      text = 'Видео 8–12 секунд: '+topic+'. Стиль — '+styleDescriptors[activeStyle]+'. Плавная ручная камера, вертикальный формат 9:16, без текста и субтитров в кадре.';
+    }
+    document.getElementById('promptText').textContent = text;
+    out.classList.add('show');
+    document.getElementById('promptHint').textContent = 'Отправлено через Hermes в '+(modelObj?modelObj.name:'модель')+' — можно скопировать и подправить.';
+    hint.classList.add('show');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M5 21 19 7M15 3l1.5 1.5M19 7l1.5 1.5M3 10l1 1M8 4l1 1"/></svg> Сгенерировать промпт';
+    paintMascots('happy'); setTimeout(function(){paintMascots('neutral');}, 900);
+  }, 600);
+});
+document.getElementById('btnCopyPrompt').addEventListener('click', function(){
+  var text = document.getElementById('promptText').textContent;
+  if(navigator.clipboard){ navigator.clipboard.writeText(text).catch(function(){}); }
+  toast('Промпт скопирован');
+});
 
-  function renderChecklist() {
-    const state = loadChecklistState();
-    const container = document.getElementById('checklistItems');
-    container.innerHTML = '';
-    CHECKLIST_DEFAULT.forEach((label, i) => {
-      const done = !!state[i];
-      const row = document.createElement('div');
-      row.className = 'checklist-item' + (done ? ' done' : '');
-      row.innerHTML = `<div class="box">${done ? '✓' : ''}</div><span class="label">${label}</span>`;
-      row.addEventListener('click', () => {
-        const s = loadChecklistState();
-        s[i] = !s[i];
-        saveChecklistState(s);
-        renderChecklist();
-        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-      });
-      container.appendChild(row);
-    });
-  }
-  renderChecklist();
+document.querySelectorAll('[data-switch]').forEach(function(sw){
+  sw.addEventListener('click', function(){ sw.classList.toggle('on'); });
+});
 
-  document.getElementById('resetChecklist').addEventListener('click', () => {
-    saveChecklistState({});
-    renderChecklist();
-  });
-
-  // ---- Copy prompt ----
-  function copyPrompt(id, btn) {
-    const text = document.getElementById(id).value;
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = 'Скопировано ✓';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Копировать'; btn.classList.remove('copied'); }, 1500);
-    });
-  }
-
-  // ---- Name settings ----
-  const NAME_KEY = 'bot_display_name';
-  const nameInput = document.getElementById('nameInput');
-  const savedName = localStorage.getItem(NAME_KEY) || 'Алиса';
-  nameInput.value = savedName;
-  document.getElementById('botNameHeading').textContent = savedName + ' — рабочее место Лены';
-
-  document.getElementById('saveNameBtn').addEventListener('click', () => {
-    const newName = nameInput.value.trim() || 'Алиса';
-    localStorage.setItem(NAME_KEY, newName);
-    document.getElementById('botNameHeading').textContent = newName + ' — рабочее место Лены';
-    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-  });
+applyTheme();
+applyAssistantName();
+renderNamePicker();
+renderCharGrid();
+renderThemeGrid();
+paintMascots('neutral');
+renderPlatformStatus();
+renderClientRow();
+renderIdeaChips(); renderIdeaCard(); renderMarketCard();
+renderToneChips(); renderForbidden(); renderPrices(); resetBrandInput();
+renderRenderModelChips(); renderStyleChips();
+renderModels();
+renderPlatformFilterChips(); renderQueueList();
+renderWizardChips();
+renderLibCatChips(); renderLibraryList(); renderNewTplCatChips();
+renderAnalyticsCatChips(); renderAnalytics();
+renderHome();
 </script>
-
 </body>
 </html>
