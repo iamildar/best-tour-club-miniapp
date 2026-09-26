@@ -1238,6 +1238,7 @@ document.getElementById('queueList').addEventListener('click', function(e){
   q.status = STATUS_ORDER[(i+1) % STATUS_ORDER.length];
   renderQueueList(); renderHome(); renderAnalytics();
   if(q.status==='published'){ toast('Отмечено как опубликовано'); }
+  syncQueueStatus(q.id, q.status);
 });
 document.getElementById('homeQueue').addEventListener('click', function(e){
   var item = e.target.closest('.queue-item'); if(!item) return;
@@ -1245,6 +1246,7 @@ document.getElementById('homeQueue').addEventListener('click', function(e){
   var i = STATUS_ORDER.indexOf(q.status);
   q.status = STATUS_ORDER[(i+1) % STATUS_ORDER.length];
   renderHome(); renderAnalytics();
+  syncQueueStatus(q.id, q.status);
 });
 document.getElementById('btnAddQueue').addEventListener('click', function(){
   var c = activeClient();
@@ -1705,6 +1707,25 @@ function loadLiveStatus(){
     .catch(function(){ /* тихо остаёмся на текущих данных, приложение не должно падать без интернета */ });
 }
 loadLiveStatus();
+
+// ---- Отправка изменений обратно (Фаза 2: приложение -> status.json) ----
+var BRIDGE_URL = 'https://best-tour-club-bridge.thebikinya.workers.dev/';
+function syncQueueStatus(id, newStatus){
+  if(!tg || !tg.initData){ return; } // вне Telegram (например локальный просмотр) - не отправляем
+  fetch(BRIDGE_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      action: 'queue_set_status',
+      payload: {id: id, status: newStatus},
+      initData: tg.initData
+    })
+  }).then(function(res){
+    if(!res.ok){ toast('Не сохранилось в общий файл, но в приложении отмечено'); }
+  }).catch(function(){
+    toast('Нет связи с сервером синхронизации');
+  });
+}
 
 </script>
 </body>
