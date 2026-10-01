@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:04:55.421Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:05:19.999Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -243,6 +243,108 @@
   ],
   "upcoming_updated": "2026-10-01",
   "carousels": [
+    {
+      "id": "mupsbvs3ze8v",
+      "kind": "carousel",
+      "planId": "mupsbdm8fees",
+      "tour": "Горный Дагестан + Грозный",
+      "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya",
+      "format": "4:5",
+      "ready": false,
+      "created": "2026-10-01T17:05:18.243Z",
+      "source": "bestik",
+      "slides": [
+        {
+          "id": "mupsbvs3teii",
+          "layers": [
+            {
+              "id": "mupsbvs37fsa",
+              "role": "date",
+              "label": "",
+              "text": "[уточнить]"
+            },
+            {
+              "id": "mupsbvs3rmhr",
+              "role": "title",
+              "label": "",
+              "text": "ГОРНЫЙ ДАГЕСТАН + ГРОЗНЫЙ"
+            },
+            {
+              "id": "mupsbvs308h4",
+              "role": "caption",
+              "label": "",
+              "text": "Сулакский каньон, Гамсутль, Старый Гоор, Грозный — до 26 000 ₽"
+            }
+          ]
+        },
+        {
+          "id": "mupsbvs3d5u7",
+          "layers": [
+            {
+              "id": "mupsbvs3n2b8",
+              "role": "text",
+              "label": "",
+              "text": "День 1. Сулакский каньон и прогулка на катере. Пещера Нохъо, подвесной мост, Чиркейское водохранилище."
+            }
+          ]
+        },
+        {
+          "id": "mupsbvs3iror",
+          "layers": [
+            {
+              "id": "mupsbvs3kn3o",
+              "role": "text",
+              "label": "",
+              "text": "День 2. Гунибская крепость, подземный водопад в Салтинской теснине, аул Чох и город-призрак Гамсутль."
+            }
+          ]
+        },
+        {
+          "id": "mupsbvs3u5tq",
+          "layers": [
+            {
+              "id": "mupsbvs3t9ts",
+              "role": "text",
+              "label": "",
+              "text": "День 3. Аул-призрак Кахиб, боевые башни Старого Гоора, Тента Мачада и смотровая «Язык Тролля»."
+            }
+          ]
+        },
+        {
+          "id": "mupsbvs3q08s",
+          "layers": [
+            {
+              "id": "mupsbvs3a8va",
+              "role": "text",
+              "label": "",
+              "text": "День 4. Грозный: Цветочный парк, Грозный Сити, мечеть «Сердце Чечни», Английский замок."
+            }
+          ]
+        },
+        {
+          "id": "mupsbvs34a1z",
+          "layers": [
+            {
+              "id": "mupsbvs380pp",
+              "role": "text",
+              "label": "",
+              "text": "В цене: проезд, гостиница, 3 завтрака и 3 ужина, гид и экскурсионная программа."
+            }
+          ]
+        },
+        {
+          "id": "mupsbvs3i165",
+          "layers": [
+            {
+              "id": "mupsbvs38bmf",
+              "role": "cta",
+              "label": "",
+              "text": "Напишите нам — расскажем детали и забронируем место"
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "mupsb39q2ep8",
       "kind": "carousel",
@@ -569,8 +671,8 @@
       "format": "Карусель",
       "tour": "Горный Дагестан + Грозный",
       "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya",
-      "status": "Запланировано",
-      "textId": "",
+      "status": "Готово",
+      "textId": "mupsbvs3ze8v",
       "note": ""
     }
   ]
