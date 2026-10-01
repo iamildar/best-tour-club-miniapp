@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:33:23.324Z (Бестик)",
+  "updated_at": "2026-10-01T17:40:27.429Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1031,6 +1031,22 @@
       "link": "https://best-tour-club.ru/vse-tury/severnaya-osetiya-i-gornaya-ingushetiya-2-dnya",
       "status": "Готово",
       "textId": "muptbjq94x48",
+      "note": ""
+    },
+    {
+      "id": "muptl2n6yvft",
+      "date": "2026-10-02",
+      "platforms": [
+        "VK",
+        "OK",
+        "Telegram",
+        "Threads"
+      ],
+      "format": "Пост",
+      "tour": "Тур по КЧР: Бадукские озера + Суфруджинские водопады",
+      "link": "https://best-tour-club.ru/vse-tury/tur-po-kchr-badukskie-ozera-sufrudzhinskie-vodopady",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ]
