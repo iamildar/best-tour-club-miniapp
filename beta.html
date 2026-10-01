@@ -415,7 +415,15 @@ function taskApi(action, payload){
 }
 function loadTasks(){
   if(!inTg) return Promise.resolve();
-  return taskApi('tasks_list').then(function(d){ TASKS = d.tasks; MAC_ONLINE = d.mac_online; renderTasks(); renderNote(); renderWeek(); }).catch(function(){ MAC_ONLINE = null; renderTasks(); });
+  return taskApi('tasks_list').then(function(d){
+    TASKS = d.tasks; MAC_ONLINE = d.mac_online;
+    // «Ждёт Мака» держим, только пока задача ещё в очереди (её могли удалить или Мак уже взял в работу).
+    Object.keys(pending).forEach(function(id){
+      if(pending[id].queued && !TASKS.some(function(t){ return t.meta && t.meta.planId === id; })) setPending(id, MAC_ONLINE ? {at: Date.now(), queued: false} : null);
+    });
+    renderTasks(); renderNote(); renderWeek();
+    if(Object.keys(pending).some(function(k){ return !pending[k].queued; })) pollForText();
+  }).catch(function(){ MAC_ONLINE = null; renderTasks(); });
 }
 var saveChain = Promise.resolve();
 function bridge(action, payload){
@@ -786,7 +794,7 @@ $('taskList').addEventListener('click', function(e){
   if(b.dataset.save){ var text = document.querySelector('textarea[data-edit="' + b.dataset.save + '"]').value.trim(); if(!text) return;
     taskApi('task_update', {id: b.dataset.save, text: text}).then(function(d){ TASKS = d.tasks; editingTask = null; renderTasks(); toast('Сохранено'); }).catch(function(){ toast('Не сохранилось'); }); return; }
   if(b.dataset.delTask){ var id = b.dataset.delTask; confirmBox('Удалить задачу?', function(y){ if(!y) return;
-    taskApi('task_delete', {id: id}).then(function(d){ TASKS = d.tasks; renderTasks(); renderNote(); toast('Удалено'); }).catch(function(){ toast('Не удалилось'); }); }); }
+    taskApi('task_delete', {id: id}).then(function(){ loadTasks(); toast('Задача удалена'); }).catch(function(){ toast('Не удалилось'); }); }); }
 });
 
 // ---------- Старт ----------
