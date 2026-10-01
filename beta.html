@@ -484,6 +484,8 @@ function renderWeek(){
   var days = {};
   week.forEach(function(it){ (days[it.date] = days[it.date] || []).push(it); });
   if(!days[TODAY] && (week.length || overdue.length)) html += '<div class="day-head today"><span>' + dayTitle(TODAY) + '</span></div><div class="empty" style="padding:14px;">На сегодня в плане ничего. Нажмите «+ Добавить в план».</div>';
+  var done = function(it){ return it.status === 'Опубликовано' || it.status === 'Отложено' ? 1 : 0; };
+  Object.keys(days).forEach(function(d){ days[d].sort(function(a, b){ return done(a) - done(b); }); }); // сделанное — в конец дня
   Object.keys(days).sort().forEach(function(d){
     html += '<div class="day-head' + (d === TODAY ? ' today' : '') + '"><span>' + dayTitle(d) + '</span><span>' + days[d].length + '</span></div>' + days[d].map(itemCard).join('');
   });
