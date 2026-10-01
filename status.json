@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T16:59:34.657Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:00:03.661Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -244,6 +244,97 @@
   "upcoming_updated": "2026-10-01",
   "carousels": [
     {
+      "id": "mups53xwej4f",
+      "kind": "carousel",
+      "planId": "mups4i1uhm27",
+      "tour": "Авторский тур по Восточной и Западной Абхазии",
+      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
+      "format": "4:5",
+      "ready": false,
+      "created": "2026-10-01T17:00:02.228Z",
+      "source": "bestik",
+      "slides": [
+        {
+          "id": "mups53xw1t58",
+          "layers": [
+            {
+              "id": "mups53xw6ifi",
+              "role": "date",
+              "label": "",
+              "text": "1–4 октября"
+            },
+            {
+              "id": "mups53xwobbd",
+              "role": "title",
+              "label": "",
+              "text": "АБХАЗИЯ: ВОСТОК И ЗАПАД"
+            },
+            {
+              "id": "mups53xw6kma",
+              "role": "caption",
+              "label": "",
+              "text": "Иверский водопад, Шакуранские водопады, Акармара, Анакопийская крепость — до 19 500 ₽"
+            }
+          ]
+        },
+        {
+          "id": "mups53xwo3q3",
+          "layers": [
+            {
+              "id": "mups53xwpn92",
+              "role": "text",
+              "label": "",
+              "text": "День 1: Пицундо-Мюссерский заповедник, дача Горбачёва, храм Амбара.\nФорелевое хозяйство и Иверский водопад."
+            }
+          ]
+        },
+        {
+          "id": "mups53xwc67p",
+          "layers": [
+            {
+              "id": "mups53xwuxai",
+              "role": "text",
+              "label": "",
+              "text": "День 2: Цебельдинское ущелье, дегустация вин и мёда.\nОльгинский, Барьяльский и Шакуранские водопады."
+            }
+          ]
+        },
+        {
+          "id": "mups53xw4lqh",
+          "layers": [
+            {
+              "id": "mups53xw729h",
+              "role": "text",
+              "label": "",
+              "text": "День 3: город-призрак Акармара, пещера Абрскила, водопады Великан, Ирина и Святой.\nОбед в абхазской семье."
+            }
+          ]
+        },
+        {
+          "id": "mups53xwtsl8",
+          "layers": [
+            {
+              "id": "mups53xwct54",
+              "role": "text",
+              "label": "",
+              "text": "День 4: Анакопийская крепость, Лыхненский храм Успения Пресвятой Богородицы, Новоафонский водопад."
+            }
+          ]
+        },
+        {
+          "id": "mups53xw4b66",
+          "layers": [
+            {
+              "id": "mups53xwrsce",
+              "role": "cta",
+              "label": "",
+              "text": "Напишите нам — расскажем детали и забронируем место"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "mupmrco8tl9n",
       "tour": "Дигория + долина тысячи водопадов",
       "link": "https://best-tour-club.ru/vse-tury/digoriya-dolina-tysyachi-vodopadov-2-dnya",
@@ -357,8 +448,8 @@
       "format": "Карусель",
       "tour": "Авторский тур по Восточной и Западной Абхазии",
       "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
-      "status": "Запланировано",
-      "textId": "",
+      "status": "Готово",
+      "textId": "mups53xwej4f",
       "note": ""
     }
   ]
