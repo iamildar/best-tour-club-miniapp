@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:16:44.314Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:19:25.767Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -716,6 +716,20 @@
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "status": "Опубликовано",
       "textId": "mupskpmdf69l",
+      "note": ""
+    },
+    {
+      "id": "mupsu0xze4ys",
+      "date": "2026-10-02",
+      "platforms": [
+        "Instagram",
+        "VK"
+      ],
+      "format": "Сторис",
+      "tour": "Кисловодск и Медовые водопады",
+      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ]
