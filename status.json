@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:00:36.974Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:00:39.103Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -450,19 +450,6 @@
       "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
       "status": "Готово",
       "textId": "mups53xwej4f",
-      "note": ""
-    },
-    {
-      "id": "probe1",
-      "date": "2026-10-02",
-      "platforms": [
-        "VK"
-      ],
-      "format": "Пост",
-      "tour": "probe",
-      "link": "",
-      "status": "Запланировано",
-      "textId": "",
       "note": ""
     }
   ]
