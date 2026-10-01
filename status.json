@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:09:58.036Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:11:41.380Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -673,6 +673,19 @@
       "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya",
       "status": "Опубликовано",
       "textId": "mupsbvs3ze8v",
+      "note": ""
+    },
+    {
+      "id": "mupsk2zhn7eh",
+      "date": "2026-10-02",
+      "platforms": [
+        "Avito"
+      ],
+      "format": "Объявление",
+      "tour": "Грозный + озеро Казеной Ам",
+      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ]
