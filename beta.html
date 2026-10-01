@@ -369,6 +369,7 @@ $('tabBar').addEventListener('click', function(e){ var b = e.target.closest('.ta
 // status.json: plan (план публикаций), carousels (тексты Бестика), upcoming (заезды), ideas.
 // Свои правки держим локально 5 минут: Pages обновляется с задержкой.
 var STATUS = {}, PLAN = [], TEXTS = [], TASKS = [], MAC_ONLINE = null;
+var pending = JSON.parse(store('cc_pending') || '{}'); // planId -> {at, queued}
 var touched = {};
 function recent(id){ return touched[id] && Date.now() - touched[id] < 5*60*1000; }
 function mergeList(local, remote){
@@ -377,8 +378,20 @@ function mergeList(local, remote){
   local.forEach(function(x){ if(recent(x.id) && !remote.some(function(r){ return r.id === x.id; })) out.push(x); });
   return out.filter(function(x){ return !x._deleted; });
 }
-function loadStatus(){
-  return fetch('./status.json?t=' + Date.now()).then(function(r){ return r.json(); }).then(function(d){
+// Обычно — с Pages; когда ждём текст от Бестика — свежий из GitHub через мостик.
+function fetchStatus(fresh){
+  if(fresh && inTg){
+    return fetch(BRIDGE_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'status_get', initData: tg.initData})})
+      .then(function(r){ return r.json(); }).then(function(d){ if(!d.ok) throw new Error('bridge'); return d.status; })
+      .catch(function(){ return fetch('./status.json?t=' + Date.now()).then(function(r){ return r.json(); }); });
+  }
+  return fetch('./status.json?t=' + Date.now()).then(function(r){ return r.json(); });
+}
+function loadStatus(fresh){
+  return fetchStatus(fresh || Object.keys(pending).length > 0).then(function(d){
+    // Pages может отдать файл старше уже полученного из GitHub — такой не берём.
+    var stamp = function(x){ return String((x && x.updated_at) || '').slice(0, 24); };
+    if(stamp(STATUS) && stamp(d) && stamp(d) < stamp(STATUS)) return;
     STATUS = d;
     PLAN = mergeList(PLAN, d.plan || []);
     TEXTS = mergeList(TEXTS, d.carousels || []);
@@ -410,7 +423,6 @@ function savePlan(item){ touched[item.id] = Date.now(); return bridge('plan_save
 
 // ---------- Ожидание текста от Бестика ----------
 // planId -> {at, queued}: пока текст не пришёл, кнопка показывает, что происходит.
-var pending = JSON.parse(store('cc_pending') || '{}');
 function setPending(id, v){ if(v) pending[id] = v; else delete pending[id]; store('cc_pending', JSON.stringify(pending)); }
 function clearPendingDone(){
   Object.keys(pending).forEach(function(id){
@@ -422,7 +434,7 @@ var pollTimer = null;
 function pollForText(){
   clearInterval(pollTimer);
   var n = 0;
-  pollTimer = setInterval(function(){ n++; loadStatus(); if(!Object.keys(pending).some(function(k){ return !pending[k].queued; }) || n > 18) clearInterval(pollTimer); }, 20000);
+  pollTimer = setInterval(function(){ n++; loadStatus(true); if(!Object.keys(pending).some(function(k){ return !pending[k].queued; }) || n > 40) clearInterval(pollTimer); }, 10000);
 }
 
 // ---------- Неделя: план публикаций ----------
