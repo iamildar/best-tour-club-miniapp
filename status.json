@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T18:11:07.033Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T18:12:56.602Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1603,6 +1603,21 @@
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "status": "Готово",
       "textId": "mupumkpf4y70",
+      "note": ""
+    },
+    {
+      "id": "mupuquoq9rrx",
+      "date": "2026-10-02",
+      "platforms": [
+        "Instagram",
+        "VK",
+        "OK"
+      ],
+      "format": "Карусель",
+      "tour": "Озеро Башкара + ледник Шхельда",
+      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ],
