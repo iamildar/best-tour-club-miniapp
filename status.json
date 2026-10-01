@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:04:42.288Z (Бестик)",
+  "updated_at": "2026-10-01T17:04:55.421Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -556,6 +556,21 @@
       "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
       "status": "Готово",
       "textId": "mupsb39q2ep8",
+      "note": ""
+    },
+    {
+      "id": "mupsbdm8fees",
+      "date": "2026-10-02",
+      "platforms": [
+        "Instagram",
+        "VK",
+        "OK"
+      ],
+      "format": "Карусель",
+      "tour": "Горный Дагестан + Грозный",
+      "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ]
