@@ -101,8 +101,12 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   }
   button{font-family:inherit;color:inherit;}
   .stage{width:100%;min-height:100vh;display:flex;justify-content:center;}
+  html:not(.in-tg) body{min-height:100dvh;}
+  .app-body{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
   .device{
-    position:relative;width:100%;max-width:430px;min-height:100vh;background:var(--bg);
+    /* Высота = экран (в Telegram — его видимая область): прокручивается только
+       середина (.app-body), нижнее меню и подсказки всегда на виду. */
+    position:relative;width:100%;max-width:430px;height:100vh;height:100dvh;height:var(--tg-viewport-stable-height,100dvh);min-height:0;background:var(--bg);
     color:var(--ink);
     overflow:hidden;display:flex;flex-direction:column;transition:background .2s ease,color .2s ease;
   }
