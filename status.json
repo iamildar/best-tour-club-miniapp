@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T18:05:50.996Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T18:05:53.000Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1282,6 +1282,23 @@
         "VK"
       ],
       "format": "Рилс",
+      "tour": "Грозный + озеро Казеной Ам",
+      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
+      "status": "Запланировано",
+      "textId": "",
+      "note": ""
+    },
+    {
+      "id": "mupuhmj5ufq6",
+      "date": "2026-10-02",
+      "platforms": [
+        "VK",
+        "OK",
+        "Telegram",
+        "MAX",
+        "Threads"
+      ],
+      "format": "Пост",
       "tour": "Грозный + озеро Казеной Ам",
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "status": "Запланировано",
