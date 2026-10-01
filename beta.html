@@ -467,7 +467,7 @@ $('weekPlan').addEventListener('click', function(e){
   var id = b.dataset.make || b.dataset.openText || b.dataset.publish || b.dataset.menu;
   var it = PLAN.find(function(p){ return p.id === id; }); if(!it) return;
   if(b.dataset.make) requestText(it);
-  if(b.dataset.openText){ showTab('texts'); openText(it.textId); }
+  if(b.dataset.openText){ showTab('texts'); openText(it.textId, 'week'); }
   if(b.dataset.publish){ it.status = 'Опубликовано'; savePlan(it); renderWeek(); toast('Отмечено: опубликовано ✓'); }
   if(b.dataset.menu) openItemSheet(it);
 });
@@ -495,7 +495,9 @@ function avitoRecent(link, tour){
   return PLAN.find(function(p){ return p.format === 'Объявление' && p.date >= lim && (p.link && p.link === link || p.tour === tour) && p.status === 'Опубликовано'; });
 }
 function renderAddSheet(){
-  var up = STATUS.upcoming || [], ideas = STATUS.ideas || [];
+  // Заезды, которые уже начались, продвигать поздно — не предлагаем.
+  var up = (STATUS.upcoming || []).filter(function(u){ return u.start >= TODAY; }), ideas = STATUS.ideas || [];
+  draft.up = up;
   if(draft.step === 1){
     var tours = up.map(function(u, i){ return '<button class="pick" data-pick-tour="' + i + '"><div class="tour-date" style="width:42px;"><b>' + new Date(u.start + 'T00:00:00').getDate() + '</b><small>' + ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'][new Date(u.start + 'T00:00:00').getMonth()] + '</small></div><div><b>' + esc(u.tour) + '</b><small>' + esc(u.when) + ' · ' + esc(u.price) + '</small></div></button>'; }).join('');
     var idea = ideas.map(function(x, i){ return '<button class="pick" data-pick-idea="' + i + '"><div><b>' + esc(x.title) + '</b><small>Идея Бестика · ' + esc(x.fmt || '') + '</small></div></button>'; }).join('');
@@ -521,7 +523,7 @@ $('sheet').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b || !draft && !b.dataset.close && !b.dataset.itemAct) return;
   if(b.dataset.close){ closeSheet(); return; }
   if(b.dataset.itemAct){ itemAction(b.dataset.itemAct); return; }
-  if(b.dataset.pickTour !== undefined){ var u = STATUS.upcoming[+b.dataset.pickTour];
+  if(b.dataset.pickTour !== undefined){ var u = draft.up[+b.dataset.pickTour];
     draft = {step: 2, tour: u.tour, link: u.link, when: u.when + ' · ' + u.price, format: 'Карусель', date: TODAY, platforms: FORMAT_PLATFORMS['Карусель'].slice(), makeNow: true}; renderAddSheet(); return; }
   if(b.dataset.pickIdea !== undefined){ var x = STATUS.ideas[+b.dataset.pickIdea]; var f = /авито/i.test(x.fmt || '') ? 'Объявление' : /рилс/i.test(x.fmt || '') ? 'Рилс' : /пост/i.test(x.fmt || '') ? 'Пост' : 'Карусель';
     draft = {step: 2, tour: x.title.replace(/\s+[—-]\s+заезд.*$/i, ''), link: '', when: 'Идея: ' + (x.outline || '').slice(0, 90), format: f, date: TODAY, platforms: FORMAT_PLATFORMS[f].slice(), makeNow: true}; renderAddSheet(); return; }
@@ -623,7 +625,7 @@ function renderTextsList(){
 $('textsItems').addEventListener('click', function(e){ var b = e.target.closest('[data-text]'); if(b) openText(b.dataset.text); });
 var backTo = 'texts';
 function showTextsList(){ flush(); openId = null; $('textsList').style.display = ''; $('textDetail').style.display = 'none'; $('checkView').style.display = 'none'; renderTextsList(); }
-function openText(id){ backTo = currentTab === 'texts' && $('textsList').style.display !== 'none' ? 'texts' : 'week'; openId = id; $('textsList').style.display = 'none'; $('checkView').style.display = 'none'; $('textDetail').style.display = ''; renderDetail(); $('appBody').scrollTop = 0; }
+function openText(id, from){ backTo = from || 'texts'; openId = id; $('textsList').style.display = 'none'; $('checkView').style.display = 'none'; $('textDetail').style.display = ''; renderDetail(); $('appBody').scrollTop = 0; }
 $('textBack').addEventListener('click', function(){ flush(); if(backTo === 'week'){ openId = null; showTab('week'); } else showTextsList(); });
 function linkedPlan(t){ return t.planId ? PLAN.find(function(p){ return p.id === t.planId; }) : PLAN.find(function(p){ return p.textId === t.id; }); }
 function renderDetail(){
