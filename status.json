@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:41:20.200Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:42:29.101Z (уборка после самопроверки)",
   "queue": [],
   "ideas": [
     {
@@ -237,7 +237,7 @@
     {
       "id": "muptlyhw2q48",
       "kind": "post",
-      "planId": "muptl2n6yvft",
+      "planId": "",
       "tour": "Тур по КЧР: Бадукские озера + Суфруджинские водопады",
       "link": "https://best-tour-club.ru/vse-tury/tur-po-kchr-badukskie-ozera-sufrudzhinskie-vodopady",
       "format": "4:5",
@@ -279,7 +279,7 @@
     {
       "id": "muptbjq94x48",
       "kind": "carousel",
-      "planId": "mupta8o5koxu",
+      "planId": "",
       "tour": "Северная Осетия и горная Ингушетия",
       "link": "https://best-tour-club.ru/vse-tury/severnaya-osetiya-i-gornaya-ingushetiya-2-dnya",
       "format": "4:5",
@@ -392,7 +392,7 @@
     {
       "id": "mupt3rooufvp",
       "kind": "reel",
-      "planId": "mupt337xhti5",
+      "planId": "",
       "tour": "Озеро Башкара + ледник Шхельда",
       "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
       "format": "4:5",
@@ -458,7 +458,7 @@
     {
       "id": "mupsulli37p7",
       "kind": "carousel",
-      "planId": "mupsu0xze4ys",
+      "planId": "",
       "tour": "Кисловодск и Медовые водопады",
       "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
       "format": "9:16",
@@ -560,7 +560,7 @@
     {
       "id": "mupskpmdf69l",
       "kind": "avito",
-      "planId": "mupsk2zhn7eh",
+      "planId": "",
       "tour": "Грозный + озеро Казеной Ам",
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "format": "4:5",
@@ -590,7 +590,7 @@
     {
       "id": "mupsbvs3ze8v",
       "kind": "carousel",
-      "planId": "mupsbdm8fees",
+      "planId": "",
       "tour": "Горный Дагестан + Грозный",
       "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya",
       "format": "4:5",
@@ -692,7 +692,7 @@
     {
       "id": "mupsb39q2ep8",
       "kind": "carousel",
-      "planId": "mupsaob5pzrq",
+      "planId": "",
       "tour": "Авторский тур по Восточной и Западной Абхазии",
       "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
       "format": "4:5",
@@ -775,97 +775,6 @@
               "role": "cta",
               "label": "",
               "text": "Напишите нам — расскажем детали и забронируем место 🖤"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "mups53xwej4f",
-      "kind": "carousel",
-      "planId": "mups4i1uhm27",
-      "tour": "Авторский тур по Восточной и Западной Абхазии",
-      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
-      "format": "4:5",
-      "ready": false,
-      "created": "2026-10-01T17:00:02.228Z",
-      "source": "bestik",
-      "slides": [
-        {
-          "id": "mups53xw1t58",
-          "layers": [
-            {
-              "id": "mups53xw6ifi",
-              "role": "date",
-              "label": "",
-              "text": "1–4 октября"
-            },
-            {
-              "id": "mups53xwobbd",
-              "role": "title",
-              "label": "",
-              "text": "АБХАЗИЯ: ВОСТОК И ЗАПАД"
-            },
-            {
-              "id": "mups53xw6kma",
-              "role": "caption",
-              "label": "",
-              "text": "Иверский водопад, Шакуранские водопады, Акармара, Анакопийская крепость — до 19 500 ₽"
-            }
-          ]
-        },
-        {
-          "id": "mups53xwo3q3",
-          "layers": [
-            {
-              "id": "mups53xwpn92",
-              "role": "text",
-              "label": "",
-              "text": "День 1: Пицундо-Мюссерский заповедник, дача Горбачёва, храм Амбара.\nФорелевое хозяйство и Иверский водопад."
-            }
-          ]
-        },
-        {
-          "id": "mups53xwc67p",
-          "layers": [
-            {
-              "id": "mups53xwuxai",
-              "role": "text",
-              "label": "",
-              "text": "День 2: Цебельдинское ущелье, дегустация вин и мёда.\nОльгинский, Барьяльский и Шакуранские водопады."
-            }
-          ]
-        },
-        {
-          "id": "mups53xw4lqh",
-          "layers": [
-            {
-              "id": "mups53xw729h",
-              "role": "text",
-              "label": "",
-              "text": "День 3: город-призрак Акармара, пещера Абрскила, водопады Великан, Ирина и Святой.\nОбед в абхазской семье."
-            }
-          ]
-        },
-        {
-          "id": "mups53xwtsl8",
-          "layers": [
-            {
-              "id": "mups53xwct54",
-              "role": "text",
-              "label": "",
-              "text": "День 4: Анакопийская крепость, Лыхненский храм Успения Пресвятой Богородицы, Новоафонский водопад."
-            }
-          ]
-        },
-        {
-          "id": "mups53xw4b66",
-          "layers": [
-            {
-              "id": "mups53xwrsce",
-              "role": "cta",
-              "label": "",
-              "text": "Напишите нам — расскажем детали и забронируем место"
             }
           ]
         }
@@ -973,123 +882,6 @@
       "status": "Готово",
       "textId": "",
       "note": "до 14500 ₽ (подтверждено каталогом)"
-    },
-    {
-      "id": "mups4i1uhm27",
-      "date": "2026-10-01",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Авторский тур по Восточной и Западной Абхазии",
-      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
-      "status": "Опубликовано",
-      "textId": "mups53xwej4f",
-      "note": ""
-    },
-    {
-      "id": "mupsaob5pzrq",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Авторский тур по Восточной и Западной Абхазии",
-      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
-      "status": "Готово",
-      "textId": "mupsb39q2ep8",
-      "note": ""
-    },
-    {
-      "id": "mupsbdm8fees",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Горный Дагестан + Грозный",
-      "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya",
-      "status": "Опубликовано",
-      "textId": "mupsbvs3ze8v",
-      "note": ""
-    },
-    {
-      "id": "mupsk2zhn7eh",
-      "date": "2026-10-02",
-      "platforms": [
-        "Avito"
-      ],
-      "format": "Объявление",
-      "tour": "Грозный + озеро Казеной Ам",
-      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
-      "status": "Опубликовано",
-      "textId": "mupskpmdf69l",
-      "note": ""
-    },
-    {
-      "id": "mupsu0xze4ys",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK"
-      ],
-      "format": "Сторис",
-      "tour": "Кисловодск и Медовые водопады",
-      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
-      "status": "Опубликовано",
-      "textId": "mupsulli37p7",
-      "note": ""
-    },
-    {
-      "id": "mupt337xhti5",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK"
-      ],
-      "format": "Рилс",
-      "tour": "Озеро Башкара + ледник Шхельда",
-      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
-      "status": "Опубликовано",
-      "textId": "mupt3rooufvp",
-      "note": ""
-    },
-    {
-      "id": "mupta8o5koxu",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Северная Осетия и горная Ингушетия",
-      "link": "https://best-tour-club.ru/vse-tury/severnaya-osetiya-i-gornaya-ingushetiya-2-dnya",
-      "status": "Готово",
-      "textId": "muptbjq94x48",
-      "note": ""
-    },
-    {
-      "id": "muptl2n6yvft",
-      "date": "2026-10-02",
-      "platforms": [
-        "VK",
-        "OK",
-        "Telegram",
-        "Threads"
-      ],
-      "format": "Пост",
-      "tour": "Тур по КЧР: Бадукские озера + Суфруджинские водопады",
-      "link": "https://best-tour-club.ru/vse-tury/tur-po-kchr-badukskie-ozera-sufrudzhinskie-vodopady",
-      "status": "Опубликовано",
-      "textId": "muptlyhw2q48",
-      "note": ""
     }
   ]
 }
