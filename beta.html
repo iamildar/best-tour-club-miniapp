@@ -166,6 +166,42 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .tab-btn.active{color:var(--accent);}
   .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:var(--bg);font-size:12.4px;font-weight:600;padding:10px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:.2s;z-index:50;white-space:nowrap;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  /* Неделя: план публикаций */
+  .day-head{font-size:12px;font-weight:800;color:var(--ink-soft);margin:16px 2px 7px;display:flex;justify-content:space-between;align-items:center;}
+  .day-head.today{color:var(--accent);}
+  .pi{padding:12px 13px;margin-bottom:9px;}
+  .pi-top{display:flex;gap:8px;align-items:flex-start;}
+  .pi-top b{flex:1;font-size:13.4px;line-height:1.35;}
+  .pi-menu{flex:none;border:none;background:none;color:var(--ink-soft);font-size:18px;line-height:1;padding:0 2px 4px;cursor:pointer;}
+  .pi-meta{font-size:11.4px;color:var(--ink-soft);margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+  .st{display:inline-block;font-size:10.4px;font-weight:800;padding:3px 8px;border-radius:8px;background:var(--surface-2);color:var(--ink-soft);}
+  .st.ready{background:var(--ok-soft);color:var(--ok);}
+  .st.done{background:var(--ok);color:var(--accent-ink);}
+  .st.wait{background:var(--bad-soft);color:var(--bad);}
+  .pi-actions{display:flex;gap:8px;margin-top:10px;}
+  .pi-actions .btn{flex:1;padding:10px;font-size:13px;}
+  .pi.published{opacity:.6;}
+  .add-fab{position:sticky;bottom:6px;margin-top:14px;box-shadow:0 10px 24px -10px rgba(0,0,0,.35);}
+  .collapse{width:100%;display:flex;justify-content:space-between;align-items:center;border:none;background:var(--surface);border-radius:var(--radius-md);box-shadow:var(--shadow);padding:13px 14px;font-size:13.4px;font-weight:700;color:var(--ink);cursor:pointer;margin-top:14px;}
+  .collapse small{font-weight:600;color:var(--ink-soft);font-size:12px;}
+  /* Окно-«шторка» снизу: добавить в план / правка строки */
+  .sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:40;display:none;}
+  .sheet-bg.show{display:block;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));z-index:41;transform:translateY(105%);transition:transform .22s ease;}
+  .sheet.show{transform:translateY(0);}
+  .sheet h2{font-family:var(--font-display);font-size:18px;margin:4px 0 10px;display:flex;justify-content:space-between;align-items:center;}
+  .sheet h2 button{border:none;background:var(--surface-2);border-radius:50%;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--ink);}
+  .pick{display:flex;gap:10px;align-items:center;width:100%;border:none;background:var(--surface);border-radius:13px;padding:10px 12px;margin-bottom:7px;text-align:left;cursor:pointer;color:var(--ink);}
+  .pick b{display:block;font-size:13px;line-height:1.35;}
+  .pick small{display:block;font-size:11px;color:var(--ink-soft);margin-top:2px;}
+  .pick.sel{outline:2px solid var(--accent);}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px;}
+  .chip{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 11px;font-size:12.6px;font-weight:600;cursor:pointer;color:var(--ink);}
+  .chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .warn{font-size:12px;line-height:1.45;color:var(--bad);background:var(--bad-soft);border-radius:10px;padding:8px 10px;margin:8px 0;}
+  .toggle{display:flex;gap:10px;align-items:center;font-size:13px;margin:12px 2px;cursor:pointer;}
+  .toggle input{width:20px;height:20px;accent-color:var(--accent);}
+  .layer-role small{display:block;text-transform:none;letter-spacing:0;color:var(--ink-soft);font-weight:700;margin-top:2px;}
 </style>
 </head>
 <body>
@@ -176,26 +212,25 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   </header>
 
   <main class="app-body" id="appBody">
-    <!-- ============ СЕГОДНЯ ============ -->
-    <section class="screen active" id="screen-today">
-      <button class="note" id="todayNote" style="display:none;"></button>
-      <div class="label">Чек-лист на сегодня <span id="checkCount"></span></div>
-      <div class="card" id="checklist"></div>
-      <div class="label">Ближайшие заезды <span id="toursCount"></span></div>
-      <div class="tours" id="tours"></div>
-      <button class="btn ghost wide" id="toursMore" style="display:none;margin-top:4px;"></button>
+    <!-- ============ НЕДЕЛЯ (план публикаций) ============ -->
+    <section class="screen active" id="screen-week">
+      <button class="note" id="weekNote" style="display:none;"></button>
+      <div id="weekPlan"></div>
+      <button class="collapse" id="checkToggle"><span>Чек-лист дня</span><small id="checkCount"></small></button>
+      <div class="card" id="checklist" style="display:none;margin-top:8px;"></div>
+      <button class="btn wide add-fab" id="addPlan">+ Добавить в план</button>
     </section>
 
     <!-- ============ ТЕКСТЫ ============ -->
     <section class="screen" id="screen-texts">
       <div id="textsList">
         <h1>Тексты</h1>
-        <p class="sub">Готовое от Бестика. Нажмите 📋 — текст скопирован, вставьте в Crsel или Авито. Текст правится нажатием.</p>
+        <p class="sub">Готовое от Бестика и шаблоны. Нажмите 📋 — текст скопирован. Текст правится нажатием.</p>
         <button class="btn ghost wide" id="openCheck" style="margin-bottom:14px;">Проверить свой текст</button>
         <div id="textsItems"></div>
       </div>
       <div id="textDetail" style="display:none;">
-        <button class="back" id="textBack">‹ Тексты</button>
+        <button class="back" id="textBack">‹ Назад</button>
         <h1 id="detailTitle">—</h1>
         <div class="row" id="detailRow"></div>
         <div class="saved" id="savedState"></div>
@@ -224,41 +259,41 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
           <button class="menu-row" data-open="settings"><span>Настройки</span>›</button>
         </div>
       </div>
-      <div class="sub-screen" id="more-howto" style="display:none;">
+      <div id="more-howto" style="display:none;">
         <button class="back" data-back="1">‹ Ещё</button>
         <h1>Как работать</h1>
         <div class="card" style="padding:14px 14px 6px;">
           <ol class="steps">
-            <li><b>Утро.</b> «Сегодня» → пройдите чек-лист, отмечая пункты пальцем.</li>
-            <li><b>Тур на неделю.</b> В «Ближайших заездах» нажмите «Карусель» (пост или сторис) или «Авито». Бестик соберёт текст из каталога и сайта.</li>
-            <li><b>Готовый текст.</b> Придёт в «Тексты» (и сообщение в чат). Поправьте нажатием, если нужно.</li>
-            <li><b>В Crsel и на Авито.</b> Нажимайте 📋 у каждого слоя и вставляйте. Закончили — «Готово в Crsel».</li>
+            <li><b>Начало недели.</b> Пришла табличка, какие туры продвигаем → «Неделя» → «+ Добавить в план»: тур, формат, день. Бестик сразу начнёт текст.</li>
+            <li><b>Каждый день.</b> «Неделя» → карточки на сегодня. На каждой одна кнопка: «Открыть текст», когда текст готов.</li>
+            <li><b>Выкладываем.</b> В тексте нажимайте 📋 у каждого слоя и вставляйте: в Crsel, Recur, ВК/ОК/Telegram/Threads, Авито. Выложили — «Опубликовано».</li>
+            <li><b>Чужое фото с отметкой.</b> «Тексты» → шаблон «Запрос согласия автора» → 📋 → отправьте автору. Без «да» не публикуем.</li>
             <li><b>Своё.</b> Написали сами — «Тексты» → «Проверить свой текст».</li>
-            <li><b>Чат с Бестиком.</b> Для идей и просьб пишите боту. Мак выключен — задача ляжет в «Задачи для Мака».</li>
+            <li><b>Мак выключен.</b> Заказ текста ляжет в «Задачи для Мака», карточка покажет «Ждёт Мака». Включится — Бестик пришлёт список в чат.</li>
           </ol>
         </div>
       </div>
-      <div class="sub-screen" id="more-tasks" style="display:none;">
+      <div id="more-tasks" style="display:none;">
         <button class="back" data-back="1">‹ Ещё</button>
         <h1>Задачи для Мака</h1>
-        <p class="sub">Что Бестик сделает, когда включится Мак. Сам он ничего не запускает — пришлёт список в чат, а вы нажмёте «Выполнить».</p>
+        <p class="sub">Что Бестик сделает, когда включится Мак. Сам он ничего не запускает — пришлёт список в чат, вы нажмёте «Выполнить».</p>
         <div class="mac" id="macStatus"><i></i><span>Проверяю Мак…</span></div>
         <div id="taskList"></div>
       </div>
-      <div class="sub-screen" id="more-rules" style="display:none;">
+      <div id="more-rules" style="display:none;">
         <button class="back" data-back="1">‹ Ещё</button>
         <h1>Правила бренда</h1>
         <div class="card rules">
-          <p><b>Цена.</b> В постах и каруселях — «до X ₽» (максимальная по городам выезда). На Авито и в списках — «от X ₽».</p>
+          <p><b>Цена.</b> По умолчанию «до X ₽» (максимальная по городам выезда). «От X ₽» — на Авито и в списках, где так привычнее.</p>
           <p><b>Не писать</b> в текстах для публикации: «Инстаграм», «Instagram», «соцсети», «социальные сети» — вместо них «в наших публикациях», «у нас».</p>
-          <p><b>Только факты</b> из каталога и сайта: цены, даты, отзывы, места. Нет данных — «[уточнить]», не придумывать.</p>
-          <p><b>Тон</b> — тёплый, живой, от «мы», к клиентам на «вы». Без пафоса, канцелярита и превосходных степеней («самый», «лучший»), если их нет в отзывах.</p>
-          <p><b>Чужие фото и видео</b> с отметками — только с согласия автора.</p>
-          <p><b>«До» = [уточнить]</b> — цена «от» поменялась, «до» ждёт подтверждения: в пост не подставлять.</p>
-          <p><b>⛔ нет на сайте</b> — тур снят с сайта: не предлагать.</p>
+          <p><b>Только факты</b> из каталога и сайта: цены, даты, отзывы, места. Нет данных — «[уточнить]».</p>
+          <p><b>Тон</b> — тёплый, живой, от «мы», к клиентам на «вы». Без пафоса и превосходных степеней («самый», «лучший»), если их нет в отзывах.</p>
+          <p><b>Чужие фото и видео</b> с отметками — только с согласия автора (скриншот переписки — в папку «Согласования»).</p>
+          <p><b>Авито:</b> одно объявление — один тур; тот же тур повторно не раньше чем через 30 дней; без телефонов и ссылок в тексте; без КАПСа.</p>
+          <p><b>«До» = [уточнить]</b> — цена «от» поменялась, «до» ждёт подтверждения. <b>⛔ нет на сайте</b> — тур не предлагаем.</p>
         </div>
       </div>
-      <div class="sub-screen" id="more-settings" style="display:none;">
+      <div id="more-settings" style="display:none;">
         <button class="back" data-back="1">‹ Ещё</button>
         <h1>Настройки</h1>
         <div class="label">Тема</div>
@@ -270,10 +305,13 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   </main>
 
   <nav class="tab-bar" id="tabBar">
-    <button class="tab-btn active" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg>Сегодня</button>
+    <button class="tab-btn active" data-tab="week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.4"/><path d="M4 10h16M8 3v4M16 3v4"/></svg>Неделя</button>
     <button class="tab-btn" data-tab="texts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Тексты</button>
     <button class="tab-btn" data-tab="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>Ещё</button>
   </nav>
+
+  <div class="sheet-bg" id="sheetBg"></div>
+  <div class="sheet" id="sheet"></div>
   <div class="toast" id="toast"></div>
 </div>
 
@@ -286,10 +324,17 @@ var BOT_APP_URL = 'https://bestik-bot.thebikinya.workers.dev/app';
 var $ = function(id){ return document.getElementById(id); };
 function esc(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 var toastTimer;
-function toast(msg){ var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1500); }
+function toast(msg){ var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1800); }
 function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
 function confirmBox(text, cb){ if(tg && typeof tg.showConfirm === 'function') tg.showConfirm(text, cb); else cb(confirm(text)); }
 function openLink(url){ if(!url) return; if(tg && typeof tg.openLink === 'function') tg.openLink(url); else window.open(url, '_blank'); }
+function newId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function isoDay(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+var TODAY = isoDay(new Date());
+var WD = ['вс','пн','вт','ср','чт','пт','сб'];
+var MONTH = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+function dayTitle(iso){ var d = new Date(iso + 'T00:00:00'); var diff = Math.round((d - new Date(TODAY + 'T00:00:00')) / 864e5);
+  return (diff === 0 ? 'Сегодня' : diff === 1 ? 'Завтра' : WD[d.getDay()].replace(/^./, function(c){ return c.toUpperCase(); })) + ', ' + d.getDate() + ' ' + MONTH[d.getMonth()]; }
 
 // ---------- Тема ----------
 var themeId = store('cc_theme') || 'companion';
@@ -303,30 +348,46 @@ function applyTheme(){
 }
 if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if(colorMode === 'auto') applyTheme(); });
 if(inTg && typeof tg.onEvent === 'function') tg.onEvent('themeChanged', function(){ if(colorMode === 'auto') applyTheme(); });
-$('themeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; themeId = b.dataset.themePick; store('cc_theme', themeId); applyTheme(); });
+$('themeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; themeId = b.dataset.themePick; store('cc_theme', themeId); applyTheme(); toast('Тема изменена'); });
 $('modeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; colorMode = b.dataset.mode; store('cc_color_mode', colorMode); applyTheme(); });
 applyTheme();
 
 // ---------- Вкладки ----------
+var currentTab = 'week';
 function showTab(name){
+  currentTab = name;
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.toggle('active', s.id === 'screen-' + name); });
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === name); });
   $('appBody').scrollTop = 0;
-  if(name === 'texts'){ showTextsList(); loadStatus(); }
+  if(name === 'texts') showTextsList();
   if(name === 'more') showMore(null);
+  loadStatus();
 }
 $('tabBar').addEventListener('click', function(e){ var b = e.target.closest('.tab-btn'); if(b) showTab(b.dataset.tab); });
 
-// ---------- Данные: status.json (раскладки, заезды) и задачи для Мака ----------
-var STATUS = {};
-var TEXTS = [];        // status.json.carousels: раскладки, посты, Авито
-var TASKS = [];
-var MAC_ONLINE = null;
+// ---------- Данные ----------
+// status.json: plan (план публикаций), carousels (тексты Бестика), upcoming (заезды), ideas.
+// Свои правки держим локально 5 минут: Pages обновляется с задержкой.
+var STATUS = {}, PLAN = [], TEXTS = [], TASKS = [], MAC_ONLINE = null;
+var touched = {};
+function recent(id){ return touched[id] && Date.now() - touched[id] < 5*60*1000; }
+function mergeList(local, remote){
+  var map = {}; local.forEach(function(x){ map[x.id] = x; });
+  var out = remote.map(function(x){ return recent(x.id) && map[x.id] ? map[x.id] : x; });
+  local.forEach(function(x){ if(recent(x.id) && !remote.some(function(r){ return r.id === x.id; })) out.push(x); });
+  return out.filter(function(x){ return !x._deleted; });
+}
 function loadStatus(){
   return fetch('./status.json?t=' + Date.now()).then(function(r){ return r.json(); }).then(function(d){
-    STATUS = d; mergeTexts(d.carousels || []); renderTours(); renderNote();
-  }).catch(function(){});
+    STATUS = d;
+    PLAN = mergeList(PLAN, d.plan || []);
+    TEXTS = mergeList(TEXTS, d.carousels || []);
+    clearPendingDone();
+    renderWeek(); renderTextsList(); renderNote();
+    if(openId && !(document.activeElement && document.activeElement.classList.contains('layer-text'))) renderDetail();
+  }).catch(function(){ toast('Нет связи — показываю сохранённое'); });
 }
+document.addEventListener('visibilitychange', function(){ if(!document.hidden){ loadStatus(); loadTasks(); } });
 function taskApi(action, payload){
   if(!inTg) return Promise.reject(new Error('outside_telegram'));
   return fetch(BOT_APP_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action: action, payload: payload || {}, initData: tg.initData})})
@@ -334,132 +395,251 @@ function taskApi(action, payload){
 }
 function loadTasks(){
   if(!inTg) return Promise.resolve();
-  return taskApi('tasks_list').then(function(d){ TASKS = d.tasks; MAC_ONLINE = d.mac_online; renderTasks(); renderNote(); }).catch(function(){});
+  return taskApi('tasks_list').then(function(d){ TASKS = d.tasks; MAC_ONLINE = d.mac_online; renderTasks(); renderNote(); renderWeek(); }).catch(function(){ MAC_ONLINE = null; renderTasks(); });
+}
+var saveChain = Promise.resolve();
+function bridge(action, payload){
+  if(!inTg) return Promise.resolve(false);
+  saveChain = saveChain.then(function(){
+    return fetch(BRIDGE_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action: action, payload: payload, initData: tg.initData})})
+      .then(function(r){ return r.ok; }).catch(function(){ return false; });
+  });
+  return saveChain;
+}
+function savePlan(item){ touched[item.id] = Date.now(); return bridge('plan_save', {item: item}).then(function(ok){ if(!ok) toast('Не сохранилось в план — проверьте связь'); return ok; }); }
+
+// ---------- Ожидание текста от Бестика ----------
+// planId -> {at, queued}: пока текст не пришёл, кнопка показывает, что происходит.
+var pending = JSON.parse(store('cc_pending') || '{}');
+function setPending(id, v){ if(v) pending[id] = v; else delete pending[id]; store('cc_pending', JSON.stringify(pending)); }
+function clearPendingDone(){
+  Object.keys(pending).forEach(function(id){
+    var it = PLAN.find(function(p){ return p.id === id; });
+    if(!it || it.textId || Date.now() - pending[id].at > 2*3600*1000) setPending(id, null);
+  });
+}
+var pollTimer = null;
+function pollForText(){
+  clearInterval(pollTimer);
+  var n = 0;
+  pollTimer = setInterval(function(){ n++; loadStatus(); if(!Object.keys(pending).some(function(k){ return !pending[k].queued; }) || n > 18) clearInterval(pollTimer); }, 20000);
 }
 
-// ---------- Сегодня: чек-лист (отметки — на этом устройстве, сбрасываются каждый день) ----------
-var CHECKLIST = [
-  'Табличка/чат — какие туры на этой неделе, сколько записано',
-  'Яндекс.Диск — посмотреть и забрать нужный контент',
-  'Отметки в публикациях — если есть чужой контент, запросить согласие',
-  'Текст — накидать идеи и подписи',
-  'Оформление — собрать пост или карусель в Crsel',
-  'Рилс — смонтировать, если сегодня видео',
-  'Публикация — VK, ОК, Telegram, Threads'
-];
-var todayKey = 'cc_check_' + new Date().toISOString().slice(0, 10);
-var checked = JSON.parse(store(todayKey) || '[]');
-function renderChecklist(){
-  $('checklist').innerHTML = CHECKLIST.map(function(t, i){
-    var on = checked.indexOf(i) >= 0;
-    return '<button class="check' + (on ? ' done' : '') + '" data-i="' + i + '"><i>' + (on ? '✓' : '') + '</i><span>' + esc(t) + '</span></button>';
-  }).join('');
-  $('checkCount').textContent = checked.length + ' из ' + CHECKLIST.length;
+// ---------- Неделя: план публикаций ----------
+var FORMAT_KIND = {'Карусель':['carousel','4:5'], 'Сторис':['carousel','9:16'], 'Рилс':['reel','4:5'], 'Пост':['post','4:5'], 'Объявление':['avito','4:5']};
+var FORMAT_PLATFORMS = {'Карусель':['Instagram','VK','OK'], 'Сторис':['Instagram','VK'], 'Рилс':['Instagram','VK'], 'Пост':['VK','OK','Telegram','Threads'], 'Объявление':['Avito']};
+var PF_NAME = {VK:'ВК', OK:'ОК', Telegram:'Telegram', Threads:'Threads', Instagram:'Instagram · Recur', Avito:'Авито'};
+function planText(it){ return it.textId ? TEXTS.find(function(t){ return t.id === it.textId; }) : null; }
+function itemCard(it){
+  var p = pending[it.id], t = planText(it), pub = it.status === 'Опубликовано', post = it.status === 'Отложено';
+  var st = pub ? '<span class="st done">✓ Опубликовано</span>' : post ? '<span class="st">Отложено</span>'
+    : t ? '<span class="st ready">Текст готов</span>' : p ? (p.queued ? '<span class="st wait">Ждёт Мака</span>' : '<span class="st wait">Бестик пишет…</span>')
+    : it.textId ? '<span class="st ready">Текст готов</span>' : '<span class="st">Нужен текст</span>';
+  var action = '';
+  if(!pub && !post){
+    if(t) action = '<button class="btn" data-open-text="' + it.id + '">Открыть текст</button><button class="btn ghost" data-publish="' + it.id + '">Опубликовано</button>';
+    else if(it.textId) action = '<button class="btn" disabled>Текст едет в приложение…</button>';
+    else if(p) action = '<button class="btn" disabled>' + (p.queued ? 'Ждёт Мака — сделаю, когда включится' : 'Бестик пишет… пришлю в чат') + '</button>';
+    else action = '<button class="btn" data-make="' + it.id + '">Сделать текст</button>';
+  }
+  return '<div class="card pi' + (pub ? ' published' : '') + '"><div class="pi-top"><b>' + esc(it.tour) + '</b><button class="pi-menu" data-menu="' + it.id + '" aria-label="Изменить">⋯</button></div>'
+    + '<div class="pi-meta"><span>' + esc(it.format) + '</span>·<span>' + esc((it.platforms || []).map(function(x){ return PF_NAME[x] || x; }).join(', ')) + '</span>' + st + '</div>'
+    + (it.note ? '<div class="pi-meta">' + esc(it.note) + '</div>' : '')
+    + (action ? '<div class="pi-actions">' + action + '</div>' : '') + '</div>';
 }
-$('checklist').addEventListener('click', function(e){
-  var b = e.target.closest('.check'); if(!b) return;
-  var i = +b.dataset.i, k = checked.indexOf(i);
-  if(k >= 0) checked.splice(k, 1); else checked.push(i);
-  store(todayKey, JSON.stringify(checked)); renderChecklist();
-  if(checked.length === CHECKLIST.length) toast('Всё на сегодня ✓');
+function renderWeek(){
+  var until = isoDay(new Date(Date.now() + 6*864e5));
+  var week = PLAN.filter(function(it){ return it.date >= TODAY && it.date <= until; });
+  var overdue = PLAN.filter(function(it){ return it.date < TODAY && it.status !== 'Опубликовано' && it.status !== 'Отложено' && it.date >= isoDay(new Date(Date.now() - 14*864e5)); });
+  var html = '';
+  if(overdue.length) html += '<div class="day-head"><span>Не выложено с прошлых дней</span></div>' + overdue.map(itemCard).join('');
+  var days = {};
+  week.forEach(function(it){ (days[it.date] = days[it.date] || []).push(it); });
+  if(!days[TODAY]) html += '<div class="day-head today"><span>' + dayTitle(TODAY) + '</span></div><div class="empty" style="padding:14px;">На сегодня в плане ничего. Нажмите «+ Добавить в план».</div>';
+  Object.keys(days).sort().forEach(function(d){
+    html += '<div class="day-head' + (d === TODAY ? ' today' : '') + '"><span>' + dayTitle(d) + '</span><span>' + days[d].length + '</span></div>' + days[d].map(itemCard).join('');
+  });
+  if(!week.length && !overdue.length) html += '<div class="empty">План на неделю пуст. Пришла табличка, какие туры продвигаем? Добавьте их кнопкой внизу — Бестик сразу начнёт тексты.</div>';
+  $('weekPlan').innerHTML = html;
+}
+$('weekPlan').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  var id = b.dataset.make || b.dataset.openText || b.dataset.publish || b.dataset.menu;
+  var it = PLAN.find(function(p){ return p.id === id; }); if(!it) return;
+  if(b.dataset.make) requestText(it);
+  if(b.dataset.openText){ showTab('texts'); openText(it.textId); }
+  if(b.dataset.publish){ it.status = 'Опубликовано'; savePlan(it); renderWeek(); toast('Отмечено: опубликовано ✓'); }
+  if(b.dataset.menu) openItemSheet(it);
 });
+function requestText(it){
+  var fk = FORMAT_KIND[it.format] || ['post','4:5'];
+  setPending(it.id, {at: Date.now(), queued: false}); renderWeek();
+  return taskApi('layout_request', {kind: fk[0], format: fk[1], query: it.link || it.tour, title: it.tour, planId: it.id}).then(function(d){
+    setPending(it.id, {at: Date.now(), queued: !!d.queued}); renderWeek();
+    toast(d.queued ? 'Мак выключен — задача в «Задачи для Мака»' : 'Бестик пишет — пришлю в чат');
+    if(d.queued) loadTasks(); else pollForText();
+  }).catch(function(e){
+    setPending(it.id, null); renderWeek();
+    toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось отправить Бестику — попробуйте ещё раз');
+  });
+}
 
-// ---------- Сегодня: ближайшие заезды ----------
-var MONTH_SHORT = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
-var showAllTours = false;
-function renderTours(){
-  var list = STATUS.upcoming || [];
-  $('toursCount').textContent = list.length ? list.length + ' на неделе' : '';
-  var shown = showAllTours ? list : list.slice(0, 6);
-  $('tours').innerHTML = shown.map(function(u, i){
-    var d = new Date(u.start + 'T00:00:00');
-    return '<div class="card tour"><div class="tour-top" data-link="' + i + '"><div class="tour-date"><b>' + d.getDate() + '</b><small>' + MONTH_SHORT[d.getMonth()] + '</small></div>'
-      + '<div class="tour-name"><b>' + esc(u.tour) + '</b><small>' + esc(u.when) + ' · ' + esc(u.price) + '</small></div></div>'
-      + '<div class="tour-actions"><button class="btn" data-carousel="' + i + '">Карусель</button><button class="btn ghost" data-avito="' + i + '">Авито</button></div></div>';
-  }).join('') || '<div class="empty">На этой неделе заездов нет.</div>';
-  var more = $('toursMore');
-  more.style.display = list.length > 6 ? '' : 'none';
-  more.textContent = showAllTours ? 'Свернуть' : 'Показать все (' + list.length + ')';
+// ---------- Окно «Добавить в план» ----------
+var draft = null;
+function openSheet(html){ $('sheet').innerHTML = html; $('sheet').classList.add('show'); $('sheetBg').classList.add('show'); $('sheet').scrollTop = 0; }
+function closeSheet(){ $('sheet').classList.remove('show'); $('sheetBg').classList.remove('show'); draft = null; }
+$('sheetBg').addEventListener('click', closeSheet);
+$('addPlan').addEventListener('click', function(){ draft = {step: 1}; renderAddSheet(); });
+function avitoRecent(link, tour){
+  var lim = isoDay(new Date(Date.now() - 30*864e5));
+  return PLAN.find(function(p){ return p.format === 'Объявление' && p.date >= lim && (p.link && p.link === link || p.tour === tour) && p.status === 'Опубликовано'; });
 }
-$('toursMore').addEventListener('click', function(){ showAllTours = !showAllTours; renderTours(); });
-$('tours').addEventListener('click', function(e){
-  var list = STATUS.upcoming || [];
-  var c = e.target.closest('[data-carousel]'), a = e.target.closest('[data-avito]'), l = e.target.closest('[data-link]');
-  if(c){ var t = list[+c.dataset.carousel]; chooseFormat(t.tour, function(fmt){ requestText('carousel', t, fmt); }); return; }
-  if(a){ requestText('avito', list[+a.dataset.avito], null); return; }
-  if(l){ openLink(list[+l.dataset.link].link); }
+function renderAddSheet(){
+  var up = STATUS.upcoming || [], ideas = STATUS.ideas || [];
+  if(draft.step === 1){
+    var tours = up.map(function(u, i){ return '<button class="pick" data-pick-tour="' + i + '"><div class="tour-date" style="width:42px;"><b>' + new Date(u.start + 'T00:00:00').getDate() + '</b><small>' + ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'][new Date(u.start + 'T00:00:00').getMonth()] + '</small></div><div><b>' + esc(u.tour) + '</b><small>' + esc(u.when) + ' · ' + esc(u.price) + '</small></div></button>'; }).join('');
+    var idea = ideas.map(function(x, i){ return '<button class="pick" data-pick-idea="' + i + '"><div><b>' + esc(x.title) + '</b><small>Идея Бестика · ' + esc(x.fmt || '') + '</small></div></button>'; }).join('');
+    openSheet('<h2>Что продвигаем? <button data-close="1">✕</button></h2>'
+      + '<div class="label">Ближайшие заезды</div>' + (tours || '<div class="empty">Нет заездов на неделе.</div>')
+      + (idea ? '<div class="label">Идеи Бестика</div>' + idea : ''));
+  } else {
+    var chips = function(list, sel, attr){ return '<div class="chips">' + list.map(function(x){ var v = x[0], t = x[1]; return '<button class="chip' + (sel(v) ? ' on' : '') + '" ' + attr + '="' + v + '">' + t + '</button>'; }).join('') + '</div>'; };
+    var days = []; for(var i = 0; i < 7; i++){ var d = isoDay(new Date(Date.now() + i*864e5)); days.push([d, i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : WD[new Date(d + 'T00:00:00').getDay()] + ' ' + new Date(d + 'T00:00:00').getDate()]); }
+    var av = draft.format === 'Объявление' && avitoRecent(draft.link, draft.tour);
+    openSheet('<h2>' + (draft.editId ? 'Изменить' : 'В план') + ' <button data-close="1">✕</button></h2>'
+      + '<div class="card" style="padding:10px 12px;margin-bottom:6px;"><b style="font-size:13.4px;">' + esc(draft.tour) + '</b>' + (draft.when ? '<div class="pi-meta">' + esc(draft.when) + '</div>' : '') + '</div>'
+      + '<div class="label">Формат</div>' + chips([['Карусель','Карусель'],['Сторис','Сторис'],['Рилс','Рилс'],['Пост','Пост'],['Объявление','Авито']], function(v){ return v === draft.format; }, 'data-fmt')
+      + (av ? '<div class="warn">На Авито этот тур выкладывали ' + av.date.split('-').reverse().join('.') + '. Повторно — не раньше чем через 30 дней, иначе модерация может заблокировать.</div>' : '')
+      + '<div class="label">День</div>' + chips(days, function(v){ return v === draft.date; }, 'data-day')
+      + '<div class="label">Где публикуем</div>' + chips([['Instagram','Instagram (Recur)'],['VK','ВК'],['OK','ОК'],['Telegram','Telegram'],['Threads','Threads'],['Avito','Авито']], function(v){ return draft.platforms.indexOf(v) >= 0; }, 'data-pf')
+      + (draft.editId ? '' : '<label class="toggle"><input type="checkbox" id="makeNow" ' + (draft.makeNow ? 'checked' : '') + '> Сразу попросить Бестика сделать текст</label>')
+      + '<button class="btn wide" data-save-item="1" ' + (draft.platforms.length ? '' : 'disabled') + '>' + (draft.editId ? 'Сохранить' : 'Добавить в план') + '</button>'
+      + (draft.editId ? '' : '<button class="back" data-step-back="1" style="margin-top:10px;">‹ Другой тур</button>'));
+  }
+}
+$('sheet').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b || !draft && !b.dataset.close && !b.dataset.itemAct) return;
+  if(b.dataset.close){ closeSheet(); return; }
+  if(b.dataset.itemAct){ itemAction(b.dataset.itemAct); return; }
+  if(b.dataset.pickTour !== undefined){ var u = STATUS.upcoming[+b.dataset.pickTour];
+    draft = {step: 2, tour: u.tour, link: u.link, when: u.when + ' · ' + u.price, format: 'Карусель', date: TODAY, platforms: FORMAT_PLATFORMS['Карусель'].slice(), makeNow: true}; renderAddSheet(); return; }
+  if(b.dataset.pickIdea !== undefined){ var x = STATUS.ideas[+b.dataset.pickIdea]; var f = /авито/i.test(x.fmt || '') ? 'Объявление' : /рилс/i.test(x.fmt || '') ? 'Рилс' : /пост/i.test(x.fmt || '') ? 'Пост' : 'Карусель';
+    draft = {step: 2, tour: x.title.replace(/\s+[—-]\s+заезд.*$/i, ''), link: '', when: 'Идея: ' + (x.outline || '').slice(0, 90), format: f, date: TODAY, platforms: FORMAT_PLATFORMS[f].slice(), makeNow: true}; renderAddSheet(); return; }
+  if(b.dataset.stepBack){ draft = {step: 1}; renderAddSheet(); return; }
+  if(b.dataset.fmt){ draft.format = b.dataset.fmt; if(!draft.editId) draft.platforms = FORMAT_PLATFORMS[draft.format].slice(); renderAddSheet(); return; }
+  if(b.dataset.day){ draft.date = b.dataset.day; renderAddSheet(); return; }
+  if(b.dataset.pf){ var k = draft.platforms.indexOf(b.dataset.pf); if(k >= 0) draft.platforms.splice(k, 1); else draft.platforms.push(b.dataset.pf); renderAddSheet(); return; }
+  if(b.dataset.saveItem){
+    var cb = $('makeNow'); if(cb) draft.makeNow = cb.checked;
+    if(draft.editId){
+      var it = PLAN.find(function(p){ return p.id === draft.editId; });
+      if(it.format !== draft.format) it.textId = '';
+      it.format = draft.format; it.date = draft.date; it.platforms = draft.platforms.slice();
+      savePlan(it); closeSheet(); renderWeek(); toast('Сохранено'); return;
+    }
+    var item = {id: newId(), date: draft.date, platforms: draft.platforms.slice(), format: draft.format, tour: draft.tour, link: draft.link, status: 'Запланировано', textId: '', note: ''};
+    var make = draft.makeNow;
+    PLAN.push(item); closeSheet(); renderWeek();
+    savePlan(item).then(function(ok){ if(ok && make) requestText(item); else if(ok) toast('Добавлено в план'); });
+    if(item.date !== TODAY) toast('Добавлено на ' + dayTitle(item.date).toLowerCase());
+  }
 });
-function chooseFormat(title, cb){
-  if(tg && typeof tg.showPopup === 'function'){
-    tg.showPopup({title:'Карусель', message:title, buttons:[{id:'4:5', type:'default', text:'Пост 4:5'}, {id:'9:16', type:'default', text:'Сторис 9:16'}, {type:'cancel'}]}, function(id){ if(id) cb(id); });
-  } else { cb(confirm('Пост 4:5? (Отмена — сторис 9:16)') ? '4:5' : '9:16'); }
+$('sheet').addEventListener('change', function(e){ if(e.target.id === 'makeNow' && draft) draft.makeNow = e.target.checked; });
+function openItemSheet(it){
+  draft = {itemId: it.id};
+  openSheet('<h2>' + esc(it.tour) + ' <button data-close="1">✕</button></h2>'
+    + '<button class="pick" data-item-act="edit"><div><b>Изменить формат, день, площадки</b></div></button>'
+    + (it.textId || pending[it.id] ? '<button class="pick" data-item-act="remake"><div><b>Сделать текст заново</b><small>Бестик напишет новый вариант</small></div></button>' : '')
+    + (it.status === 'Опубликовано' ? '<button class="pick" data-item-act="unpublish"><div><b>Снять отметку «Опубликовано»</b></div></button>' : '')
+    + (it.status === 'Отложено' ? '<button class="pick" data-item-act="resume"><div><b>Вернуть в план</b></div></button>' : '<button class="pick" data-item-act="postpone"><div><b>Отложить</b><small>Останется в плане серым</small></div></button>')
+    + (it.link ? '<button class="pick" data-item-act="site"><div><b>Тур на сайте</b></div></button>' : '')
+    + '<button class="pick" data-item-act="delete"><div><b style="color:var(--bad);">Удалить из плана</b></div></button>');
 }
-// Заявка Бестику: Мак онлайн — делает сразу, офлайн — задача в очередь.
-function requestText(kind, tour, format){
-  taskApi('layout_request', {kind: kind, query: tour.link, title: tour.tour, format: format || '4:5'}).then(function(d){
-    toast(d.queued ? 'Мак выключен — задача в «Задачи для Мака»' : (kind === 'avito' ? 'Бестик пишет объявление — пришлю в чат' : 'Бестик делает карусель — пришлю в чат'));
-    if(d.queued) loadTasks();
-  }).catch(function(e){ toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось отправить'); });
+function itemAction(act){
+  var it = PLAN.find(function(p){ return p.id === draft.itemId; }); if(!it) return;
+  if(act === 'edit'){ draft = {step: 2, editId: it.id, tour: it.tour, link: it.link, format: it.format, date: it.date < TODAY ? TODAY : it.date, platforms: (it.platforms || []).slice()}; renderAddSheet(); return; }
+  closeSheet();
+  if(act === 'remake'){ it.textId = ''; it.status = 'Запланировано'; savePlan(it); requestText(it); }
+  if(act === 'unpublish'){ it.status = it.textId ? 'Готово' : 'Запланировано'; savePlan(it); toast('Отметка снята'); }
+  if(act === 'postpone'){ it.status = 'Отложено'; savePlan(it); toast('Отложено'); }
+  if(act === 'resume'){ it.status = it.textId ? 'Готово' : 'Запланировано'; savePlan(it); toast('Снова в плане'); }
+  if(act === 'site') openLink(it.link);
+  if(act === 'delete') confirmBox('Удалить «' + it.tour + '» из плана?', function(y){ if(!y) return;
+    it._deleted = true; touched[it.id] = Date.now(); bridge('plan_delete', {id: it.id}); renderWeek(); toast('Удалено из плана'); });
+  renderWeek();
 }
 
 // «Заметил» — одна строка, только когда есть что сказать.
 function renderNote(){
-  var n = $('todayNote'), msg = '', go = null;
-  var fresh = TEXTS.filter(function(t){ return !t.ready && t.created && Date.now() - new Date(t.created) < 24*3600*1000; })[0];
-  if(TASKS.length){ msg = 'Ждут Мака задач: ' + TASKS.length; go = function(){ showTab('more'); showMore('tasks'); }; }
-  else if(fresh){ msg = 'Готово от Бестика: ' + fresh.tour; go = function(){ showTab('texts'); openText(fresh.id); }; }
+  var n = $('weekNote'), msg = '', go = null;
+  if(TASKS.length){ msg = 'Ждут Мака задач: ' + TASKS.length + (MAC_ONLINE === false ? ' (Мак выключен)' : ''); go = function(){ showTab('more'); showMore('tasks'); }; }
   n.style.display = msg ? '' : 'none';
   n.innerHTML = msg ? '<b>Заметил</b><span>' + esc(msg) + '</span>' : '';
   n.onclick = go;
 }
 
-// ---------- Тексты: раскладки, посты, Авито + шаблоны ----------
-var TEMPLATES = [
-  {id:'tpl1', kind:'template', tour:'Шаблон: тур в горы — карусель', slides:[{layers:[{role:'text', text:'[Название тура], [даты заезда]. Маршрут: [ключевые точки]. Формат: [автобус/поезд/самолёт] из [город]. Что включено: [список]. Цена: до [X] ₽.'}]}]},
-  {id:'tpl2', kind:'template', tour:'Шаблон: пляжный тур — пост', slides:[{layers:[{role:'text', text:'[Направление] ждёт: [даты]. [X] дней у моря, [что включено]. Выезд из [город] на [транспорт]. Цена: до [X] ₽.'}]}]},
-  {id:'tpl3', kind:'template', tour:'Шаблон: объявление Авито', slides:[{layers:[{role:'title', text:'[Название тура] ([даты заезда])'}, {role:'text', text:'Что входит: [список]\nТрансфер: [город] → [направление]\nГруппа: до [N] человек\n\nЦена: от [X] ₽\nПишите — ответим быстро.'}]}]}
-];
-var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', template:'Шаблон'};
-var ROLE = {date:'Дата', title:'Заголовок', caption:'Подпись', text:'Текст', cta:'Призыв'};
-var openId = null, touched = {}, saveChain = Promise.resolve(), saveTimer = null;
-function newId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-function byId(id){ return TEXTS.concat(TEMPLATES).find(function(t){ return t.id === id; }); }
-function mergeTexts(remote){
-  var local = {}; TEXTS.forEach(function(t){ local[t.id] = t; });
-  var now = Date.now(), recent = function(id){ return touched[id] && now - touched[id] < 5*60*1000; };
-  TEXTS = remote.map(function(t){ return recent(t.id) && local[t.id] ? local[t.id] : t; });
-  Object.keys(local).forEach(function(id){ if(recent(id) && !remote.some(function(t){ return t.id === id; })) TEXTS.unshift(local[id]); });
-  renderTextsList();
-  if(openId && !(document.activeElement && document.activeElement.classList.contains('layer-text'))) renderDetail();
+// ---------- Чек-лист дня (на этом устройстве, сбрасывается каждый день) ----------
+var CHECKLIST = ['Табличка/чат — какие туры на этой неделе, сколько записано', 'Яндекс.Диск — посмотреть и забрать нужный контент',
+  'Отметки — если есть чужой контент, запросить согласие', 'Текст — открыть готовые тексты в плане', 'Оформление — собрать карусель в Crsel',
+  'Рилс — смонтировать в Edits или CapCut, если сегодня видео', 'Публикация — Recur, ВК, ОК, Telegram, Threads'];
+var todayKey = 'cc_check_' + TODAY;
+var checked = JSON.parse(store(todayKey) || '[]');
+function renderChecklist(){
+  $('checklist').innerHTML = CHECKLIST.map(function(t, i){ var on = checked.indexOf(i) >= 0;
+    return '<button class="check' + (on ? ' done' : '') + '" data-i="' + i + '"><i>' + (on ? '✓' : '') + '</i><span>' + esc(t) + '</span></button>'; }).join('');
+  $('checkCount').textContent = checked.length + ' из ' + CHECKLIST.length + (store('cc_check_open') === '1' ? ' ▴' : ' ▾');
 }
+$('checkToggle').addEventListener('click', function(){ var open = store('cc_check_open') !== '1'; store('cc_check_open', open ? '1' : '0'); $('checklist').style.display = open ? '' : 'none'; renderChecklist(); });
+$('checklist').addEventListener('click', function(e){
+  var b = e.target.closest('.check'); if(!b) return;
+  var i = +b.dataset.i, k = checked.indexOf(i);
+  if(k >= 0) checked.splice(k, 1); else checked.push(i);
+  store(todayKey, JSON.stringify(checked)); renderChecklist();
+  if(checked.length === CHECKLIST.length) toast('Чек-лист на сегодня пройден ✓');
+});
+
+// ---------- Тексты ----------
+var TEMPLATES = [
+  {id:'tplUgc', kind:'template', tour:'Запрос согласия автора (чужое фото с отметкой)', slides:[{layers:[{role:'text', text:'Здравствуйте! Мы «Бест тур», туроператор по Кавказу. Хотим опубликовать ваше фото в наших публикациях с указанием вашего аккаунта. Не возражаете?'}]}]},
+  {id:'tpl1', kind:'template', tour:'Тур в горы — карусель', slides:[{layers:[{role:'text', text:'[Название тура], [даты заезда]. Маршрут: [ключевые точки]. Формат: [автобус/поезд/самолёт] из [город]. Что включено: [список]. Цена: до [X] ₽.'}]}]},
+  {id:'tpl2', kind:'template', tour:'Пляжный тур — пост', slides:[{layers:[{role:'text', text:'[Направление] ждёт: [даты]. [X] дней у моря, [что включено]. Выезд из [город] на [транспорт]. Цена: до [X] ₽.'}]}]},
+  {id:'tpl3', kind:'template', tour:'Объявление Авито', slides:[{layers:[{role:'title', text:'[Направление] тур из [город] — [что получает клиент]'}, {role:'text', text:'Что входит: [список]\nТрансфер: [город] → [направление]\nГруппа: до [N] человек\n\nЦена: от [X] ₽\nПишите в чат Авито — ответим быстро.'}]}]}
+];
+var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс', template:'Шаблон'};
+var ROLE = {date:'Дата', title:'Заголовок', caption:'Подпись', text:'Текст', cta:'Призыв'};
+var openId = null, saveTimer = null;
+function kindName(t){ return t.kind === 'carousel' || !t.kind ? (t.format === '9:16' ? 'Сторис' : 'Карусель') : KIND[t.kind]; }
+function byId(id){ return TEXTS.concat(TEMPLATES).find(function(t){ return t.id === id; }); }
 function renderTextsList(){
   var items = TEXTS.map(function(t){
-    var meta = (t.kind === 'avito' ? 'Объявление' : (t.format === '9:16' ? 'Сторис 9:16' : 'Пост 4:5') + ' · слайдов: ' + (t.slides || []).length)
+    var meta = (t.kind === 'avito' ? 'Объявление' : t.kind === 'post' ? 'Тексты для площадок' : t.kind === 'reel' ? 'Сценарий' : (t.format === '9:16' ? 'Сторис 9:16' : 'Пост 4:5') + ' · слайдов: ' + (t.slides || []).length)
       + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '');
-    return '<button class="card text-item" data-text="' + t.id + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? '✓ ' : '') + KIND[t.kind || 'carousel'] + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
+    return '<button class="card text-item" data-text="' + t.id + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? '✓ ' : '') + kindName(t) + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
   }).join('');
-  var tpls = TEMPLATES.map(function(t){ return '<button class="card text-item" data-text="' + t.id + '"><b><span class="kind">Шаблон</span>' + esc(t.tour.replace('Шаблон: ', '')) + '</b></button>'; }).join('');
-  $('textsItems').innerHTML = (items || '<div class="empty">Готовых текстов пока нет. На «Сегодня» нажмите «Карусель» или «Авито» у тура — Бестик пришлёт текст сюда.</div>')
-    + '<div class="label">Шаблоны</div>' + tpls;
+  $('textsItems').innerHTML = (items || '<div class="empty">Готовых текстов пока нет. Добавьте тур в план на «Неделе» — Бестик пришлёт текст сюда.</div>')
+    + '<div class="label">Шаблоны</div>' + TEMPLATES.map(function(t){ return '<button class="card text-item" data-text="' + t.id + '"><b><span class="kind">Шаблон</span>' + esc(t.tour) + '</b></button>'; }).join('');
 }
 $('textsItems').addEventListener('click', function(e){ var b = e.target.closest('[data-text]'); if(b) openText(b.dataset.text); });
+var backTo = 'texts';
 function showTextsList(){ flush(); openId = null; $('textsList').style.display = ''; $('textDetail').style.display = 'none'; $('checkView').style.display = 'none'; renderTextsList(); }
-function openText(id){ openId = id; $('textsList').style.display = 'none'; $('checkView').style.display = 'none'; $('textDetail').style.display = ''; renderDetail(); $('appBody').scrollTop = 0; }
-$('textBack').addEventListener('click', showTextsList);
-
+function openText(id){ backTo = currentTab === 'texts' && $('textsList').style.display !== 'none' ? 'texts' : 'week'; openId = id; $('textsList').style.display = 'none'; $('checkView').style.display = 'none'; $('textDetail').style.display = ''; renderDetail(); $('appBody').scrollTop = 0; }
+$('textBack').addEventListener('click', function(){ flush(); if(backTo === 'week'){ openId = null; showTab('week'); } else showTextsList(); });
+function linkedPlan(t){ return t.planId ? PLAN.find(function(p){ return p.id === t.planId; }) : PLAN.find(function(p){ return p.textId === t.id; }); }
 function renderDetail(){
   var t = byId(openId); if(!t){ showTextsList(); return; }
-  var tpl = t.kind === 'template', car = !t.kind || t.kind === 'carousel';
+  var tpl = t.kind === 'template', car = !t.kind || t.kind === 'carousel', plan = linkedPlan(t);
+  $('textBack').textContent = backTo === 'week' ? '‹ Неделя' : '‹ Тексты';
   $('detailTitle').textContent = t.tour;
+  var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">☑ Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">☐ Опубликовано</button>')
+    : '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
   $('detailRow').innerHTML = tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
-    : (car ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '')
-      + '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Опубликовано') + '</button>';
+    : (car ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '') + pub;
   var n = t.slides.length;
   $('slides').innerHTML = t.slides.map(function(sl, si){
     var head = car && !tpl ? '<div class="slide-top"><b>Слайд ' + (si + 1) + (si === 0 ? ' · обложка' : '') + '</b>'
-      + '<button class="mini" data-up="' + si + '" ' + (si === 0 ? 'disabled' : '') + '>↑</button><button class="mini" data-down="' + si + '" ' + (si === n - 1 ? 'disabled' : '') + '>↓</button><button class="mini" data-del="' + si + '">🗑</button></div>' : '';
+      + '<button class="mini" data-up="' + si + '" ' + (si === 0 ? 'disabled' : '') + ' aria-label="Выше">↑</button><button class="mini" data-down="' + si + '" ' + (si === n - 1 ? 'disabled' : '') + ' aria-label="Ниже">↓</button><button class="mini" data-del="' + si + '" aria-label="Удалить слайд">🗑</button></div>' : '';
     return '<div class="card slide">' + head + (sl.layers || []).map(function(l, li){
-      return '<div class="layer"><div class="layer-role">' + (ROLE[l.role] || 'Текст') + '</div>'
+      return '<div class="layer"><div class="layer-role">' + (l.label ? esc(l.label) : (ROLE[l.role] || 'Текст')) + '</div>'
         + '<div class="layer-text role-' + l.role + '" ' + (tpl ? '' : 'contenteditable="true"') + ' data-sl="' + si + '" data-ly="' + li + '">' + esc(l.text) + '</div>'
         + '<button class="copy" data-copy-sl="' + si + '" data-copy-ly="' + li + '" aria-label="Копировать">📋</button></div>';
     }).join('') + '</div>';
@@ -488,14 +668,17 @@ $('textDetail').addEventListener('click', function(e){
   if(b.dataset.down !== undefined){ var j = +b.dataset.down; t.slides.splice(j + 1, 0, t.slides.splice(j, 1)[0]); changed(t, true); return; }
   if(b.dataset.del !== undefined){ var k = +b.dataset.del; confirmBox('Удалить слайд ' + (k + 1) + '?', function(y){ if(y){ t.slides.splice(k, 1); changed(t, true); } }); return; }
   if(b.dataset.fmt){ t.format = b.dataset.fmt; changed(t, true); return; }
-  if(b.id === 'readyBtn'){ t.ready = !t.ready; changed(t, true); return; }
+  if(b.id === 'readyBtn'){ t.ready = !t.ready; changed(t, true); toast(t.ready ? 'Отмечено: готово' : 'Отметка снята'); return; }
+  if(b.id === 'pubBtn'){ var p = linkedPlan(t); p.status = p.status === 'Опубликовано' ? 'Готово' : 'Опубликовано'; savePlan(p); renderDetail(); renderWeek(); toast(p.status === 'Опубликовано' ? 'Отмечено: опубликовано ✓' : 'Отметка снята'); return; }
   if(b.id === 'addSlide'){
     var last = t.slides.length && t.slides[t.slides.length - 1].layers.some(function(l){ return l.role === 'cta'; }) ? t.slides.length - 1 : t.slides.length;
-    t.slides.splice(last, 0, {id:newId(), layers:[{id:newId(), role:'text', text:''}]}); changed(t, true); return;
+    t.slides.splice(last, 0, {id:newId(), layers:[{id:newId(), role:'text', text:''}]}); changed(t, true); toast('Слайд добавлен'); return;
   }
   if(b.id === 'openTour'){ openLink(t.link); return; }
   if(b.id === 'delText'){ confirmBox('Удалить «' + t.tour + '»?', function(y){ if(!y) return;
-    TEXTS = TEXTS.filter(function(x){ return x.id !== t.id; }); bridge('carousel_delete', {id:t.id}); showTextsList(); toast('Удалено'); }); }
+    t._deleted = true; touched[t.id] = Date.now(); TEXTS = TEXTS.filter(function(x){ return x.id !== t.id; });
+    var p = linkedPlan(t); if(p){ p.textId = ''; p.status = 'Запланировано'; savePlan(p); }
+    bridge('carousel_delete', {id:t.id}); showTextsList(); toast('Удалено'); }); }
 });
 $('slides').addEventListener('input', function(e){
   var el = e.target.closest('.layer-text'); var t = byId(openId); if(!el || !t) return;
@@ -512,15 +695,8 @@ function changed(t, rerender){
 function flush(){ if(!saveTimer) return; clearTimeout(saveTimer); saveTimer = null; var t = byId(openId); if(t && t.kind !== 'template') save(t); }
 function save(t){
   saveTimer = null; $('savedState').textContent = 'Сохраняю…';
-  bridge('carousel_save', {carousel: JSON.parse(JSON.stringify(t))}).then(function(ok){ var el = $('savedState'); if(el) el.textContent = ok ? 'Сохранено ✓' : 'Не сохранилось — проверьте связь, правки на экране'; });
-}
-function bridge(action, payload){
-  if(!inTg) return Promise.resolve(false);
-  saveChain = saveChain.then(function(){
-    return fetch(BRIDGE_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action: action, payload: payload, initData: tg.initData})})
-      .then(function(r){ return r.ok; }).catch(function(){ return false; });
-  });
-  return saveChain;
+  var copy = JSON.parse(JSON.stringify(t)); delete copy._deleted;
+  bridge('carousel_save', {carousel: copy}).then(function(ok){ var el = $('savedState'); if(el) el.textContent = ok ? 'Сохранено ✓' : 'Не сохранилось — проверьте связь, правки на экране'; });
 }
 
 // ---------- Проверить свой текст (правила бренда, без ИИ) ----------
@@ -536,18 +712,27 @@ $('checkRun').addEventListener('click', function(){
   var banned = BANNED.filter(function(w){ return low.indexOf(w) >= 0; });
   out.push(banned.length ? ['✗', 'Слова, которых не пишем: ' + banned.join(', ') + ' — замените на «в наших публикациях», «у нас»'] : ['✓', 'Запрещённых слов нет']);
   var hasDo = /до\s*\d[\d\s]*\s*(₽|руб)/i.test(text), hasOt = /от\s*\d[\d\s]*\s*(₽|руб)/i.test(text), anyPrice = /\d[\d\s]{2,}\s*(₽|руб)/i.test(text);
-  if(checkKind === 'post') out.push(hasOt ? ['✗', 'В посте цена «от X ₽» — по правилам в постах «до X ₽»'] : (anyPrice && !hasDo ? ['!', 'Цена без «до» — в постах пишем «до X ₽»'] : ['✓', anyPrice ? 'Цена в формате «до X ₽»' : 'Цены в тексте нет']));
-  else out.push(hasDo ? ['✗', 'На Авито цена «до X ₽» — по правилам «от X ₽»'] : (anyPrice && !hasOt ? ['!', 'Цена без «от» — на Авито пишем «от X ₽»'] : ['✓', anyPrice ? 'Цена в формате «от X ₽»' : 'Цены в тексте нет']));
-  out.push(/\[уточнить/i.test(text) ? ['✗', 'Остались «[уточнить]» — заполните перед публикацией'] : ['✓', 'Пропусков «[уточнить]» нет']);
+  if(checkKind === 'post') out.push(hasOt ? ['!', 'Цена «от X ₽» — в постах по умолчанию «до X ₽» (честнее, без разочарования ценой)'] : (anyPrice && !hasDo ? ['!', 'Цена без «до» — в постах пишем «до X ₽»'] : ['✓', anyPrice ? 'Цена в формате «до X ₽»' : 'Цены в тексте нет']));
+  else {
+    out.push(anyPrice ? ['✓', 'Цена есть' + (hasDo ? ' («до» допустимо, на Авито привычнее «от»)' : '')] : ['!', 'Нет цены — на Авито лучше указать «от X ₽»']);
+    var contacts = /(\+7|8)[\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}|https?:\/\/|www\.|t\.me|@[a-z0-9_]{3,}|whatsapp|ватсап|телеграм/i.test(text);
+    out.push(contacts ? ['✗', 'В тексте контакты или ссылки — Авито блокирует, только чат Авито'] : ['✓', 'Контактов в тексте нет']);
+    var caps = (text.match(/[A-ZА-ЯЁ]{4,}/g) || []).filter(function(w){ return w !== 'КЧР' && w !== 'КБР'; });
+    out.push(caps.length ? ['✗', 'КАПС: ' + caps.slice(0, 3).join(', ') + ' — Авито не пропускает'] : ['✓', 'Без КАПСа']);
+    var first = text.split('\n')[0];
+    out.push(first.length > 50 ? ['!', 'Первая строка ' + first.length + ' знаков — заголовок на Авито до 50'] : ['✓', 'Заголовок до 50 знаков']);
+  }
+  out.push(/\[уточнить|\[нужно уточнить/i.test(text) ? ['✗', 'Остались «[уточнить]» — заполните перед публикацией'] : ['✓', 'Пропусков «[уточнить]» нет']);
   var sup = text.match(SUPERLATIVE);
   out.push(sup ? ['!', 'Есть «' + sup[2] + '…» — превосходные степени только если так сказано в отзыве'] : ['✓', 'Без превосходных степеней']);
   var ex = (text.match(/!/g) || []).length;
   out.push(ex > 2 ? ['!', 'Восклицательных знаков: ' + ex + ' — тон спокойнее, когда их 1–2'] : ['✓', 'Тон в норме']);
   out.push(['i', 'Цены и даты сверьте с каталогом: проверка их не видит']);
-  var bad = out.some(function(o){ return o[0] === '✗'; });
+  var bad = out.some(function(o){ return o[0] === '✗'; }), warn = out.some(function(o){ return o[0] === '!'; });
   $('checkResult').style.display = '';
-  $('checkResult').innerHTML = '<b style="display:block;margin-bottom:4px;">' + (bad ? 'Стоит подправить' : 'Можно публиковать') + '</b>'
+  $('checkResult').innerHTML = '<b style="display:block;margin-bottom:4px;">' + (bad ? 'Стоит подправить' : warn ? 'Можно публиковать, но гляньте замечания' : 'Можно публиковать') + '</b>'
     + out.map(function(o){ return '<div><i>' + {'✓':'✅','✗':'❌','!':'⚠️','i':'ℹ️'}[o[0]] + '</i><span>' + esc(o[1]) + '</span></div>'; }).join('');
+  $('checkResult').scrollIntoView({block:'nearest'});
 });
 
 // ---------- Ещё ----------
@@ -559,18 +744,17 @@ function showMore(which){
 }
 document.querySelectorAll('[data-open]').forEach(function(b){ b.addEventListener('click', function(){ showMore(b.dataset.open); }); });
 document.querySelectorAll('[data-back]').forEach(function(b){ b.addEventListener('click', function(){ showMore(null); }); });
-
 var editingTask = null;
 function renderTasks(){
   var c = $('tasksCount'); c.style.display = TASKS.length ? '' : 'none'; c.textContent = TASKS.length;
   var m = $('macStatus'); m.classList.toggle('on', !!MAC_ONLINE);
-  m.querySelector('span').textContent = MAC_ONLINE === null ? 'Мак: нет связи с ботом' : (MAC_ONLINE ? 'Мак на связи — Бестик отвечает сразу' : 'Мак выключен — задачи ждут здесь');
+  m.querySelector('span').textContent = !inTg ? 'Откройте приложение из Telegram' : MAC_ONLINE === null ? 'Нет связи с ботом' : (MAC_ONLINE ? 'Мак на связи — Бестик отвечает сразу' : 'Мак выключен — задачи ждут здесь');
   $('taskList').innerHTML = TASKS.map(function(t, i){
     var when = new Date(t.at).toLocaleString('ru-RU', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
     if(editingTask === t.id) return '<div class="card task"><textarea data-edit="' + t.id + '">' + esc(t.text) + '</textarea><div class="row" style="margin:8px 0 0;"><button class="btn" data-save="' + t.id + '">Сохранить</button><button class="btn ghost" data-cancel="1">Отмена</button></div></div>';
     return '<div class="card task"><div class="task-text">' + (i + 1) + '. ' + esc(t.text) + '</div><div class="task-meta">' + when + '</div>'
       + '<div class="row" style="margin:8px 0 0;"><button class="chip-btn" data-edit-btn="' + t.id + '">Изменить</button><button class="chip-btn" data-del-task="' + t.id + '">Удалить</button></div></div>';
-  }).join('') || '<div class="empty">Очередь пуста 🐾</div>';
+  }).join('') || '<div class="empty">Очередь пуста 🐾 Когда Мак выключен, заказы текстов из плана будут ждать здесь.</div>';
 }
 $('taskList').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
@@ -583,8 +767,9 @@ $('taskList').addEventListener('click', function(e){
 });
 
 // ---------- Старт ----------
+if(store('cc_check_open') === '1') $('checklist').style.display = '';
 renderChecklist();
-loadStatus();
+loadStatus().then(function(){ if(Object.keys(pending).length) pollForText(); });
 loadTasks();
 if(location.hash === '#texts' || location.hash === '#carousels') showTab('texts');
 </script>
