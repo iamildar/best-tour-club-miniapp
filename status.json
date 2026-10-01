@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T18:12:56.602Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T18:12:58.938Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1614,6 +1614,20 @@
         "OK"
       ],
       "format": "Карусель",
+      "tour": "Озеро Башкара + ледник Шхельда",
+      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
+      "status": "Запланировано",
+      "textId": "",
+      "note": ""
+    },
+    {
+      "id": "mupuquore9m0",
+      "date": "2026-10-02",
+      "platforms": [
+        "Instagram",
+        "VK"
+      ],
+      "format": "Сторис",
       "tour": "Озеро Башкара + ледник Шхельда",
       "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
       "status": "Запланировано",
