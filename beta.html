@@ -371,6 +371,7 @@ $('tabBar').addEventListener('click', function(e){ var b = e.target.closest('.ta
 var STATUS = {}, PLAN = [], TEXTS = [], TASKS = [], MAC_ONLINE = null;
 var pending = JSON.parse(store('cc_pending') || '{}'); // planId -> {at, queued}
 var touched = {};
+var deletedIds = {}; // удалённое здесь — не возвращаем, даже если Pages ещё отдаёт старое
 function recent(id){ return touched[id] && Date.now() - touched[id] < 5*60*1000; }
 function mergeList(local, remote){
   var map = {}; local.forEach(function(x){ map[x.id] = x; });
@@ -382,7 +383,7 @@ function mergeList(local, remote){
     return l;
   });
   local.forEach(function(x){ if(recent(x.id) && !remote.some(function(r){ return r.id === x.id; })) out.push(x); });
-  return out.filter(function(x){ return !x._deleted; });
+  return out.filter(function(x){ return !x._deleted && !deletedIds[x.id]; });
 }
 // Обычно — с Pages; когда ждём текст от Бестика — свежий из GitHub через мостик.
 function fetchStatus(fresh){
@@ -473,7 +474,7 @@ function renderWeek(){
   if(overdue.length) html += '<div class="day-head"><span>Не выложено с прошлых дней</span></div>' + overdue.map(itemCard).join('');
   var days = {};
   week.forEach(function(it){ (days[it.date] = days[it.date] || []).push(it); });
-  if(!days[TODAY]) html += '<div class="day-head today"><span>' + dayTitle(TODAY) + '</span></div><div class="empty" style="padding:14px;">На сегодня в плане ничего. Нажмите «+ Добавить в план».</div>';
+  if(!days[TODAY] && (week.length || overdue.length)) html += '<div class="day-head today"><span>' + dayTitle(TODAY) + '</span></div><div class="empty" style="padding:14px;">На сегодня в плане ничего. Нажмите «+ Добавить в план».</div>';
   Object.keys(days).sort().forEach(function(d){
     html += '<div class="day-head' + (d === TODAY ? ' today' : '') + '"><span>' + dayTitle(d) + '</span><span>' + days[d].length + '</span></div>' + days[d].map(itemCard).join('');
   });
@@ -586,7 +587,8 @@ function itemAction(act){
   if(act === 'resume'){ it.status = it.textId ? 'Готово' : 'Запланировано'; savePlan(it); toast('Снова в плане'); }
   if(act === 'site') openLink(it.link);
   if(act === 'delete') confirmBox('Удалить «' + it.tour + '» из плана?', function(y){ if(!y) return;
-    it._deleted = true; touched[it.id] = Date.now(); bridge('plan_delete', {id: it.id}); renderWeek(); toast('Удалено из плана'); });
+    it._deleted = true; deletedIds[it.id] = 1; touched[it.id] = Date.now(); PLAN = PLAN.filter(function(p){ return p.id !== it.id; });
+    bridge('plan_delete', {id: it.id}); renderWeek(); toast('Удалено из плана'); });
   renderWeek();
 }
 
@@ -697,7 +699,7 @@ $('textDetail').addEventListener('click', function(e){
   }
   if(b.id === 'openTour'){ openLink(t.link); return; }
   if(b.id === 'delText'){ confirmBox('Удалить «' + t.tour + '»?', function(y){ if(!y) return;
-    t._deleted = true; touched[t.id] = Date.now(); TEXTS = TEXTS.filter(function(x){ return x.id !== t.id; });
+    t._deleted = true; deletedIds[t.id] = 1; touched[t.id] = Date.now(); TEXTS = TEXTS.filter(function(x){ return x.id !== t.id; });
     var p = linkedPlan(t); if(p){ p.textId = ''; p.status = 'Запланировано'; savePlan(p); }
     bridge('carousel_delete', {id:t.id}); showTextsList(); toast('Удалено'); }); }
 });
