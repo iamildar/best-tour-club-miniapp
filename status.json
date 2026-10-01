@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T18:05:12.711Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T18:05:46.486Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1243,6 +1243,21 @@
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "status": "Готово",
       "textId": "mupugo0c0rvi",
+      "note": ""
+    },
+    {
+      "id": "mupuhmj5qu6b",
+      "date": "2026-10-02",
+      "platforms": [
+        "Instagram",
+        "VK",
+        "OK"
+      ],
+      "format": "Карусель",
+      "tour": "Грозный + озеро Казеной Ам",
+      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ]
