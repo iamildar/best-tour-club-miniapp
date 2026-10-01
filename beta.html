@@ -385,9 +385,10 @@ function mergeList(local, remote){
   local.forEach(function(x){ if(recent(x.id) && !remote.some(function(r){ return r.id === x.id; })) out.push(x); });
   return out.filter(function(x){ return !x._deleted && !deletedIds[x.id]; });
 }
-// Обычно — с Pages; когда ждём текст от Бестика — свежий из GitHub через мостик.
-function fetchStatus(fresh){
-  if(fresh && inTg){
+// Внутри Telegram — всегда свежий файл из GitHub через мостик: Pages обновляется
+// с задержкой до 5 минут, и Лена видела бы старый план. Pages — запасной путь.
+function fetchStatus(){
+  if(inTg){
     return fetch(BRIDGE_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'status_get', initData: tg.initData})})
       .then(function(r){ return r.json(); }).then(function(d){ if(!d.ok) throw new Error('bridge'); return d.status; })
       .catch(function(){ return fetch('./status.json?t=' + Date.now()).then(function(r){ return r.json(); }); });
@@ -395,7 +396,7 @@ function fetchStatus(fresh){
   return fetch('./status.json?t=' + Date.now()).then(function(r){ return r.json(); });
 }
 function loadStatus(fresh){
-  return fetchStatus(fresh || Object.keys(pending).length > 0).then(function(d){
+  return fetchStatus().then(function(d){
     // Pages может отдать файл старше уже полученного из GitHub — такой не берём.
     var stamp = function(x){ return String((x && x.updated_at) || '').slice(0, 24); };
     if(stamp(STATUS) && stamp(d) && stamp(d) < stamp(STATUS)) return;
