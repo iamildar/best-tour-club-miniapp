@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T18:14:34.109Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T18:15:45.477Z (уборка после самопроверки)",
   "queue": [],
   "ideas": [
     {
@@ -239,7 +239,7 @@
       "kind": "carousel",
       "format": "4:5",
       "packId": "mupusn9quf2c",
-      "planId": "mupuquoq9rrx",
+      "planId": "",
       "tour": "Озеро Башкара + ледник Шхельда",
       "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
       "ready": false,
@@ -342,7 +342,7 @@
       "kind": "carousel",
       "format": "9:16",
       "packId": "mupusn9quf2c",
-      "planId": "mupuquore9m0",
+      "planId": "",
       "tour": "Озеро Башкара + ледник Шхельда",
       "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
       "ready": false,
@@ -423,7 +423,7 @@
       "kind": "post",
       "format": "4:5",
       "packId": "mupusn9quf2c",
-      "planId": "mupuquorw3hu",
+      "planId": "",
       "tour": "Озеро Башкара + ледник Шхельда",
       "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
       "ready": false,
@@ -472,7 +472,7 @@
       "kind": "carousel",
       "format": "4:5",
       "packId": "mupumkpekvyg",
-      "planId": "mupuhmj5qu6b",
+      "planId": "",
       "tour": "Грозный + озеро Казеной Ам",
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "ready": false,
@@ -575,7 +575,7 @@
       "kind": "carousel",
       "format": "9:16",
       "packId": "mupumkpekvyg",
-      "planId": "mupuhmj51gxr",
+      "planId": "",
       "tour": "Грозный + озеро Казеной Ам",
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "ready": false,
@@ -656,7 +656,7 @@
       "kind": "reel",
       "format": "4:5",
       "packId": "mupumkpekvyg",
-      "planId": "mupuhmj5urd6",
+      "planId": "",
       "tour": "Грозный + озеро Казеной Ам",
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "ready": false,
@@ -723,7 +723,7 @@
       "kind": "post",
       "format": "4:5",
       "packId": "mupumkpekvyg",
-      "planId": "mupuhmj5ufq6",
+      "planId": "",
       "tour": "Грозный + озеро Казеной Ам",
       "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
       "ready": false,
@@ -772,7 +772,7 @@
       "kind": "carousel",
       "format": "4:5",
       "packId": "mupugo0cdkfy",
-      "planId": "mupueloqvv9t",
+      "planId": "",
       "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "ready": false,
@@ -908,7 +908,7 @@
       "kind": "carousel",
       "format": "9:16",
       "packId": "mupugo0cdkfy",
-      "planId": "mupueloqitiu",
+      "planId": "",
       "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "ready": false,
@@ -995,7 +995,7 @@
       "kind": "post",
       "format": "4:5",
       "packId": "mupugo0cdkfy",
-      "planId": "mupueloq931b",
+      "planId": "",
       "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "ready": false,
@@ -1044,7 +1044,7 @@
       "kind": "avito",
       "format": "4:5",
       "packId": "mupugo0cdkfy",
-      "planId": "mupueloqcslg",
+      "planId": "",
       "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "ready": false,
@@ -1718,175 +1718,6 @@
       "status": "Готово",
       "textId": "",
       "note": "до 14500 ₽ (подтверждено каталогом)"
-    },
-    {
-      "id": "mupueloqvv9t",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
-      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
-      "status": "Опубликовано",
-      "textId": "mupugo0c3w7l",
-      "note": ""
-    },
-    {
-      "id": "mupueloqitiu",
-      "date": "2026-10-03",
-      "platforms": [
-        "Instagram",
-        "VK"
-      ],
-      "format": "Сторис",
-      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
-      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
-      "status": "Готово",
-      "textId": "mupugo0cv2fg",
-      "note": ""
-    },
-    {
-      "id": "mupueloq931b",
-      "date": "2026-10-02",
-      "platforms": [
-        "VK",
-        "OK",
-        "Telegram",
-        "MAX",
-        "Threads"
-      ],
-      "format": "Пост",
-      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
-      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
-      "status": "Готово",
-      "textId": "mupugo0cz2by",
-      "note": ""
-    },
-    {
-      "id": "mupueloqcslg",
-      "date": "2026-10-02",
-      "platforms": [
-        "Avito"
-      ],
-      "format": "Объявление",
-      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
-      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
-      "status": "Готово",
-      "textId": "mupugo0c0rvi",
-      "note": ""
-    },
-    {
-      "id": "mupuhmj5qu6b",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Грозный + озеро Казеной Ам",
-      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
-      "status": "Опубликовано",
-      "textId": "mupumkpfsg21",
-      "note": ""
-    },
-    {
-      "id": "mupuhmj51gxr",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK"
-      ],
-      "format": "Сторис",
-      "tour": "Грозный + озеро Казеной Ам",
-      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
-      "status": "Готово",
-      "textId": "mupumkpfi28n",
-      "note": ""
-    },
-    {
-      "id": "mupuhmj5urd6",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK"
-      ],
-      "format": "Рилс",
-      "tour": "Грозный + озеро Казеной Ам",
-      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
-      "status": "Готово",
-      "textId": "mupumkpfsegq",
-      "note": ""
-    },
-    {
-      "id": "mupuhmj5ufq6",
-      "date": "2026-10-02",
-      "platforms": [
-        "VK",
-        "OK",
-        "Telegram",
-        "MAX",
-        "Threads"
-      ],
-      "format": "Пост",
-      "tour": "Грозный + озеро Казеной Ам",
-      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya",
-      "status": "Готово",
-      "textId": "mupumkpf4y70",
-      "note": ""
-    },
-    {
-      "id": "mupuquoq9rrx",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK",
-        "OK"
-      ],
-      "format": "Карусель",
-      "tour": "Озеро Башкара + ледник Шхельда",
-      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
-      "status": "Опубликовано",
-      "textId": "mupusn9q6la3",
-      "note": ""
-    },
-    {
-      "id": "mupuquore9m0",
-      "date": "2026-10-02",
-      "platforms": [
-        "Instagram",
-        "VK"
-      ],
-      "format": "Сторис",
-      "tour": "Озеро Башкара + ледник Шхельда",
-      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
-      "status": "Готово",
-      "textId": "mupusn9rqtzx",
-      "note": ""
-    },
-    {
-      "id": "mupuquorw3hu",
-      "date": "2026-10-02",
-      "platforms": [
-        "VK",
-        "OK",
-        "Telegram",
-        "MAX",
-        "Threads"
-      ],
-      "format": "Пост",
-      "tour": "Озеро Башкара + ледник Шхельда",
-      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
-      "status": "Готово",
-      "textId": "mupusn9r6y2s",
-      "note": ""
     }
-  ],
-  "checklist_today": {
-    "date": "2026-10-02",
-    "done": []
-  }
+  ]
 }
