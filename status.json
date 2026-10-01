@@ -40,5 +40,206 @@
   ],
   "checklist_date": null,
   "checklist": [],
-  "bot_name": "Бестик"
+  "bot_name": "Бестик",
+  "upcoming": [
+    {
+      "start": "2026-10-01",
+      "when": "с 01 по 04 октября",
+      "tour": "Авторский тур по Восточной и Западной Абхазии",
+      "napr": "Абхазия",
+      "days": "4 дня",
+      "price": "до 19 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya"
+    },
+    {
+      "start": "2026-10-01",
+      "when": "с 01 по 04 октября",
+      "tour": "Горный Дагестан + Грозный",
+      "napr": "Дагестан, Чеченская республика",
+      "days": "4 дня",
+      "price": "до 26 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya"
+    },
+    {
+      "start": "2026-10-01",
+      "when": "с 01 по 04 октября",
+      "tour": "Курортные города: Гагры, Новый Афон, Пицунда, Черниговка, Рица",
+      "napr": "Абхазия",
+      "days": "4 дня",
+      "price": "до 19 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/kurortnye-goroda-gagry-novyj-afon-picunda-chernigovka-rica-4-dnya"
+    },
+    {
+      "start": "2026-10-01",
+      "when": "с 01 по 04 октября",
+      "tour": "Тур в Грузию: Тбилиси + Кахетия",
+      "napr": "Грузия",
+      "days": "4 дня",
+      "price": "до 29 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-kahetiya"
+    },
+    {
+      "start": "2026-10-02",
+      "when": "с 2 по 8 октября",
+      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
+      "napr": "Грузия",
+      "days": "7 дней",
+      "price": "от 44 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya"
+    },
+    {
+      "start": "2026-10-02",
+      "when": "с 2 по 4 октября",
+      "tour": "Тур по трем республикам Кавказа: Осетия, Ингушетия, КБР (3 дня) автобус",
+      "napr": "Северная-Осетия, Ингушетия, КБР, Чечня",
+      "days": "3 дня",
+      "price": "до 21 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-po-trem-respublikam-kavkaza-osetiya-ingushetiya-kbr-3-dnya-avtobus"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "с 3 по 4 октября",
+      "tour": "Грозный + озеро Казеной Ам",
+      "napr": "Без направления",
+      "days": "2 дня",
+      "price": "до 12 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/groznyj-ozero-kazenoj-am-2-dnya"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "3 октября",
+      "tour": "Кисловодск и Медовые водопады",
+      "napr": "Ставропольский край",
+      "days": "",
+      "price": "от 2 700 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "с 3 по 4 октября",
+      "tour": "Озеро Башкара + ледник Шхельда",
+      "napr": "Кабардино-Балкария",
+      "days": "2 дня \\ 1 ночь",
+      "price": "до 13 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "с 3 по 4 октября",
+      "tour": "Плато Бермамыт + Джилы Су",
+      "napr": "Кабардино-Балкария",
+      "days": "2 дня",
+      "price": "от 9 400 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/plato-bermamyt-dzhily-su-2-dnya"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "с 3 по 4 октября",
+      "tour": "Северная Осетия и горная Ингушетия",
+      "napr": "Северная-Осетия, Ингушетия",
+      "days": "2 дня",
+      "price": "до 13 900 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/severnaya-osetiya-i-gornaya-ingushetiya-2-dnya"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "с 3 по 4 октября",
+      "tour": "Тур по КЧР: Бадукские озера + Суфруджинские водопады",
+      "napr": "Карачаево-Черкесия",
+      "days": "2 дня\\1 ночь",
+      "price": "до 12 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-po-kchr-badukskie-ozera-sufrudzhinskie-vodopady"
+    },
+    {
+      "start": "2026-10-03",
+      "when": "с 3 по 4 октября",
+      "tour": "Тур по лучшим местам КБР. Пять ущелий",
+      "napr": "Кабардино-Балкария",
+      "days": "",
+      "price": "до 13 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-po-luchshim-mestam-kbr-pyat-uschelij-2-dnya"
+    },
+    {
+      "start": "2026-10-04",
+      "when": "4 октября",
+      "tour": "Домбай",
+      "napr": "Карачаево-Черкесия",
+      "days": "",
+      "price": "от 2 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/dombaj-1-den"
+    },
+    {
+      "start": "2026-10-05",
+      "when": "с 5 по 11 октября",
+      "tour": "Азербайджан, от Каспия до Кавказских гор за 7 дней",
+      "napr": "[уточнить]",
+      "days": "",
+      "price": "от 75 000 ₽",
+      "link": "https://best-tour-club.ru/azerbajdzhan-ot-kaspiya-do-kavkazskih-gor-za-7-dnej"
+    },
+    {
+      "start": "2026-10-06",
+      "when": "с 06 по 11 октября",
+      "tour": "Тур в Армению + Грузия 6 дней",
+      "napr": "Грузия, Армения",
+      "days": "6 дней",
+      "price": "от 43 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-armeniyu-gruziya-6-dnej"
+    },
+    {
+      "start": "2026-10-06",
+      "when": "с 06 по 10 октября",
+      "tour": "Тур в Турцию в Стамбул: откройте магию Востока",
+      "napr": "Турция",
+      "days": "5 дней",
+      "price": "до 42 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-turciyu-v-stambul-otkrojte-magiyu-vostoka"
+    },
+    {
+      "start": "2026-10-07",
+      "when": "с 7 по 11 октября, С 4 по 8 ноября",
+      "tour": "Тур в Грузию: Тбилиси, Кахетия, Боржоми",
+      "napr": "Грузия",
+      "days": "5 дней",
+      "price": "до 35 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-gruziyu-tbilisi-kahetiya-borzhomi-5-dnej"
+    },
+    {
+      "start": "2026-10-08",
+      "when": "с 08 по 11 октября",
+      "tour": "Авторский тур по Восточной и Западной Абхазии",
+      "napr": "Абхазия",
+      "days": "4 дня",
+      "price": "до 19 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya"
+    },
+    {
+      "start": "2026-10-08",
+      "when": "с 08 по 11 октября",
+      "tour": "Вокруг Эльбруса за 4 дня",
+      "napr": "Кабардино-Балкария",
+      "days": "4 дня",
+      "price": "до 26 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/vokrug-elbrusa-za-4-dnya"
+    },
+    {
+      "start": "2026-10-08",
+      "when": "с 08 по 11 октября",
+      "tour": "Горный Дагестан",
+      "napr": "Дагестан",
+      "days": "4 дня",
+      "price": "до 26 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-4-dnya"
+    },
+    {
+      "start": "2026-10-08",
+      "when": "с 08 по 11 октября",
+      "tour": "Тур в южный Дагестан: Дербент",
+      "napr": "Дагестан",
+      "days": "4 дня",
+      "price": "до 26 000 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-yuzhnyj-dagestan-derbent-4-dnya"
+    }
+  ],
+  "upcoming_updated": "2026-10-01"
 }

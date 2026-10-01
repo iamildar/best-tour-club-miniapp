@@ -403,6 +403,17 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .tab-btn span{font-size:9px;font-weight:700;white-space:nowrap;}
   .tab-btn.active{color:var(--accent);}
 
+  /* Ближайшие заезды на неделе */
+  .upc-list{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px;}
+  html.in-tg .upc-list{grid-template-columns:1fr 1fr;}
+  @media (max-width:559px){ html.in-tg .upc-list{grid-template-columns:1fr;} }
+  .upc-item{display:flex;gap:11px;align-items:center;background:var(--surface);border-radius:var(--radius-md);padding:11px 12px;box-shadow:var(--shadow);cursor:pointer;text-align:left;border:none;width:100%;color:var(--ink);font-family:inherit;}
+  .upc-date{flex:none;width:46px;text-align:center;border-radius:12px;background:var(--accent-soft, var(--surface-3));padding:6px 0;}
+  .upc-date b{display:block;font-size:17px;font-family:var(--font-display);color:var(--accent);line-height:1.1;}
+  .upc-date small{display:block;font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.3px;}
+  .upc-text{flex:1;min-width:0;}
+  .upc-text b{display:block;font-size:12.8px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+  .upc-text small{display:block;font-size:11px;color:var(--ink-soft);margin-top:3px;}
   /* Задачи для Мака */
   .mac-status{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--surface-3);color:var(--ink-soft);margin:-4px 0 12px;}
   .mac-status i{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);display:block;}
@@ -445,8 +456,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
           <div class="greet-line" id="greetLine">—</div>
           <div class="hero-stats">
             <div class="hero-stat"><b id="statQueue">0</b><span>в очереди</span></div>
-            <div class="hero-stat"><b id="statAuto">0</b><span>опубликует сам</span></div>
-            <div class="hero-stat"><b id="statManual">0</b><span>нужны руки</span></div>
+            <div class="hero-stat"><b id="statAuto">0</b><span>через Recur</span></div>
+            <div class="hero-stat"><b id="statManual">0</b><span>вручную</span></div>
           </div>
         </div>
 
@@ -474,6 +485,11 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
             <b id="tipLabel">Заметил</b>
             <p id="tipText">—</p>
           </div>
+        </div>
+
+        <div id="homeUpcomingWrap" style="display:none;">
+          <div class="section-label">Ближайшие заезды на неделе <small id="homeUpcomingLabel"></small></div>
+          <div class="upc-list" id="homeUpcoming"></div>
         </div>
       </section>
 
@@ -1034,12 +1050,12 @@ document.getElementById('colorModeSeg').addEventListener('click', function(e){
 });
 
 var PLATFORMS = {
-  vk:{label:'ВКонтакте', mono:'VK', color:'#0077FF', auto:true},
-  ok:{label:'Одноклассники', mono:'ОК', color:'#F7900A', auto:true},
-  instagram:{label:'Instagram', mono:'IG', color:'#C1387E', auto:false},
+  vk:{label:'ВКонтакте', mono:'VK', color:'#0077FF', auto:false},
+  ok:{label:'Одноклассники', mono:'ОК', color:'#F7900A', auto:false},
+  instagram:{label:'Instagram', mono:'IG', color:'#C1387E', auto:true}, // auto = выходит через Recur
   threads:{label:'Threads', mono:'Th', color:'#2B2B2B', auto:false},
-  avito:{label:'Avito', mono:'Av', color:'#3FA9F5', auto:true},
-  vkmarket:{label:'VK Маркетплейс', mono:'VM', color:'#3F63E0', auto:true}
+  avito:{label:'Avito', mono:'Av', color:'#3FA9F5', auto:false},
+  vkmarket:{label:'VK Маркетплейс', mono:'VM', color:'#3F63E0', auto:false}
 };
 var CLIENTS = [
   {id:'besttour', name:'Best Tour Club', niche:'Турагентство · Краснодар', color:'#146B69', logo:'assets/logos/besttour-icon.svg', platforms:['vk','ok','instagram','threads','avito']}
@@ -1165,7 +1181,7 @@ function renderPlatformStatus(){
     var p = PLATFORMS[k];
     return '<div class="pf-row"><div class="pf-badge" style="background:'+p.color+'">'+p.mono+'</div>'
       + '<div class="pf-name">'+p.label+'</div>'
-      + '<div class="pf-mode">'+(p.auto?ICON_AUTO+'автопубликация':ICON_MANUAL+'вручную')+'</div></div>';
+      + '<div class="pf-mode">'+(p.auto?ICON_AUTO+'через Recur':ICON_MANUAL+'вручную')+'</div></div>';
   }).join('');
 }
 
@@ -1249,7 +1265,7 @@ function renderHome(){
   document.getElementById('statAuto').textContent = auto;
   document.getElementById('statManual').textContent = manual;
   var c = activeClient();
-  document.getElementById('greetLine').textContent = 'По клиенту «'+c.name+'» сегодня: '+items.length+' публикаций в очереди'+(manual?', '+manual+' нужно выложить руками':'.');
+  document.getElementById('greetLine').textContent = 'По клиенту «'+c.name+'» сегодня: '+items.length+' публикаций в очереди'+(manual?', '+manual+' выложить вручную':'.');
 
   var wrap = document.getElementById('homeQueue');
   var today = items.slice(0,4);
@@ -1266,7 +1282,7 @@ function queueItemHTML(q){
   return '<div class="queue-item" data-id="'+q.id+'">'
     + '<div class="pf-badge" style="background:'+p.color+'">'+p.mono+'</div>'
     + '<div class="queue-info"><b>'+q.title+'</b>'
-    + '<div class="meta"><span>'+cl.name+'</span>·<span>'+q.when+'</span>·<span class="auto-tag">'+(p.auto?'авто':'вручную')+'</span></div></div>'
+    + '<div class="meta"><span>'+cl.name+'</span>·<span>'+q.when+'</span>·<span class="auto-tag">'+(p.auto?'Recur':'вручную')+'</span></div></div>'
     + '<div class="status-pill status-'+q.status+'">'+STATUS_LABEL[q.status]+'</div>'
     + '</div>';
 }
@@ -1612,7 +1628,7 @@ function renderAnalytics(){
   var ICON_LOOP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>';
   var insights = [];
   if(topPf){ insights.push({ic:ICON_TREND, text:'Больше всего публикаций уходит в '+PLATFORMS[topPf].label+' ('+byPf[topPf]+') — остальные площадки стоит подтянуть.'}); }
-  if(manualLeft.length){ insights.push({ic:ICON_HAND, text:manualLeft.length+' публикаци'+(manualLeft.length===1?'я':'и')+' ждут ручной выкладки — в основном Instagram/Threads.'}); }
+  if(manualLeft.length){ insights.push({ic:ICON_HAND, text:manualLeft.length+' публикаци'+(manualLeft.length===1?'я':'и')+' ждут ручной выкладки — ВК, ОК, Авито или Threads.'}); }
   insights.push({ic:ICON_LOOP, text:'Контент цикличен по сезону — готовые шаблоны есть в «Библиотеке».'});
 
   document.getElementById('insightsList').innerHTML = insights.map(function(i){
@@ -1756,12 +1772,34 @@ function loadLiveStatus(){
         IDEAS.besttour = data.ideas;
       }
       renderQueueList(); renderHome(); renderIdeaChips(); renderIdeaCard(); renderAnalytics();
+      renderUpcoming(data.upcoming);
       var upd = document.getElementById('liveUpdatedAt');
       if(upd && data.updated_at){ upd.textContent = 'Обновлено: ' + data.updated_at; }
     })
     .catch(function(){ /* тихо остаёмся на текущих данных, приложение не должно падать без интернета */ });
 }
 loadLiveStatus();
+
+// ---- Ближайшие заезды на неделе (status.json.upcoming, готовит Мак из каталога) ----
+var MONTH_SHORT = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+function renderUpcoming(list){
+  var wrap = document.getElementById('homeUpcomingWrap');
+  if(!Array.isArray(list)){ wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  document.getElementById('homeUpcomingLabel').textContent = list.length ? list.length + ' шт.' : '';
+  var box = document.getElementById('homeUpcoming');
+  if(!list.length){ box.innerHTML = '<div class="task-empty">На этой неделе заездов нет.</div>'; return; }
+  box.innerHTML = list.map(function(u, i){
+    var d = new Date(u.start + 'T00:00:00');
+    return '<button class="upc-item" data-upc="'+i+'"><div class="upc-date"><b>'+d.getDate()+'</b><small>'+MONTH_SHORT[d.getMonth()]+'</small></div>'
+      + '<div class="upc-text"><b>'+escHtml(u.tour)+'</b><small>'+escHtml(u.when)+' · '+escHtml(u.price)+'</small></div></button>';
+  }).join('');
+  box.onclick = function(e){
+    var b = e.target.closest('.upc-item'); if(!b) return;
+    var u = list[+b.dataset.upc]; if(!u || !u.link) return;
+    if(tg && typeof tg.openLink === 'function') tg.openLink(u.link); else window.open(u.link, '_blank');
+  };
+}
 
 // ---- Задачи для Мака (бот bestik-bot: очередь, пока Мак выключен) ----
 var BOT_APP_URL = 'https://bestik-bot.thebikinya.workers.dev/app';
