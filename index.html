@@ -117,6 +117,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .app-header{flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
   .mascot-avatar{width:34px;height:34px;flex:none;}
   .mascot-avatar img{width:100%;height:100%;object-fit:contain;display:block;animation:mascotBob 2.6s ease-in-out infinite;}
+  /* В светлой теме белый бультерьер сливается с фоном — подкладываем цветной кружок */
+  .device:not(.dark) .mascot-avatar{background:var(--accent);border-radius:50%;padding:3px;box-sizing:border-box;}
   @keyframes mascotBob{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-2px) rotate(-2deg);}}
   .app-header .htext{flex:1;min-width:0;}
   .app-header .htext b{font-family:var(--font-display);font-weight:800;font-size:14.5px;display:flex;align-items:baseline;gap:2px;}
@@ -743,7 +745,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
 
         <div class="section-label">Светлая / тёмная</div>
         <div class="mode-seg" id="colorModeSeg">
-          <button data-mode="auto" class="active">Как в системе</button>
+          <button data-mode="auto" class="active">Авто</button>
           <button data-mode="light">Светлая</button>
           <button data-mode="dark">Тёмная</button>
         </div>
@@ -977,10 +979,24 @@ var THEMES = [
   {id:'midnight',  name:'Полночь',            colors:['#5b7cff','#0d1020','#1b2036'], soon:true},
   {id:'forest',    name:'Лес',                colors:['#3f8f5e','#1c2b22','#eef4ec'], soon:true}
 ];
-var themeId = localStorage.getItem('cc_theme') || 'teal';
+// Один раз сбрасываем сохранённую тему на новые значения по умолчанию
+// (01.10.2026: «Контент.Компаньон» + «Авто»).
+try {
+  if(localStorage.getItem('cc_theme_v') !== '2'){
+    localStorage.removeItem('cc_theme'); localStorage.removeItem('cc_color_mode');
+    localStorage.setItem('cc_theme_v', '2');
+  }
+} catch(e){}
+var themeId = localStorage.getItem('cc_theme') || 'companion';
 var colorMode = localStorage.getItem('cc_color_mode') || 'auto';
 
-function systemPrefersDark(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+// «Авто»: внутри Telegram — тема самого Telegram, вне его — системная.
+function tgApp(){ var w = window.Telegram && window.Telegram.WebApp; return w && w.initData ? w : null; }
+function systemPrefersDark(){
+  var w = tgApp();
+  if(w && w.colorScheme) return w.colorScheme === 'dark';
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
 function applyTheme(){
   var device = document.getElementById('device');
   device.setAttribute('data-theme', themeId);
@@ -991,6 +1007,9 @@ if(window.matchMedia){
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
     if(colorMode==='auto') applyTheme();
   });
+}
+if(tgApp() && typeof tgApp().onEvent === 'function'){
+  tgApp().onEvent('themeChanged', function(){ if(colorMode==='auto') applyTheme(); });
 }
 function renderThemeGrid(){
   document.getElementById('themeGrid').innerHTML = THEMES.map(function(t){
@@ -1216,9 +1235,10 @@ function renderFocus(){
   }
 }
 var HOME_TIPS = [
-  'Instagram и Threads всё ещё публикуются вручную — Бестик пришлёт готовый текст и напомнит, а кнопку жмёте вы.',
-  'У вас есть шаблоны в библиотеке для этого направления — можно не писать с нуля.',
-  'Напишите Бестику /idei — он подберёт туры с ближайшими заездами и зацепки для постов.'
+  'Instagram и Threads выкладываются вручную: попросите Бестика в чате — он напишет текст, а опубликуете вы.',
+  'Готовые шаблоны лежат в «Контент» → «Библиотека» — можно не писать с нуля.',
+  'Напишите Бестику /idei — он подберёт туры с ближайшими заездами и зацепки для постов.',
+  'Мак выключен? Кнопка «📥 В очередь для Мака» под ответом бота сохранит задачу — она появится в «Ещё» → «Задачи для Мака».'
 ];
 function renderHome(){
   updateGreeting();
@@ -1593,7 +1613,7 @@ function renderAnalytics(){
   var insights = [];
   if(topPf){ insights.push({ic:ICON_TREND, text:'Больше всего публикаций уходит в '+PLATFORMS[topPf].label+' ('+byPf[topPf]+') — остальные площадки стоит подтянуть.'}); }
   if(manualLeft.length){ insights.push({ic:ICON_HAND, text:manualLeft.length+' публикаци'+(manualLeft.length===1?'я':'и')+' ждут ручной выкладки — в основном Instagram/Threads.'}); }
-  insights.push({ic:ICON_LOOP, text:'Контент цикличен по сезону — загляните в «Библиотеку», там уже есть шаблоны под текущие направления.'});
+  insights.push({ic:ICON_LOOP, text:'Контент цикличен по сезону — готовые шаблоны есть в «Библиотеке».'});
 
   document.getElementById('insightsList').innerHTML = insights.map(function(i){
     return '<div class="insight-row"><span class="ic">'+i.ic+'</span><p>'+i.text+'</p></div>';
@@ -1706,6 +1726,7 @@ document.querySelectorAll('[data-switch]').forEach(function(sw){
 });
 
 applyTheme();
+document.querySelectorAll('#colorModeSeg button').forEach(function(b){ b.classList.toggle('active', b.dataset.mode===colorMode); });
 applyAssistantName();
 renderNamePicker();
 renderCharGrid();
