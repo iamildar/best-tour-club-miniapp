@@ -1,5 +1,5 @@
 {
-  "updated_at": "26.09.2026 (токен ротирован, чистый старт)",
+  "updated_at": "2026-10-01T14:29:23.655Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -241,5 +241,68 @@
       "link": "https://best-tour-club.ru/vse-tury/tur-v-yuzhnyj-dagestan-derbent-4-dnya"
     }
   ],
-  "upcoming_updated": "2026-10-01"
+  "upcoming_updated": "2026-10-01",
+  "carousels": [
+    {
+      "id": "mupmrco8tl9n",
+      "tour": "Дигория + долина тысячи водопадов",
+      "link": "https://best-tour-club.ru/vse-tury/digoriya-dolina-tysyachi-vodopadov-2-dnya",
+      "format": "4:5",
+      "ready": false,
+      "created": "2026-10-01T14:29:22.280Z",
+      "source": "bestik",
+      "slides": [
+        {
+          "id": "mupmrco8hlsd",
+          "layers": [
+            {
+              "id": "mupmrco8wa5w",
+              "role": "date",
+              "text": "10–11 октября"
+            },
+            {
+              "id": "mupmrco81wht",
+              "role": "title",
+              "text": "ДИГОРИЯ: ДОЛИНА ВОДОПАДОВ"
+            },
+            {
+              "id": "mupmrco8cv2c",
+              "role": "caption",
+              "text": "Задалеск, «Замок-фрегат» в Ханазе, каньон Ахсинта, водопад Три сестры — до 13 900 ₽"
+            }
+          ]
+        },
+        {
+          "id": "mupmrco80k07",
+          "layers": [
+            {
+              "id": "mupmrco8ird9",
+              "role": "text",
+              "text": "День 1: древние селения Задалеск, Махческ, Галиат и Фаснал.\nДом-музей Наны Задалеской, башня Абисаловых, каньон Ахсинта."
+            }
+          ]
+        },
+        {
+          "id": "mupmrco81p6y",
+          "layers": [
+            {
+              "id": "mupmrco888i0",
+              "role": "text",
+              "text": "День 2: долина реки Хересидон — край тысячи водопадов.\nТри сестры, Байради, Чертова Мельница, Галдоридон."
+            }
+          ]
+        },
+        {
+          "id": "mupmrco8sp7j",
+          "layers": [
+            {
+              "id": "mupmrco8crtc",
+              "role": "cta",
+              "text": "Напишите нам — расскажем всё о туре и забронируем места"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
