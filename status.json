@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:28:02.316Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:28:20.940Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -912,6 +912,22 @@
       "link": "https://best-tour-club.ru/vse-tury/ozero-bashkara-lednik-shhelda-2-dnya-2-dnya",
       "status": "Опубликовано",
       "textId": "mupt3rooufvp",
+      "note": ""
+    },
+    {
+      "id": "mupt5hrf5ejt",
+      "date": "2026-10-03",
+      "platforms": [
+        "VK",
+        "OK",
+        "Telegram",
+        "Threads"
+      ],
+      "format": "Пост",
+      "tour": "Плато Бермамыт + Джилы Су",
+      "link": "https://best-tour-club.ru/vse-tury/plato-bermamyt-dzhily-su-2-dnya",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ]
