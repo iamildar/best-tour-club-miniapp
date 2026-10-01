@@ -539,9 +539,10 @@ $('sheet').addEventListener('click', function(e){
     }
     var item = {id: newId(), date: draft.date, platforms: draft.platforms.slice(), format: draft.format, tour: draft.tour, link: draft.link, status: 'Запланировано', textId: '', note: ''};
     var make = draft.makeNow;
-    PLAN.push(item); closeSheet(); renderWeek();
-    savePlan(item).then(function(ok){ if(ok && make) requestText(item); else if(ok) toast('Добавлено в план'); });
-    if(item.date !== TODAY) toast('Добавлено на ' + dayTitle(item.date).toLowerCase());
+    PLAN.push(item); closeSheet();
+    // Сохранение в план и заказ текста — параллельно: отклик сразу, без ожидания GitHub.
+    savePlan(item);
+    if(make) requestText(item); else { renderWeek(); toast('Добавлено в план' + (item.date !== TODAY ? ' на ' + dayTitle(item.date).toLowerCase() : '')); }
   }
 });
 $('sheet').addEventListener('change', function(e){ if(e.target.id === 'makeNow' && draft) draft.makeNow = e.target.checked; });
