@@ -804,6 +804,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
 
 <script>
 var tg = window.Telegram ? window.Telegram.WebApp : null;
+// Данные из status.json — в HTML только через escH (защита от внедрения кода).
+function escH(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 if(tg){
   tg.ready();
   tg.expand();
@@ -1283,10 +1285,10 @@ function renderHome(){
 function queueItemHTML(q){
   var p = PLATFORMS[q.pf];
   var cl = CLIENTS.find(function(c){return c.id===q.client;});
-  return '<div class="queue-item" data-id="'+q.id+'">'
+  return '<div class="queue-item" data-id="'+escH(q.id)+'">'
     + '<div class="pf-badge" style="background:'+p.color+'">'+p.mono+'</div>'
-    + '<div class="queue-info"><b>'+q.title+'</b>'
-    + '<div class="meta"><span>'+cl.name+'</span>·<span>'+q.when+'</span>·<span class="auto-tag">'+(p.auto?'Recur':'вручную')+'</span></div></div>'
+    + '<div class="queue-info"><b>'+escH(q.title)+'</b>'
+    + '<div class="meta"><span>'+cl.name+'</span>·<span>'+escH(q.when)+'</span>·<span class="auto-tag">'+(p.auto?'Recur':'вручную')+'</span></div></div>'
     + '<div class="status-pill status-'+q.status+'">'+STATUS_LABEL[q.status]+'</div>'
     + '</div>';
 }
@@ -1348,8 +1350,8 @@ function renderIdeaCard(){
   if(!idea){
     card.innerHTML = '<p style="color:var(--ink-soft);font-size:12.8px;margin:auto;">В этой категории пока пусто — выберите другую 🙂</p>';
   } else {
-    card.innerHTML = '<div class="idea-badges"><span class="badge format">'+idea.fmt+'</span><span class="badge cat">'+idea.cat+'</span></div>'
-      + '<h3>'+idea.title+'</h3><p class="outline">'+idea.outline+'</p><div class="cta-line">'+idea.cta+'</div>';
+    card.innerHTML = '<div class="idea-badges"><span class="badge format">'+escH(idea.fmt)+'</span><span class="badge cat">'+escH(idea.cat)+'</span></div>'
+      + '<h3>'+escH(idea.title)+'</h3><p class="outline">'+escH(idea.outline)+'</p><div class="cta-line">'+escH(idea.cta)+'</div>';
   }
   document.getElementById('ideaCounter').textContent = 'Идея '+(list.length?ideaState.idx+1:0)+' из '+list.length;
 }
@@ -1357,7 +1359,7 @@ function renderSaved(){
   document.getElementById('savedCountInline').textContent = ideaState.saved.length;
   document.getElementById('ideaSavedCount').textContent = 'Сохранено: '+ideaState.saved.length;
   document.getElementById('savedList').innerHTML = ideaState.saved.map(function(idea){
-    return '<div class="saved-item"><b>'+idea.title+'</b><span>'+idea.fmt+' · '+idea.cat+'</span></div>';
+    return '<div class="saved-item"><b>'+escH(idea.title)+'</b><span>'+escH(idea.fmt)+' · '+escH(idea.cat)+'</span></div>';
   }).join('') || '<div class="saved-item"><span>Пока пусто — сохраните понравившиеся идеи выше.</span></div>';
 }
 document.getElementById('ideaChips').addEventListener('click', function(e){
