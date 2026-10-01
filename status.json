@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:32:30.717Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:33:04.252Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -243,6 +243,119 @@
   ],
   "upcoming_updated": "2026-10-01",
   "carousels": [
+    {
+      "id": "muptbjq94x48",
+      "kind": "carousel",
+      "planId": "mupta8o5koxu",
+      "tour": "Северная Осетия и горная Ингушетия",
+      "link": "https://best-tour-club.ru/vse-tury/severnaya-osetiya-i-gornaya-ingushetiya-2-dnya",
+      "format": "4:5",
+      "ready": false,
+      "created": "2026-10-01T17:33:02.241Z",
+      "source": "bestik",
+      "slides": [
+        {
+          "id": "muptbjq9qyde",
+          "layers": [
+            {
+              "id": "muptbjq96lo0",
+              "role": "date",
+              "label": "",
+              "text": "3–4 октября"
+            },
+            {
+              "id": "muptbjq9ge3e",
+              "role": "title",
+              "label": "",
+              "text": "СЕВЕРНАЯ ОСЕТИЯ И ИНГУШЕТИЯ"
+            },
+            {
+              "id": "muptbjq97uli",
+              "role": "caption",
+              "label": "",
+              "text": "Куртатинское ущелье, Даргавс, Вовнушки, Цей-Лоам — до 13 900 ₽"
+            }
+          ]
+        },
+        {
+          "id": "muptbjq98z33",
+          "layers": [
+            {
+              "id": "muptbjq9tija",
+              "role": "text",
+              "label": "",
+              "text": "День 1: Куртатинское ущелье и зеркальный барс, Кадаргаванский каньон и тропа чудес, меч кровников."
+            }
+          ]
+        },
+        {
+          "id": "muptbjq9vmjg",
+          "layers": [
+            {
+              "id": "muptbjq9cktp",
+              "role": "text",
+              "label": "",
+              "text": "Дзивгисская крепость и некрополь, Аланский Свято-Успенский монастырь, старинные башни, буква АЕ."
+            }
+          ]
+        },
+        {
+          "id": "muptbjq9hbhj",
+          "layers": [
+            {
+              "id": "muptbjq91gtj",
+              "role": "text",
+              "label": "",
+              "text": "Аул Даргавс и Даргавский некрополь, Кармадонское ущелье, памятник Бодрову. Ночуем во Владикавказе."
+            }
+          ]
+        },
+        {
+          "id": "muptbjq9qb04",
+          "layers": [
+            {
+              "id": "muptbjq9vydl",
+              "role": "text",
+              "label": "",
+              "text": "День 2: курорт Армхи и канатная дорога, Джейрахское ущелье, башенный комплекс Эрзи."
+            }
+          ]
+        },
+        {
+          "id": "muptbjq9u6jb",
+          "layers": [
+            {
+              "id": "muptbjq95b9k",
+              "role": "text",
+              "label": "",
+              "text": "Перевал Цей-Лоам, башни Вовнушки, храм Тхаба-Ёрды, Эка-Чожинский водопад — и домой."
+            }
+          ]
+        },
+        {
+          "id": "muptbjq9qmhd",
+          "layers": [
+            {
+              "id": "muptbjq9fc95",
+              "role": "text",
+              "label": "",
+              "text": "В стоимость входят проезд туда и обратно, гостиница во Владикавказе, завтрак и сопровождение гида."
+            }
+          ]
+        },
+        {
+          "id": "muptbjq98k56",
+          "layers": [
+            {
+              "id": "muptbjq93dha",
+              "role": "cta",
+              "label": "",
+              "text": "Напишите нам — расскажем всё о туре и забронируем места"
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "mupt3rooufvp",
       "kind": "reel",
@@ -925,8 +1038,8 @@
       "format": "Карусель",
       "tour": "Северная Осетия и горная Ингушетия",
       "link": "https://best-tour-club.ru/vse-tury/severnaya-osetiya-i-gornaya-ingushetiya-2-dnya",
-      "status": "Запланировано",
-      "textId": "",
+      "status": "Готово",
+      "textId": "muptbjq94x48",
       "note": ""
     }
   ]
