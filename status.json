@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:19:25.767Z (обновлено из приложения)",
+  "updated_at": "2026-10-01T17:19:53.424Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -243,6 +243,108 @@
   ],
   "upcoming_updated": "2026-10-01",
   "carousels": [
+    {
+      "id": "mupsulli37p7",
+      "kind": "carousel",
+      "planId": "mupsu0xze4ys",
+      "tour": "Кисловодск и Медовые водопады",
+      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
+      "format": "9:16",
+      "ready": false,
+      "created": "2026-10-01T17:19:51.510Z",
+      "source": "bestik",
+      "slides": [
+        {
+          "id": "mupsullipm0d",
+          "layers": [
+            {
+              "id": "mupsulliycn1",
+              "role": "date",
+              "label": "",
+              "text": "3 октября"
+            },
+            {
+              "id": "mupsulliaeb4",
+              "role": "title",
+              "label": "",
+              "text": "КИСЛОВОДСК И МЕДОВЫЕ ВОДОПАДЫ"
+            },
+            {
+              "id": "mupsulli7f6w",
+              "role": "caption",
+              "label": "",
+              "text": "Гора Кольцо, дегустация варенья, Медовые водопады, парк Кисловодска — до [уточнить]"
+            }
+          ]
+        },
+        {
+          "id": "mupsulliz297",
+          "layers": [
+            {
+              "id": "mupsullizoh5",
+              "role": "text",
+              "label": "",
+              "text": "Начнём с горы «Кольцо» — одного из любимых мест М. Ю. Лермонтова."
+            }
+          ]
+        },
+        {
+          "id": "mupsullith14",
+          "layers": [
+            {
+              "id": "mupsullinvry",
+              "role": "text",
+              "label": "",
+              "text": "По дороге остановимся на дегустации варенья и меда: из моркови, чеснока, имбиря, шишек, кизила."
+            }
+          ]
+        },
+        {
+          "id": "mupsulli9evs",
+          "layers": [
+            {
+              "id": "mupsullippui",
+              "role": "text",
+              "label": "",
+              "text": "Медовые водопады: самый большой падает с 18 метров, рядом — водопад с шести метров и ещё два среди каменных глыб."
+            }
+          ]
+        },
+        {
+          "id": "mupsullidj5v",
+          "layers": [
+            {
+              "id": "mupsullia2rc",
+              "role": "text",
+              "label": "",
+              "text": "Прогуляемся по парку Кисловодска: нарзанная галерея, красные камни."
+            }
+          ]
+        },
+        {
+          "id": "mupsullince4",
+          "layers": [
+            {
+              "id": "mupsullij5az",
+              "role": "text",
+              "label": "",
+              "text": "Поднимемся по канатной дороге на гору Красное солнышко и увидим парк с высоты."
+            }
+          ]
+        },
+        {
+          "id": "mupsullim3tx",
+          "layers": [
+            {
+              "id": "mupsulli7r5s",
+              "role": "cta",
+              "label": "",
+              "text": "Напишите нам — расскажем детали и забронируем место"
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "mupskpmdf69l",
       "kind": "avito",
@@ -728,8 +830,8 @@
       "format": "Сторис",
       "tour": "Кисловодск и Медовые водопады",
       "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
-      "status": "Запланировано",
-      "textId": "",
+      "status": "Готово",
+      "textId": "mupsulli37p7",
       "note": ""
     }
   ]
