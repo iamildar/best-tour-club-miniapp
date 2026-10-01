@@ -485,12 +485,12 @@ function itemCard(it){
     : it.textId ? '<span class="st ready">Текст готов</span>' : '<span class="st">Нужен текст</span>';
   var action = '';
   if(!pub && !post){
-    if(t) action = '<button class="btn" data-open-text="' + it.id + '">Открыть текст</button><button class="btn ghost" data-publish="' + it.id + '">Опубликовано</button>';
+    if(t) action = '<button class="btn" data-open-text="' + esc(it.id) + '">Открыть текст</button><button class="btn ghost" data-publish="' + esc(it.id) + '">Опубликовано</button>';
     else if(it.textId) action = '<button class="btn" disabled>Текст едет в приложение…</button>';
     else if(p) action = '<button class="btn" disabled>' + (p.queued ? 'Ждёт Мака — сделаю, когда включится' : 'Бестик пишет… пришлю в чат') + '</button>';
-    else action = '<button class="btn" data-make="' + it.id + '">Сделать текст</button>';
+    else action = '<button class="btn" data-make="' + esc(it.id) + '">Сделать текст</button>';
   }
-  return '<div class="card pi' + (pub ? ' published' : '') + '"><div class="pi-top"><b>' + esc(it.tour) + '</b><button class="pi-menu" data-menu="' + it.id + '" aria-label="Изменить">⋯</button></div>'
+  return '<div class="card pi' + (pub ? ' published' : '') + '"><div class="pi-top"><b>' + esc(it.tour) + '</b><button class="pi-menu" data-menu="' + esc(it.id) + '" aria-label="Изменить">⋯</button></div>'
     + '<div class="pi-meta"><span>' + esc(it.format) + '</span>·<span>' + esc((it.platforms || []).map(function(x){ return PF_NAME[x] || x; }).join(', ')) + '</span>' + st + '</div>'
     + (it.note ? '<div class="pi-meta">' + esc(it.note) + '</div>' : '')
     + (action ? '<div class="pi-actions">' + action + '</div>' : '') + '</div>';
@@ -757,15 +757,15 @@ function renderTextsList(){
   var items = TEXTS.filter(function(t){ if(!t.packId) return true; if(seen[t.packId]) return false; seen[t.packId] = 1; return true; }).map(function(t){
     if(t.packId){
       var parts = packParts(t.packId), ready = parts.every(function(x){ var p = linkedPlan(x); return p ? p.status === 'Опубликовано' : x.ready; });
-      return '<button class="card text-item" data-text="' + parts[0].id + '"><b><span class="kind' + (ready ? ' ready' : '') + '">' + (ready ? '✓ ' : '') + 'Пакет</span>' + esc(t.tour) + '</b><small>' + parts.map(kindName).join(' · ')
+      return '<button class="card text-item" data-text="' + esc(parts[0].id) + '"><b><span class="kind' + (ready ? ' ready' : '') + '">' + (ready ? '✓ ' : '') + 'Пакет</span>' + esc(t.tour) + '</b><small>' + parts.map(kindName).join(' · ')
         + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '') + '</small></button>';
     }
     var meta = (t.kind === 'avito' ? 'Объявление' : t.kind === 'post' ? 'Тексты для площадок' : t.kind === 'reel' ? 'Сценарий' : (t.format === '9:16' ? 'Сторис 9:16' : 'Пост 4:5') + ' · слайдов: ' + (t.slides || []).length)
       + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '');
-    return '<button class="card text-item" data-text="' + t.id + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? '✓ ' : '') + kindName(t) + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
+    return '<button class="card text-item" data-text="' + esc(t.id) + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? '✓ ' : '') + kindName(t) + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
   }).join('');
   $('textsItems').innerHTML = (items || '<div class="empty">Готовых текстов пока нет. Добавьте тур в план на «Неделе» — Бестик пришлёт текст сюда.</div>')
-    + '<div class="label">Шаблоны</div>' + TEMPLATES.map(function(t){ return '<button class="card text-item" data-text="' + t.id + '"><b><span class="kind">Шаблон</span>' + esc(t.tour) + '</b></button>'; }).join('');
+    + '<div class="label">Шаблоны</div>' + TEMPLATES.map(function(t){ return '<button class="card text-item" data-text="' + esc(t.id) + '"><b><span class="kind">Шаблон</span>' + esc(t.tour) + '</b></button>'; }).join('');
 }
 $('textsItems').addEventListener('click', function(e){ var b = e.target.closest('[data-text]'); if(b) openText(b.dataset.text); });
 var backTo = 'texts';
@@ -780,7 +780,7 @@ function renderDetail(){
   $('detailTitle').textContent = t.tour;
   var tabs = t.packId ? packParts(t.packId) : [];
   $('packTabs').style.display = tabs.length > 1 ? '' : 'none';
-  $('packTabs').innerHTML = tabs.map(function(x){ return '<button class="' + (x.id === t.id ? 'on' : '') + '" data-tab-text="' + x.id + '">' + kindName(x) + '</button>'; }).join('');
+  $('packTabs').innerHTML = tabs.map(function(x){ return '<button class="' + (x.id === t.id ? 'on' : '') + '" data-tab-text="' + esc(x.id) + '">' + kindName(x) + '</button>'; }).join('');
   var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">☑ Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">☐ Опубликовано</button>')
     : '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
   $('detailRow').innerHTML = tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
@@ -903,9 +903,9 @@ function renderTasks(){
   m.querySelector('span').textContent = !inTg ? 'Откройте приложение из Telegram' : MAC_ONLINE === null ? 'Нет связи с ботом' : (MAC_ONLINE ? 'Мак на связи — Бестик отвечает сразу' : 'Мак выключен — задачи ждут здесь');
   $('taskList').innerHTML = TASKS.map(function(t, i){
     var when = new Date(t.at).toLocaleString('ru-RU', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
-    if(editingTask === t.id) return '<div class="card task"><textarea data-edit="' + t.id + '">' + esc(t.text) + '</textarea><div class="row" style="margin:8px 0 0;"><button class="btn" data-save="' + t.id + '">Сохранить</button><button class="btn ghost" data-cancel="1">Отмена</button></div></div>';
+    if(editingTask === t.id) return '<div class="card task"><textarea data-edit="' + esc(t.id) + '">' + esc(t.text) + '</textarea><div class="row" style="margin:8px 0 0;"><button class="btn" data-save="' + esc(t.id) + '">Сохранить</button><button class="btn ghost" data-cancel="1">Отмена</button></div></div>';
     return '<div class="card task"><div class="task-text">' + (i + 1) + '. ' + esc(t.text) + '</div><div class="task-meta">' + when + '</div>'
-      + '<div class="row" style="margin:8px 0 0;"><button class="chip-btn" data-edit-btn="' + t.id + '">Изменить</button><button class="chip-btn" data-del-task="' + t.id + '">Удалить</button></div></div>';
+      + '<div class="row" style="margin:8px 0 0;"><button class="chip-btn" data-edit-btn="' + esc(t.id) + '">Изменить</button><button class="chip-btn" data-del-task="' + esc(t.id) + '">Удалить</button></div></div>';
   }).join('') || '<div class="empty">Очередь пуста 🐾 Когда Мак выключен, заказы текстов из плана будут ждать здесь.</div>';
 }
 $('taskList').addEventListener('click', function(e){
