@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T17:33:04.252Z (Бестик)",
+  "updated_at": "2026-10-01T17:33:23.324Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -42,42 +42,6 @@
   "checklist": [],
   "bot_name": "Бестик",
   "upcoming": [
-    {
-      "start": "2026-10-01",
-      "when": "с 01 по 04 октября",
-      "tour": "Авторский тур по Восточной и Западной Абхазии",
-      "napr": "Абхазия",
-      "days": "4 дня",
-      "price": "до 19 500 ₽",
-      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya"
-    },
-    {
-      "start": "2026-10-01",
-      "when": "с 01 по 04 октября",
-      "tour": "Горный Дагестан + Грозный",
-      "napr": "Дагестан, Чеченская республика",
-      "days": "4 дня",
-      "price": "до 26 000 ₽",
-      "link": "https://best-tour-club.ru/vse-tury/gornyj-dagestan-groznyj-4-dnya"
-    },
-    {
-      "start": "2026-10-01",
-      "when": "с 01 по 04 октября",
-      "tour": "Курортные города: Гагры, Новый Афон, Пицунда, Черниговка, Рица",
-      "napr": "Абхазия",
-      "days": "4 дня",
-      "price": "до 19 000 ₽",
-      "link": "https://best-tour-club.ru/vse-tury/kurortnye-goroda-gagry-novyj-afon-picunda-chernigovka-rica-4-dnya"
-    },
-    {
-      "start": "2026-10-01",
-      "when": "с 01 по 04 октября",
-      "tour": "Тур в Грузию: Тбилиси + Кахетия",
-      "napr": "Грузия",
-      "days": "4 дня",
-      "price": "до 29 500 ₽",
-      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-kahetiya"
-    },
     {
       "start": "2026-10-02",
       "when": "с 2 по 8 октября",
@@ -239,6 +203,33 @@
       "days": "4 дня",
       "price": "до 26 000 ₽",
       "link": "https://best-tour-club.ru/vse-tury/tur-v-yuzhnyj-dagestan-derbent-4-dnya"
+    },
+    {
+      "start": "2026-10-09",
+      "when": "с 9 по 11 октября",
+      "tour": "Тур в Абхазию: Гагры, Новый Афон, Пицунда, Черниговка, Рица. 3 дня",
+      "napr": "Абхазия",
+      "days": "3 дня",
+      "price": "до 14 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-abhaziyu-gagry-novyj-afon-picunda-chernigovka-rica-3-dnya"
+    },
+    {
+      "start": "2026-10-09",
+      "when": "с 9 по 11 октября",
+      "tour": "Тур по КЧР: озеро Хурла-Кель + Махарское и Гондарайское ущелье",
+      "napr": "КЧР",
+      "days": "3дня",
+      "price": "до 15 500 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-po-kchr-ozero-hurla-kel-maharskoe-i-gondarajskoe-uschelje-3-dnya"
+    },
+    {
+      "start": "2026-10-09",
+      "when": "с 9 по 11 октября",
+      "tour": "Тур по Северной Осетии, Горной Ингушетии и Чечне (Грозный)",
+      "napr": "Северная-Осетия, Ингушетия, Чечня",
+      "days": "3 дня",
+      "price": "до 19 900 ₽",
+      "link": "https://best-tour-club.ru/vse-tury/tur-po-severnoj-osetii-gornoj-ingushetii-i-chechne-groznyj-3-dnya"
     }
   ],
   "upcoming_updated": "2026-10-01",
