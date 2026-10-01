@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T16:53:01.779Z (перенос плана из xlsx)",
+  "updated_at": "2026-10-01T16:59:34.657Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -345,6 +345,21 @@
       "status": "Готово",
       "textId": "",
       "note": "до 14500 ₽ (подтверждено каталогом)"
+    },
+    {
+      "id": "mups4i1uhm27",
+      "date": "2026-10-01",
+      "platforms": [
+        "Instagram",
+        "VK",
+        "OK"
+      ],
+      "format": "Карусель",
+      "tour": "Авторский тур по Восточной и Западной Абхазии",
+      "link": "https://best-tour-club.ru/vse-tury/avtorskij-tur-po-vostochnoj-i-zapadnoj-abhazii-4-dnya",
+      "status": "Запланировано",
+      "textId": "",
+      "note": ""
     }
   ]
 }
