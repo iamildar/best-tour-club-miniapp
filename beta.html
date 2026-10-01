@@ -374,7 +374,13 @@ var touched = {};
 function recent(id){ return touched[id] && Date.now() - touched[id] < 5*60*1000; }
 function mergeList(local, remote){
   var map = {}; local.forEach(function(x){ map[x.id] = x; });
-  var out = remote.map(function(x){ return recent(x.id) && map[x.id] ? map[x.id] : x; });
+  var out = remote.map(function(x){
+    var l = map[x.id];
+    if(!(recent(x.id) && l)) return x;
+    // Свои правки свежее, но текст, который привязал Бестик, берём всегда.
+    if(x.textId && !l.textId){ l.textId = x.textId; if(l.status === 'Запланировано') l.status = x.status; }
+    return l;
+  });
   local.forEach(function(x){ if(recent(x.id) && !remote.some(function(r){ return r.id === x.id; })) out.push(x); });
   return out.filter(function(x){ return !x._deleted; });
 }
