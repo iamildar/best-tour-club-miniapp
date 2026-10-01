@@ -784,7 +784,7 @@ function renderDetail(){
   var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">☑ Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">☐ Опубликовано</button>')
     : '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
   $('detailRow').innerHTML = tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
-    : (car ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '') + pub;
+    : (car && !t.packId ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '') + pub;
   var n = t.slides.length;
   $('slides').innerHTML = t.slides.map(function(sl, si){
     var head = car && !tpl ? '<div class="slide-top"><b>Слайд ' + (si + 1) + (si === 0 ? ' · обложка' : '') + '</b>'
