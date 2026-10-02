@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T18:44:13.041Z (обновлено из приложения)",
+  "updated_at": "2026-10-02T18:45:28.452Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -2430,6 +2430,21 @@
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "status": "Готово",
       "textId": "muqs236i5zp2",
+      "note": ""
+    },
+    {
+      "id": "murbcj5rk6or",
+      "date": "2026-10-07",
+      "platforms": [
+        "Instagram",
+        "VK",
+        "OK"
+      ],
+      "format": "Карусель",
+      "tour": "Кисловодск и Медовые водопады",
+      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
+      "status": "Запланировано",
+      "textId": "",
       "note": ""
     }
   ],
