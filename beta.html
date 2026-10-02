@@ -3,56 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Контент.Компаньон — Бестик</title>
+<title>К•К — Бест-Тур</title>
+<link rel="icon" type="image/svg+xml" href="assets/logos/icon-green.svg">
+<link rel="apple-touch-icon" href="assets/logos/app-icon-180.png">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
 // Внутри Telegram — без рамки «телефона»: на iPad приложение на весь экран.
 if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.documentElement.classList.add('in-tg');
 </script>
 <style>
-  @font-face{font-family:"HIbiny";src:url("assets/fonts/HIbiny%20Bold.ttf") format("truetype");font-weight:700;font-display:swap;}
-  @font-face{font-family:"HIbiny";src:url("assets/fonts/HIbiny%20Regular.ttf") format("truetype");font-weight:400;font-display:swap;}
+  /* Брендбук Best Tour Club (docs/brand-kimi): заголовки — Lozung, текст — системный.
+     Одна схема «Бест-Тур»: светлая по умолчанию, тёмная — только по выбору в настройках. */
+  @font-face{font-family:"Lozung";src:url("assets/fonts/Lozung.otf") format("opentype");font-display:swap;}
   :root{
     --radius-md:18px; --radius-sm:13px;
-    --font-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+    --font-display:"Lozung",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
     --font-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
   }
-  [data-theme="bestour"]{--font-display:"HIbiny",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;}
-  [data-theme="companion"]{
-    --bg:#f4f5f7; --surface:#ffffff; --surface-2:#eceef1; --surface-3:#e4e6ea;
-    --ink:#16181d; --ink-soft:#7b808a; --ink-faint:#a7abb3;
-    --accent:#ff5a36; --accent-ink:#ffffff; --ok:#28a66f; --ok-soft:#e2f5ec; --bad:#d94a2b; --bad-soft:#fdeae5;
-    --line:rgba(22,24,29,.1); --shadow:0 10px 28px -14px rgba(20,22,30,.18); --chrome-bg:#0f1014;
-  }
-  [data-theme="companion"].dark{
-    --bg:#121317; --surface:#23262e; --surface-2:#1a1c22; --surface-3:#2d3039;
-    --ink:#f5f6f8; --ink-soft:#9da2ad; --ink-faint:#666b76;
-    --accent:#ff7a52; --accent-ink:#1c0f09; --ok:#3ecf8e; --ok-soft:#143226; --bad:#ff8a76; --bad-soft:#34191a;
-    --line:rgba(255,255,255,.15); --shadow:0 14px 34px -16px rgba(0,0,0,.75); --chrome-bg:#2b2d31;
-  }
-  [data-theme="teal"]{
-    --bg:#FBF3E6; --surface:#ffffff; --surface-2:#F4EAD9; --surface-3:#EDE0C9;
-    --ink:#21302B; --ink-soft:#5B6B62; --ink-faint:#93A199;
-    --accent:#146B69; --accent-ink:#ffffff; --ok:#146B69; --ok-soft:#DCEDEA; --bad:#EF5C6E; --bad-soft:#FCE1E3;
-    --line:rgba(33,48,43,.12); --shadow:0 10px 24px -12px rgba(20,107,105,.28); --chrome-bg:#0F1613;
-  }
-  [data-theme="teal"].dark{
-    --bg:#0B100E; --surface:#1B2823; --surface-2:#131C19; --surface-3:#243530;
-    --ink:#EFF8F5; --ink-soft:#9CB2AB; --ink-faint:#5C7A72;
-    --accent:#3FC2BC; --accent-ink:#04120F; --ok:#3FC2BC; --ok-soft:#132D2A; --bad:#FF8FA0; --bad-soft:#331E24;
-    --line:rgba(255,255,255,.14); --shadow:0 14px 34px -16px rgba(0,0,0,.8); --chrome-bg:#2b2d31;
-  }
   [data-theme="bestour"]{
-    --bg:#F9EED8; --surface:#ffffff; --surface-2:#F1E4C8; --surface-3:#E9D9B8;
-    --ink:#171717; --ink-soft:#5B5A55; --ink-faint:#8A8880;
-    --accent:#123322; --accent-ink:#F9EED8; --ok:#123322; --ok-soft:#DCE6DE; --bad:#8A3B2B; --bad-soft:#F1E0DA;
-    --line:rgba(18,51,34,.14); --shadow:0 10px 24px -12px rgba(18,51,34,.28); --chrome-bg:#0A1C13;
+    --bg:#FCF6EA; --surface:#ffffff; --surface-2:#F9EED8; --surface-3:#F1E4C8;
+    --ink:#171717; --heading:#123322; --ink-soft:#6E6C65; --ink-faint:#9C9A92;
+    --accent:#123322; --accent-ink:#F9EED8; --ok:#1F6B45; --ok-soft:#DCEBE0; --bad:#A23E2A; --bad-soft:#F6E2DB;
+    --line:rgba(18,51,34,.12); --shadow:0 10px 24px -14px rgba(18,51,34,.30); --chrome-bg:#0A1C13;
   }
   [data-theme="bestour"].dark{
-    --bg:#0E241A; --surface:#123322; --surface-2:#0C2419; --surface-3:#1A3F2C;
-    --ink:#F9EED8; --ink-soft:#B9C7BD; --ink-faint:#7C8C81;
-    --accent:#F9EED8; --accent-ink:#123322; --ok:#F9EED8; --ok-soft:#1E4A34; --bad:#E7A08F; --bad-soft:#3A2620;
-    --line:rgba(249,238,216,.14); --shadow:0 14px 34px -16px rgba(0,0,0,.75); --chrome-bg:#2b2d31;
+    --bg:#0B1F15; --surface:#123322; --surface-2:#0F2A1C; --surface-3:#1A3F2C;
+    --ink:#F9EED8; --heading:#F9EED8; --ink-soft:#B0ADA3; --ink-faint:#8A8880;
+    --accent:#F9EED8; --accent-ink:#123322; --ok:#9FD3B0; --ok-soft:#1E4A34; --bad:#EBA592; --bad-soft:#3A2620;
+    --line:rgba(249,238,216,.14); --shadow:0 14px 34px -16px rgba(0,0,0,.75); --chrome-bg:#06120C;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -67,16 +45,17 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
     html.in-tg .device{max-width:760px;}
   }
   .app-header{flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
-  .mascot{width:36px;height:36px;flex:none;border-radius:50%;overflow:hidden;}
-  .device:not(.dark) .mascot{background:var(--accent);padding:3px;}
+  .mascot{width:40px;height:34px;flex:none;}
+  .device .logo-dark,.device.dark .logo-light{display:none !important;}
+  .device.dark .logo-dark{display:block !important;}
   .mascot img{width:100%;height:100%;object-fit:contain;display:block;}
-  .app-header b{display:block;font-family:var(--font-display);font-size:16px;}
+  .app-header b{display:block;font-family:var(--font-display);font-weight:400;color:var(--heading);font-size:18px;}
   .app-header small{display:block;font-size:11.5px;color:var(--ink-soft);}
   .app-body{flex:1;overflow-y:auto;padding:4px 16px 18px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;}
   .app-body::-webkit-scrollbar{display:none;}
   .screen{display:none;}
   .screen.active{display:block;}
-  h1{font-family:var(--font-display);font-size:22px;margin:6px 0 4px;}
+  h1{font-family:var(--font-display);font-weight:400;color:var(--heading);font-size:24px;margin:6px 0 4px;}
   .sub{font-size:12.6px;color:var(--ink-soft);line-height:1.5;margin:0 0 14px;}
   .label{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);margin:18px 2px 8px;display:flex;justify-content:space-between;}
   .card{background:var(--surface);border-radius:var(--radius-md);box-shadow:var(--shadow);}
@@ -99,7 +78,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .tour{padding:12px 13px;margin-bottom:9px;}
   .tour-top{display:flex;gap:11px;align-items:flex-start;cursor:pointer;}
   .tour-date{flex:none;width:46px;text-align:center;border-radius:12px;background:var(--surface-2);padding:6px 0;}
-  .tour-date b{display:block;font-size:17px;font-family:var(--font-display);color:var(--accent);line-height:1.1;}
+  .tour-date b{display:block;font-size:17px;font-family:var(--font-display);font-weight:400;color:var(--accent);line-height:1.1;}
   .tour-date small{display:block;font-size:10px;color:var(--ink-soft);text-transform:uppercase;}
   .tour-name{flex:1;min-width:0;}
   .tour-name b{display:block;font-size:13.2px;line-height:1.35;}
@@ -181,9 +160,15 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .st.done{background:var(--ok);color:var(--accent-ink);}
   .st.wait{background:var(--bad-soft);color:var(--bad);}
   .pi-actions{display:flex;gap:8px;margin-top:10px;}
+  .pi-fmts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .fmt-chip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:9px;padding:5px 9px;font-size:12px;font-weight:600;cursor:pointer;}
+  .fmt-chip.done{background:var(--ok);border-color:var(--ok);color:var(--accent-ink);}
+  .fmt-chip.ready{background:var(--ok-soft);border-color:transparent;color:var(--ok);}
+  .fmt-chip.wait{background:var(--bad-soft);border-color:transparent;color:var(--bad);}
+  .fmt-chip.off{opacity:.5;}
   .pi-actions .btn{flex:1;padding:10px;font-size:13px;}
   .pi.published{opacity:.6;}
-  .add-fab{position:sticky;bottom:6px;margin-top:14px;box-shadow:0 10px 24px -10px rgba(0,0,0,.35);}
+  .add-fab{margin:6px 0 18px;}
   .collapse{width:100%;display:flex;justify-content:space-between;align-items:center;border:none;background:var(--surface);border-radius:var(--radius-md);box-shadow:var(--shadow);padding:13px 14px;font-size:13.4px;font-weight:700;color:var(--ink);cursor:pointer;margin-top:14px;}
   .collapse small{font-weight:600;color:var(--ink-soft);font-size:12px;}
   /* Окно-«шторка» снизу: добавить в план / правка строки */
@@ -191,7 +176,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .sheet-bg.show{display:block;}
   .sheet{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));z-index:41;transform:translateY(105%);transition:transform .22s ease;}
   .sheet.show{transform:translateY(0);}
-  .sheet h2{font-family:var(--font-display);font-size:18px;margin:4px 0 10px;display:flex;justify-content:space-between;align-items:center;}
+  .sheet h2{font-family:var(--font-display);font-weight:400;color:var(--heading);font-size:19px;margin:4px 0 10px;display:flex;justify-content:space-between;align-items:center;}
   .sheet h2 button{border:none;background:var(--surface-2);border-radius:50%;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--ink);}
   .pick{display:flex;gap:10px;align-items:center;width:100%;border:none;background:var(--surface);border-radius:13px;padding:10px 12px;margin-bottom:7px;text-align:left;cursor:pointer;color:var(--ink);}
   .pick b{display:block;font-size:13px;line-height:1.35;}
@@ -223,9 +208,9 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
 </style>
 </head>
 <body>
-<div class="device" id="device" data-theme="companion">
+<div class="device" id="device" data-theme="bestour">
   <header class="app-header">
-    <div class="mascot"><img src="assets/stickers/neutral-standing.webp" alt="Бестик"></div>
+    <div class="mascot"><img class="logo-light" src="assets/logos/icon-green.svg" alt="Бест-Тур"><img class="logo-dark" src="assets/logos/icon-cream.svg" alt="Бест-Тур"></div>
     <div><b>Бестик</b><small>Best Tour Club</small></div>
   </header>
 
@@ -234,13 +219,13 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
     <section class="screen active" id="screen-week">
       <button class="note" id="weekNote" style="display:none;"></button>
       <div id="weekPlan"></div>
+      <button class="btn wide add-fab" id="addPlan">+ Тур или идея в план</button>
       <div class="label">Ближайшие заезды <span id="upcCount"></span></div>
       <div id="upcList"></div>
       <button class="btn ghost wide" id="upcMore" style="display:none;"></button>
       <button class="btn ghost wide" id="digestBtn" style="margin-top:6px;">🗂 Подборка «Куда сбежать на выходные»</button>
       <button class="collapse" id="checkToggle"><span>Чек-лист дня</span><small id="checkCount"></small></button>
       <div class="card" id="checklist" style="display:none;margin-top:8px;"></div>
-      <button class="btn wide add-fab" id="addPlan">+ Тур или идея в план</button>
     </section>
 
     <!-- ============ ТЕКСТЫ ============ -->
@@ -320,10 +305,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
       <div id="more-settings" style="display:none;">
         <button class="back" data-back="1">‹ Ещё</button>
         <h1>Настройки</h1>
-        <div class="label">Тема</div>
-        <div class="seg" id="themeSeg"><button data-theme-pick="companion">Контент.Компаньон</button><button data-theme-pick="teal">Спокойная</button><button data-theme-pick="bestour">Бест-Тур</button></div>
         <div class="label">Оформление</div>
-        <div class="seg" id="modeSeg"><button data-mode="auto">Авто</button><button data-mode="light">Светлая</button><button data-mode="dark">Тёмная</button></div>
+        <div class="seg" id="modeSeg"><button data-mode="light">Светлая</button><button data-mode="dark">Тёмная</button></div>
       </div>
     </section>
   </main>
@@ -361,19 +344,16 @@ function dayTitle(iso){ var d = new Date(iso + 'T00:00:00'); var diff = Math.rou
   return (diff === 0 ? 'Сегодня' : diff === 1 ? 'Завтра' : WD[d.getDay()].replace(/^./, function(c){ return c.toUpperCase(); })) + ', ' + d.getDate() + ' ' + MONTH[d.getMonth()]; }
 
 // ---------- Тема ----------
-var themeId = store('cc_theme') || 'companion';
-var colorMode = store('cc_color_mode') || 'auto';
-function prefersDark(){ if(inTg && tg.colorScheme) return tg.colorScheme === 'dark'; return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+// Одна схема «Бест-Тур». Светлая по умолчанию, тёмная — только если выбрали сами
+// (старое «Авто» и другие схемы больше не читаем).
+var colorMode = store('cc_mode') === 'dark' ? 'dark' : 'light';
 function applyTheme(){
-  var d = $('device'); d.setAttribute('data-theme', themeId);
-  d.classList.toggle('dark', colorMode === 'dark' || (colorMode === 'auto' && prefersDark()));
-  document.querySelectorAll('#themeSeg button').forEach(function(b){ b.classList.toggle('active', b.dataset.themePick === themeId); });
+  var d = $('device'); d.setAttribute('data-theme', 'bestour');
+  d.classList.toggle('dark', colorMode === 'dark');
   document.querySelectorAll('#modeSeg button').forEach(function(b){ b.classList.toggle('active', b.dataset.mode === colorMode); });
+  if(inTg && typeof tg.setHeaderColor === 'function'){ try { var bg = colorMode === 'dark' ? '#0B1F15' : '#FCF6EA'; tg.setHeaderColor(bg); tg.setBackgroundColor(bg); if(tg.setBottomBarColor) tg.setBottomBarColor(bg); } catch(e){} }
 }
-if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if(colorMode === 'auto') applyTheme(); });
-if(inTg && typeof tg.onEvent === 'function') tg.onEvent('themeChanged', function(){ if(colorMode === 'auto') applyTheme(); });
-$('themeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; themeId = b.dataset.themePick; store('cc_theme', themeId); applyTheme(); toast('Тема изменена'); });
-$('modeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; colorMode = b.dataset.mode; store('cc_color_mode', colorMode); applyTheme(); });
+$('modeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; colorMode = b.dataset.mode; store('cc_mode', colorMode); applyTheme(); });
 applyTheme();
 
 // ---------- Вкладки ----------
@@ -501,19 +481,71 @@ function itemCard(it){
     + (it.note ? '<div class="pi-meta">' + esc(it.note) + '</div>' : '')
     + (action ? '<div class="pi-actions">' + action + '</div>' : '') + '</div>';
 }
+// Один тур = одна карточка: форматы строкой со статусами, «Открыть пакет».
+// Нажатие на формат — меню этой публикации (перенести, отложить, заново…).
+var FMT_SHORT = {'Объявление':'Авито', 'Разговорное видео':'Видео с гидом', 'Рилс':'Рилс'};
+function itemState(it){
+  if(it.status === 'Опубликовано') return ['done', ' ✓'];
+  if(it.status === 'Отложено') return ['off', ' ⏸'];
+  if(planText(it) || it.textId) return ['ready', ' ●'];
+  if(pending[it.id]) return ['wait', ' …'];
+  return ['', ''];
+}
+function groupCard(items){
+  var first = items[0], ready = items.filter(function(it){ return planText(it) && it.status !== 'Отложено'; });
+  var need = items.filter(function(it){ return !it.textId && !pending[it.id] && it.status !== 'Опубликовано' && it.status !== 'Отложено'; });
+  var waiting = items.some(function(it){ return pending[it.id] && !it.textId; });
+  var allPub = items.every(function(it){ return it.status === 'Опубликовано' || it.status === 'Отложено'; });
+  var chips = items.map(function(it){ var st = itemState(it);
+    return '<button class="fmt-chip ' + st[0] + '" data-menu="' + esc(it.id) + '">' + esc(FMT_SHORT[it.format] || it.format) + st[1] + '</button>'; }).join('');
+  var act = '';
+  if(!allPub){
+    if(ready.length) act += '<button class="btn" data-open-pack="' + esc(ready[0].id) + '">Открыть пакет</button>';
+    if(need.length) act += '<button class="btn' + (ready.length ? ' ghost' : '') + '" data-make-group="' + esc(need.map(function(x){ return x.id; }).join(',')) + '">Сделать ' + (need.length > 1 ? 'тексты (' + need.length + ')' : 'текст') + '</button>';
+    else if(!ready.length && waiting) act += '<button class="btn" disabled>Бестик пишет… пришлю в чат</button>';
+  }
+  var pfs = []; items.forEach(function(it){ (it.platforms || []).forEach(function(x){ if(pfs.indexOf(x) < 0) pfs.push(x); }); });
+  return '<div class="card pi' + (allPub ? ' published' : '') + '"><div class="pi-top"><b>' + esc(first.tour) + '</b></div>'
+    + '<div class="pi-meta"><span>' + esc(pfs.map(function(x){ return PF_NAME[x] || x; }).join(', ')) + '</span></div>'
+    + '<div class="pi-fmts">' + chips + '</div>'
+    + (act ? '<div class="pi-actions">' + act + '</div>' : '') + '</div>';
+}
+function cardsFor(list){
+  var groups = {}, order = [];
+  list.forEach(function(it){ var k = it.tour; if(!groups[k]){ groups[k] = []; order.push(k); } groups[k].push(it); });
+  var ord = {'Карусель':0, 'Сторис':1, 'Рилс':2, 'Разговорное видео':3, 'Пост':4, 'Объявление':5, 'Подборка':6};
+  return order.map(function(k){ var g = groups[k].sort(function(a, b){ var o = function(x){ return x.format in ord ? ord[x.format] : 9; }; return o(a) - o(b); });
+    return g.length > 1 ? groupCard(g) : itemCard(g[0]); }).join('');
+}
+function makeGroup(ids){
+  var items = ids.map(function(id){ return PLAN.find(function(p){ return p.id === id; }); }).filter(Boolean);
+  if(items.length === 1 || items.some(function(it){ return it.format === 'Подборка'; })){ items.forEach(requestText); return; }
+  var first = items[0];
+  items.forEach(function(it){ setPending(it.id, {at: Date.now(), queued: false}); }); renderWeek();
+  var pfs = []; items.forEach(function(it){ (it.platforms || []).forEach(function(x){ if(pfs.indexOf(x) < 0) pfs.push(x); }); });
+  taskApi('pack_request', {query: first.link || first.tour, title: first.tour, platforms: pfs,
+    parts: items.map(function(it){ return {kind: FORMAT_PACK[it.format] || 'post', planId: it.id}; })}).then(function(d){
+    items.forEach(function(it){ setPending(it.id, {at: Date.now(), queued: !!d.queued}); }); renderWeek();
+    toast(d.queued ? 'Мак выключен — пакет в «Задачи для Мака»' : 'Бестик делает пакет из ' + items.length + ' — пришлю в чат');
+    if(d.queued) loadTasks(); else pollForText();
+  }).catch(function(e){
+    items.forEach(function(it){ setPending(it.id, null); }); renderWeek();
+    toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось отправить Бестику — попробуйте ещё раз');
+  });
+}
 function renderWeek(){
   var until = isoDay(new Date(Date.now() + 6*864e5));
   var week = PLAN.filter(function(it){ return it.date >= TODAY && it.date <= until; });
   var overdue = PLAN.filter(function(it){ return it.date < TODAY && it.status !== 'Опубликовано' && it.status !== 'Отложено' && it.date >= isoDay(new Date(Date.now() - 14*864e5)); });
   var html = '';
-  if(overdue.length) html += '<div class="day-head"><span>Не выложено с прошлых дней</span></div>' + overdue.map(itemCard).join('');
+  if(overdue.length) html += '<div class="day-head"><span>Не выложено с прошлых дней</span></div>' + cardsFor(overdue);
   var days = {};
   week.forEach(function(it){ (days[it.date] = days[it.date] || []).push(it); });
   if(!days[TODAY] && (week.length || overdue.length)) html += '<div class="day-head today"><span>' + dayTitle(TODAY) + '</span></div><div class="empty" style="padding:14px;">На сегодня в плане ничего. Нажмите «+ Добавить в план».</div>';
   var done = function(it){ return it.status === 'Опубликовано' || it.status === 'Отложено' ? 1 : 0; };
   Object.keys(days).forEach(function(d){ days[d].sort(function(a, b){ return done(a) - done(b); }); }); // сделанное — в конец дня
   Object.keys(days).sort().forEach(function(d){
-    html += '<div class="day-head' + (d === TODAY ? ' today' : '') + '"><span>' + dayTitle(d) + '</span><span>' + days[d].length + '</span></div>' + days[d].map(itemCard).join('');
+    html += '<div class="day-head' + (d === TODAY ? ' today' : '') + '"><span>' + dayTitle(d) + '</span><span>' + days[d].length + '</span></div>' + cardsFor(days[d]);
   });
   if(!week.length && !overdue.length) html += '<div class="empty">План на неделю пуст. Пришла табличка, какие туры продвигаем? Добавьте их кнопкой внизу — Бестик сразу начнёт тексты.</div>';
   $('weekPlan').innerHTML = html;
@@ -539,6 +571,8 @@ $('upcList').addEventListener('click', function(e){
 
 $('weekPlan').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.makeGroup){ makeGroup(b.dataset.makeGroup.split(',')); return; }
+  if(b.dataset.openPack){ var ip = PLAN.find(function(p){ return p.id === b.dataset.openPack; }); if(ip){ showTab('texts'); openText(ip.textId, 'week'); } return; }
   var id = b.dataset.make || b.dataset.openText || b.dataset.publish || b.dataset.menu;
   var it = PLAN.find(function(p){ return p.id === id; }); if(!it) return;
   if(b.dataset.make) requestText(it);
