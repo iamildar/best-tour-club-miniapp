@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T18:45:28.452Z (обновлено из приложения)",
+  "updated_at": "2026-10-02T18:45:31.175Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -2441,6 +2441,20 @@
         "OK"
       ],
       "format": "Карусель",
+      "tour": "Кисловодск и Медовые водопады",
+      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
+      "status": "Запланировано",
+      "textId": "",
+      "note": ""
+    },
+    {
+      "id": "murbcj5tebn3",
+      "date": "2026-10-03",
+      "platforms": [
+        "Instagram",
+        "VK"
+      ],
+      "format": "Сторис",
       "tour": "Кисловодск и Медовые водопады",
       "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
       "status": "Запланировано",
