@@ -857,6 +857,11 @@ $('openCheck').addEventListener('click', function(){ $('textsList').style.displa
 $('checkBack').addEventListener('click', showTextsList);
 $('checkKind').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; checkKind = b.dataset.k; this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('active', x === b); }); });
 var BANNED = ['инстаграм', 'instagram', 'соцсет', 'социальн сет', 'социальных сет', 'социальные сет'];
+// Штампы, которые делают текст «справкой из аптеки» — вместо них нужна живая деталь.
+var CLICHES = [['погруз', 'погрузитесь в атмосферу'], ['незабываем', 'незабываемые впечатления'], ['откройте для себя', 'откройте для себя'],
+  ['уникальная возможность', 'уникальная возможность'], ['живописн', 'живописные пейзажи'], ['не упустите', 'не упустите шанс'],
+  ['сказочн', 'сказочная природа'], ['насладит', 'насладитесь'], ['райск', 'райский уголок'], ['захватывающ', 'захватывающие виды'],
+  ['окунит', 'окунитесь'], ['подарите себе', 'подарите себе'], ['море эмоций', 'море эмоций'], ['незабываемых', 'незабываемых']];
 var SUPERLATIVE = /(^|[^а-яё])(самы[йеахм]|лучш[иаеу][йхем]?|уникальн|незабываем|гарантирован)/i;
 $('checkRun').addEventListener('click', function(){
   var text = $('checkInput').value.trim(); if(!text){ toast('Вставьте текст'); return; }
@@ -874,6 +879,8 @@ $('checkRun').addEventListener('click', function(){
     var first = text.split('\n')[0];
     out.push(first.length > 50 ? ['!', 'Первая строка ' + first.length + ' знаков — заголовок на Авито до 50'] : ['✓', 'Заголовок до 50 знаков']);
   }
+  var cl = CLICHES.filter(function(c){ return low.indexOf(c[0]) >= 0; }).map(function(c){ return '«' + c[1] + '»'; });
+  out.push(cl.length ? ['!', 'Штампы: ' + cl.join(', ') + ' — замените живой деталью со страницы тура или из отзыва'] : ['✓', 'Без штампов']);
   out.push(/\[уточнить|\[нужно уточнить/i.test(text) ? ['✗', 'Остались «[уточнить]» — заполните перед публикацией'] : ['✓', 'Пропусков «[уточнить]» нет']);
   var sup = text.match(SUPERLATIVE);
   out.push(sup ? ['!', 'Есть «' + sup[2] + '…» — превосходные степени только если так сказано в отзыве'] : ['✓', 'Без превосходных степеней']);
