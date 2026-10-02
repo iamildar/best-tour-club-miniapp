@@ -130,6 +130,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .mini:disabled{opacity:.3;}
   .layer{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);}
   .layer:first-of-type{border-top:none;}
+  .layer.wide{flex-wrap:wrap;row-gap:4px;}
+  .layer.wide .layer-role{width:100%;padding-top:0;text-transform:none;letter-spacing:0;font-size:11.6px;}
   .layer-role{flex:none;width:74px;font-size:10.4px;font-weight:800;color:var(--accent);padding-top:8px;text-transform:uppercase;letter-spacing:.3px;}
   .layer-text{flex:1;min-width:0;font-size:13.2px;line-height:1.45;white-space:pre-wrap;word-break:break-word;border-radius:9px;padding:6px 8px;background:var(--bg);border:1px solid transparent;min-height:32px;outline:none;-webkit-user-select:text;user-select:text;}
   .layer-text:focus{border-color:var(--accent);}
@@ -287,7 +289,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
           <ol class="steps">
             <li><b>Тур на неделю.</b> «Неделя» → «Ближайшие заезды» → нажмите на тур. В конструкторе отметьте форматы (у каждого — свой день) и площадки → «Сделать всё». Бестик напишет весь пакет одним заходом.</li>
             <li><b>Каждый день.</b> «Неделя» → карточки на сегодня. Текст готов — «Открыть текст»: внутри пакета вкладки по форматам.</li>
-            <li><b>Выкладываем.</b> В тексте нажимайте 📋 у каждого слоя и вставляйте: в Crsel, Recur, ВК/ОК/Telegram/Threads, Авито. Выложили — «Опубликовано».</li>
+            <li><b>Видео.</b> «Рилс · CapCut» — текст на экран для каждого кусочка с секундами, подпись и хештеги: монтируете в CapCut по своим шаблонам. «Разговорное видео» — сценарий для гида: реплики, доп. кадры и памятка по съёмке; внизу «Всё одним сообщением» — 📋 и переслать гиду.</li>
+            <li><b>Выкладываем.</b> В тексте нажимайте 📋 у каждого слоя и вставляйте: в Crsel, CapCut, Recur, ВК/ОК/Telegram/Threads, Авито. Выложили — «Опубликовано».</li>
             <li><b>Чужое фото с отметкой.</b> «Тексты» → шаблон «Запрос согласия автора» → 📋 → отправьте автору. Без «да» не публикуем.</li>
             <li><b>Своё.</b> Написали сами — «Тексты» → «Проверить свой текст».</li>
             <li><b>Мак выключен.</b> Заказ текста ляжет в «Задачи для Мака», карточка покажет «Ждёт Мака». Включится — Бестик пришлёт список в чат.</li>
@@ -475,10 +478,10 @@ function pollForText(){
 }
 
 // ---------- Неделя: план публикаций ----------
-var FORMAT_KIND = {'Карусель':['carousel','4:5'], 'Сторис':['carousel','9:16'], 'Рилс':['reel','4:5'], 'Пост':['post','4:5'], 'Объявление':['avito','4:5']};
-var FORMAT_PLATFORMS = {'Карусель':['Instagram','VK','OK'], 'Сторис':['Instagram','VK'], 'Рилс':['Instagram','VK'], 'Пост':['VK','OK','Telegram','MAX','Threads'], 'Объявление':['Avito'], 'Подборка':['Instagram','VK','OK']};
+var FORMAT_KIND = {'Карусель':['carousel','4:5'], 'Сторис':['carousel','9:16'], 'Рилс':['reel','9:16'], 'Разговорное видео':['talk','9:16'], 'Пост':['post','4:5'], 'Объявление':['avito','4:5']};
+var FORMAT_PLATFORMS = {'Карусель':['Instagram','VK','OK'], 'Сторис':['Instagram','VK'], 'Рилс':['Instagram','VK'], 'Разговорное видео':['Instagram','VK'], 'Пост':['VK','OK','Telegram','MAX','Threads'], 'Объявление':['Avito'], 'Подборка':['Instagram','VK','OK']};
 var ALL_PLATFORMS = [['Instagram','Instagram (Recur)'],['VK','ВК'],['OK','ОК'],['Telegram','Telegram'],['MAX','MAX'],['Threads','Threads'],['Avito','Авито']];
-var FORMAT_PACK = {'Карусель':'carousel', 'Сторис':'stories', 'Рилс':'reel', 'Пост':'post', 'Объявление':'avito'};
+var FORMAT_PACK = {'Карусель':'carousel', 'Сторис':'stories', 'Рилс':'reel', 'Разговорное видео':'talk', 'Пост':'post', 'Объявление':'avito'};
 var PF_NAME = {VK:'ВК', OK:'ОК', Telegram:'Telegram', MAX:'MAX', Threads:'Threads', Instagram:'Instagram · Recur', Avito:'Авито'};
 function planText(it){ return it.textId ? TEXTS.find(function(t){ return t.id === it.textId; }) : null; }
 function itemCard(it){
@@ -583,7 +586,7 @@ function renderAddSheet(){
     var av = draft.format === 'Объявление' && avitoRecent(draft.link, draft.tour);
     openSheet('<h2>' + (draft.editId ? 'Изменить' : 'В план') + ' <button data-close="1">✕</button></h2>'
       + '<div class="card" style="padding:10px 12px;margin-bottom:6px;"><b style="font-size:13.4px;">' + esc(draft.tour) + '</b>' + (draft.when ? '<div class="pi-meta">' + esc(draft.when) + '</div>' : '') + '</div>'
-      + '<div class="label">Формат</div>' + chips([['Карусель','Карусель'],['Сторис','Сторис'],['Рилс','Рилс'],['Пост','Пост'],['Объявление','Авито']], function(v){ return v === draft.format; }, 'data-fmt')
+      + '<div class="label">Формат</div>' + chips([['Карусель','Карусель'],['Сторис','Сторис'],['Рилс','Рилс · CapCut'],['Разговорное видео','Разговорное видео'],['Пост','Пост'],['Объявление','Авито']], function(v){ return v === draft.format; }, 'data-fmt')
       + (av ? '<div class="warn">На Авито этот тур выкладывали ' + av.date.split('-').reverse().join('.') + '. Повторно — не раньше чем через 30 дней, иначе модерация может заблокировать.</div>' : '')
       + '<div class="label">День</div>' + chips(days, function(v){ return v === draft.date; }, 'data-day')
       + '<div class="label">Где публикуем</div>' + chips(ALL_PLATFORMS, function(v){ return draft.platforms.indexOf(v) >= 0; }, 'data-pf')
@@ -628,7 +631,7 @@ $('sheet').addEventListener('click', function(e){
 $('sheet').addEventListener('change', function(e){ if(e.target.id === 'makeNow' && draft) draft.makeNow = e.target.checked; });
 // Конструктор «один тур -> весь контент»: форматы (у каждого свой день), площадки,
 // «Сделать всё» -> карточки в плане + один заказ Бестику на весь пакет.
-var BUILDER_FORMATS = [['Карусель','Карусель для Crsel'], ['Сторис','Сторис 9:16'], ['Рилс','Сценарий рилса'], ['Пост','Пост для площадок'], ['Объявление','Объявление Авито']];
+var BUILDER_FORMATS = [['Карусель','Карусель для Crsel'], ['Сторис','Сторис 9:16'], ['Рилс','Рилс — раскладка для CapCut'], ['Разговорное видео','Разговорное видео — сценарий гиду'], ['Пост','Пост для площадок'], ['Объявление','Объявление Авито']];
 function openBuilder(src){
   draft = {mode: 'builder', tour: src.tour, link: src.link || '', when: src.when || '',
     formats: {'Карусель': TODAY, 'Сторис': TODAY, 'Пост': TODAY}, platforms: ['Instagram','VK','OK','Telegram','MAX','Threads']};
@@ -823,12 +826,13 @@ var TEMPLATES = [
   {id:'tpl2', kind:'template', tour:'Пляжный тур — пост', slides:[{layers:[{role:'text', text:'[Направление] ждёт: [даты]. [X] дней у моря, [что включено]. Выезд из [город] на [транспорт]. Цена: до [X] ₽.'}]}]},
   {id:'tpl3', kind:'template', tour:'Объявление Авито', slides:[{layers:[{role:'title', text:'[Направление] тур из [город] — [что получает клиент]'}, {role:'text', text:'Что входит: [список]\nТрансфер: [город] → [направление]\nГруппа: до [N] человек\n\nЦена: от [X] ₽\nПишите в чат Авито — ответим быстро.'}]}]}
 ];
-var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс', digest:'Подборка', template:'Шаблон'};
+var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс · CapCut', talk:'Разговорное видео', digest:'Подборка', template:'Шаблон'};
 var ROLE = {date:'Дата', title:'Заголовок', caption:'Подпись', text:'Текст', cta:'Призыв'};
 var openId = null, saveTimer = null;
-function kindName(t){ return t.kind === 'carousel' || !t.kind ? (t.format === '9:16' ? 'Сторис' : 'Карусель') : KIND[t.kind]; }
+function isOldReel(t){ return t.kind === 'reel' && !(t.slides || []).some(function(sl){ return (sl.layers || []).some(function(l){ return /^\d+\s*[–-]\s*\d+\s*с/.test(l.label || ''); }); }); }
+function kindName(t){ return t.kind === 'carousel' || !t.kind ? (t.format === '9:16' ? 'Сторис' : 'Карусель') : isOldReel(t) ? 'Рилс (старый формат)' : KIND[t.kind]; }
 function byId(id){ return TEXTS.concat(TEMPLATES).find(function(t){ return t.id === id; }); }
-var PART_ORDER = {carousel:0, stories:1, reel:2, post:3, avito:4};
+var PART_ORDER = {carousel:0, stories:1, reel:2, talk:3, post:4, avito:5};
 function partKey(t){ return (!t.kind || t.kind === 'carousel') && t.format === '9:16' ? 'stories' : (t.kind || 'carousel'); }
 function packParts(packId){ return TEXTS.filter(function(x){ return x.packId === packId; }).sort(function(a, b){ return PART_ORDER[partKey(a)] - PART_ORDER[partKey(b)]; }); }
 function renderTextsList(){
@@ -869,7 +873,8 @@ function renderDetail(){
     var head = car && !tpl ? '<div class="slide-top"><b>Слайд ' + (si + 1) + (si === 0 ? ' · обложка' : '') + '</b>'
       + '<button class="mini" data-up="' + si + '" ' + (si === 0 ? 'disabled' : '') + ' aria-label="Выше">↑</button><button class="mini" data-down="' + si + '" ' + (si === n - 1 ? 'disabled' : '') + ' aria-label="Ниже">↓</button><button class="mini" data-del="' + si + '" aria-label="Удалить слайд">🗑</button></div>' : '';
     return '<div class="card slide">' + head + (sl.layers || []).map(function(l, li){
-      return '<div class="layer"><div class="layer-role">' + (l.label ? esc(l.label) : (ROLE[l.role] || 'Текст')) + '</div>'
+      // Длинные подписи (рилс: «0–2 с · кадр: …», реплики) — строкой над текстом.
+      return '<div class="layer' + ((l.label || '').length > 14 ? ' wide' : '') + '"><div class="layer-role">' + (l.label ? esc(l.label) : (ROLE[l.role] || 'Текст')) + '</div>'
         + '<div class="layer-text role-' + l.role + '" ' + (tpl ? '' : 'contenteditable="true"') + ' data-sl="' + si + '" data-ly="' + li + '">' + esc(l.text) + '</div>'
         + '<button class="copy" data-copy-sl="' + si + '" data-copy-ly="' + li + '" aria-label="Копировать">📋</button></div>';
     }).join('') + '</div>';
