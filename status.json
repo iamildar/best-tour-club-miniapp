@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T09:31:15.669Z (обновлено из приложения)",
+  "updated_at": "2026-10-02T09:43:52.770Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1718,6 +1718,21 @@
       "status": "Готово",
       "textId": "",
       "note": "до 14500 ₽ (подтверждено каталогом)"
+    },
+    {
+      "id": "muqs0126uzah",
+      "date": "2026-10-02",
+      "platforms": [
+        "Instagram",
+        "VK",
+        "OK"
+      ],
+      "format": "Карусель",
+      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
+      "status": "Запланировано",
+      "textId": "",
+      "note": ""
     }
   ],
   "checklist_today": {
