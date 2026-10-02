@@ -211,6 +211,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .fmt-row input{width:20px;height:20px;accent-color:var(--accent);}
   .fmt-row select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:9px;padding:6px 8px;font:inherit;font-size:12.6px;}
   .fmt-row select:disabled{opacity:.35;}
+  .fmt-row small{display:block;font-size:11px;font-weight:400;color:var(--ink-soft);margin-top:1px;}
+  .dg-title{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:11px;padding:10px 11px;font:inherit;font-size:13.4px;margin-bottom:4px;}
   .pack-tabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 10px;scrollbar-width:none;}
   .pack-tabs button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;font-size:12.6px;font-weight:700;color:var(--ink-soft);cursor:pointer;}
   .pack-tabs button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
@@ -233,6 +235,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
       <div class="label">Ближайшие заезды <span id="upcCount"></span></div>
       <div id="upcList"></div>
       <button class="btn ghost wide" id="upcMore" style="display:none;"></button>
+      <button class="btn ghost wide" id="digestBtn" style="margin-top:6px;">🗂 Подборка «Куда сбежать на выходные»</button>
       <button class="collapse" id="checkToggle"><span>Чек-лист дня</span><small id="checkCount"></small></button>
       <div class="card" id="checklist" style="display:none;margin-top:8px;"></div>
       <button class="btn wide add-fab" id="addPlan">+ Тур или идея в план</button>
@@ -473,7 +476,7 @@ function pollForText(){
 
 // ---------- Неделя: план публикаций ----------
 var FORMAT_KIND = {'Карусель':['carousel','4:5'], 'Сторис':['carousel','9:16'], 'Рилс':['reel','4:5'], 'Пост':['post','4:5'], 'Объявление':['avito','4:5']};
-var FORMAT_PLATFORMS = {'Карусель':['Instagram','VK','OK'], 'Сторис':['Instagram','VK'], 'Рилс':['Instagram','VK'], 'Пост':['VK','OK','Telegram','MAX','Threads'], 'Объявление':['Avito']};
+var FORMAT_PLATFORMS = {'Карусель':['Instagram','VK','OK'], 'Сторис':['Instagram','VK'], 'Рилс':['Instagram','VK'], 'Пост':['VK','OK','Telegram','MAX','Threads'], 'Объявление':['Avito'], 'Подборка':['Instagram','VK','OK']};
 var ALL_PLATFORMS = [['Instagram','Instagram (Recur)'],['VK','ВК'],['OK','ОК'],['Telegram','Telegram'],['MAX','MAX'],['Threads','Threads'],['Avito','Авито']];
 var FORMAT_PACK = {'Карусель':'carousel', 'Сторис':'stories', 'Рилс':'reel', 'Пост':'post', 'Объявление':'avito'};
 var PF_NAME = {VK:'ВК', OK:'ОК', Telegram:'Telegram', MAX:'MAX', Threads:'Threads', Instagram:'Instagram · Recur', Avito:'Авито'};
@@ -541,6 +544,7 @@ $('weekPlan').addEventListener('click', function(e){
   if(b.dataset.menu) openItemSheet(it);
 });
 function requestText(it){
+  if(it.format === 'Подборка'){ openDigest({planId: it.id, title: it.tour, date: it.date < TODAY ? TODAY : it.date, platforms: it.platforms}); return; }
   var fk = FORMAT_KIND[it.format] || ['post','4:5'];
   setPending(it.id, {at: Date.now(), queued: false}); renderWeek();
   return taskApi('layout_request', {kind: fk[0], format: fk[1], query: it.link || it.tour, title: it.tour, planId: it.id}).then(function(d){
@@ -598,6 +602,9 @@ $('sheet').addEventListener('click', function(e){
   if(b.dataset.site){ openLink(draft.link); return; }
   if(b.dataset.bpf){ var k2 = draft.platforms.indexOf(b.dataset.bpf); if(k2 >= 0) draft.platforms.splice(k2, 1); else draft.platforms.push(b.dataset.bpf); renderBuilder(); return; }
   if(b.dataset.makeAll){ makeAll(); return; }
+  if(b.dataset.dgpf){ var k3 = draft.platforms.indexOf(b.dataset.dgpf); if(k3 >= 0) draft.platforms.splice(k3, 1); else draft.platforms.push(b.dataset.dgpf); renderDigest(); return; }
+  if(b.dataset.dgAll){ draft.all = !draft.all; renderDigest(); return; }
+  if(b.dataset.makeDigest){ makeDigest(); return; }
   if(b.dataset.stepBack){ draft = {step: 1}; renderAddSheet(); return; }
   if(b.dataset.fmt){ draft.format = b.dataset.fmt; if(!draft.editId) draft.platforms = FORMAT_PLATFORMS[draft.format].slice(); renderAddSheet(); return; }
   if(b.dataset.day){ draft.date = b.dataset.day; renderAddSheet(); return; }
@@ -676,6 +683,77 @@ function makeAll(){
   });
 }
 
+// Подборка «Куда сбежать на выходные в <месяц>»: несколько заездов -> одна карусель
+// (обложка, слайд на тур: дата / НАЗВАНИЕ / 2 строки, подпись в стиле Лены).
+var MONTH_IN = ['январе','феврале','марте','апреле','мае','июне','июле','августе','сентябре','октябре','ноябре','декабре'];
+function monthList(){ return (STATUS.upcoming_month || STATUS.upcoming || []).filter(function(u){ return u.start >= TODAY; }); }
+function isWeekend(u){ var d = new Date(u.start + 'T00:00:00').getDay(); return (d === 5 || d === 6 || d === 0) && (parseInt(u.days, 10) || 9) <= 3; }
+function weekendKey(u){ var d = new Date(u.start + 'T00:00:00'); return isoDay(new Date(d.getTime() - ((d.getDay() + 2) % 7) * 864e5)); }
+// Как у Бестика: по 1–2 тура с каждых выходных, сначала короткие, без повторов.
+function autoPick(list){
+  var soon = isoDay(new Date(Date.now() + 2*864e5)), w = {};
+  list.filter(isWeekend).forEach(function(u){ if(u.start >= soon) (w[weekendKey(u)] = w[weekendKey(u)] || []).push(u); });
+  var keys = Object.keys(w).sort(), seen = {}, picked = [];
+  keys.forEach(function(k){ w[k].sort(function(a, b){ return (parseInt(a.days, 10) || 9) - (parseInt(b.days, 10) || 9) || a.start.localeCompare(b.start); }); });
+  for(var r = 0; picked.length < 9 && r < 5; r++) keys.forEach(function(k){
+    var u = w[k].filter(function(x){ return !seen[x.tour]; })[0]; if(u && picked.length < 9){ seen[u.tour] = 1; picked.push(u); } });
+  return picked;
+}
+function dgKey(u){ return u.start + '|' + u.tour; }
+function openDigest(src){
+  src = src || {};
+  var list = monthList(), picked = autoPick(list);
+  var mon = picked.length ? new Date(picked[0].start + 'T00:00:00').getMonth() : new Date().getMonth();
+  var sel = {}; picked.forEach(function(u){ sel[dgKey(u)] = 1; });
+  draft = {mode: 'digest', planId: src.planId || '', title: src.title || 'Куда сбежать на выходные в ' + MONTH_IN[mon], date: src.date || TODAY,
+    platforms: (src.platforms || FORMAT_PLATFORMS['Подборка']).slice(), sel: sel, all: false};
+  renderDigest();
+}
+function digestTours(){ return monthList().filter(function(u){ return draft.sel[dgKey(u)]; }); }
+function renderDigest(){
+  var list = monthList(), shown = draft.all ? list : list.filter(function(u){ return isWeekend(u) || draft.sel[dgKey(u)]; });
+  var n = digestTours().length;
+  var days = []; for(var i = 0; i < 7; i++){ var d = isoDay(new Date(Date.now() + i*864e5)); days.push([d, i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : WD[new Date(d + 'T00:00:00').getDay()] + ' ' + new Date(d + 'T00:00:00').getDate()]); }
+  openSheet('<h2>Подборка <button data-close="1">✕</button></h2>'
+    + '<div class="label">Заголовок</div><input class="dg-title" id="dgTitle" maxlength="120" value="' + esc(draft.title) + '">'
+    + '<div class="label">Туры (' + n + ' выбрано' + (draft.all ? '' : ', заезды на выходные') + ')</div>'
+    + (shown.map(function(u){ var k = dgKey(u), d = new Date(u.start + 'T00:00:00');
+        return '<div class="fmt-row"><label><input type="checkbox" data-dg="' + esc(k) + '" ' + (draft.sel[k] ? 'checked' : '') + '><span><b style="font-size:12.8px;">' + esc(u.tour) + '</b><small>' + WD[d.getDay()] + ' · ' + esc(u.when) + ' · ' + esc(u.price) + '</small></span></label></div>'; }).join('')
+      || '<div class="empty" style="padding:12px;">Заездов на месяц вперёд нет — список обновится, когда включится Мак.</div>')
+    + '<button class="btn ghost wide" data-dg-all="1" style="margin:4px 0 6px;">' + (draft.all ? 'Только выходные' : 'Показать все заезды месяца') + '</button>'
+    + '<div class="fmt-row"><label>Публикуем</label><select id="dgDay">' + days.map(function(d){ return '<option value="' + d[0] + '"' + (draft.date === d[0] ? ' selected' : '') + '>' + d[1] + '</option>'; }).join('') + '</select></div>'
+    + '<div class="label">Где публикуем</div><div class="chips">' + ALL_PLATFORMS.filter(function(x){ return x[0] !== 'Avito'; }).map(function(x){ return '<button class="chip' + (draft.platforms.indexOf(x[0]) >= 0 ? ' on' : '') + '" data-dgpf="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>'
+    + (n < 2 ? '<div class="warn">Отметьте хотя бы 2 тура.</div>' : n > 12 ? '<div class="warn">Больше 12 туров в одну карусель не влезет.</div>' : '')
+    + '<button class="btn wide" data-make-digest="1" ' + (n >= 2 && n <= 12 && draft.platforms.length ? '' : 'disabled') + ' style="margin-top:10px;">Сделать подборку' + (n ? ' (' + n + ')' : '') + '</button>'
+    + '<div class="sub" style="margin:8px 2px 0;">Обложка, слайд на каждый тур (дата / название / 2 строки) и подпись к посту. Цены — «до» из каталога.</div>');
+}
+$('sheet').addEventListener('change', function(e){
+  if(!draft || draft.mode !== 'digest') return;
+  var t = e.target;
+  if(t.dataset.dg){ if(t.checked) draft.sel[t.dataset.dg] = 1; else delete draft.sel[t.dataset.dg]; draft.title = $('dgTitle').value; renderDigest(); }
+  if(t.id === 'dgDay') draft.date = t.value;
+});
+$('sheet').addEventListener('input', function(e){ if(draft && draft.mode === 'digest' && e.target.id === 'dgTitle') draft.title = e.target.value; });
+function makeDigest(){
+  var tours = digestTours(), src = draft, title = (src.title || '').trim() || 'Подборка';
+  var first = tours[0].start, last = tours[tours.length - 1].start, fmtD = function(x){ var d = new Date(x + 'T00:00:00'); return d.getDate() + ' ' + MON[d.getMonth()]; };
+  var note = 'Туров: ' + tours.length + ' · ' + fmtD(first) + (last !== first ? ' – ' + fmtD(last) : '');
+  var it = src.planId && PLAN.find(function(p){ return p.id === src.planId; });
+  if(it){ it.tour = title; it.date = src.date; it.platforms = src.platforms.slice(); it.note = note; it.textId = ''; it.status = 'Запланировано'; }
+  else { it = {id: newId(), date: src.date, platforms: src.platforms.slice(), format: 'Подборка', tour: title, link: '', status: 'Запланировано', textId: '', note: note}; PLAN.push(it); }
+  setPending(it.id, {at: Date.now(), queued: false}); savePlan(it);
+  closeSheet(); renderWeek();
+  taskApi('digest_request', {title: title, planId: it.id, tours: tours.map(function(u){ return {title: u.tour, link: u.link, when: u.when, price: u.price, days: u.days}; })}).then(function(d){
+    setPending(it.id, {at: Date.now(), queued: !!d.queued}); renderWeek();
+    toast(d.queued ? 'Мак выключен — подборка в «Задачи для Мака»' : 'Бестик делает подборку — минуты две, пришлю в чат');
+    if(d.queued) loadTasks(); else pollForText();
+  }).catch(function(e){
+    setPending(it.id, null); renderWeek();
+    toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось отправить Бестику — нажмите «Сделать текст» на карточке');
+  });
+}
+$('digestBtn').addEventListener('click', function(){ openDigest(); });
+
 function openItemSheet(it){
   draft = {itemId: it.id};
   openSheet('<h2>' + esc(it.tour) + ' <button data-close="1">✕</button></h2>'
@@ -688,6 +766,7 @@ function openItemSheet(it){
 }
 function itemAction(act){
   var it = PLAN.find(function(p){ return p.id === draft.itemId; }); if(!it) return;
+  if(act === 'edit' && it.format === 'Подборка'){ openDigest({planId: it.id, title: it.tour, date: it.date < TODAY ? TODAY : it.date, platforms: it.platforms}); return; }
   if(act === 'edit'){ draft = {step: 2, editId: it.id, tour: it.tour, link: it.link, format: it.format, date: it.date < TODAY ? TODAY : it.date, platforms: (it.platforms || []).slice()}; renderAddSheet(); return; }
   closeSheet();
   if(act === 'remake'){ it.textId = ''; it.status = 'Запланировано'; savePlan(it); requestText(it); }
@@ -744,7 +823,7 @@ var TEMPLATES = [
   {id:'tpl2', kind:'template', tour:'Пляжный тур — пост', slides:[{layers:[{role:'text', text:'[Направление] ждёт: [даты]. [X] дней у моря, [что включено]. Выезд из [город] на [транспорт]. Цена: до [X] ₽.'}]}]},
   {id:'tpl3', kind:'template', tour:'Объявление Авито', slides:[{layers:[{role:'title', text:'[Направление] тур из [город] — [что получает клиент]'}, {role:'text', text:'Что входит: [список]\nТрансфер: [город] → [направление]\nГруппа: до [N] человек\n\nЦена: от [X] ₽\nПишите в чат Авито — ответим быстро.'}]}]}
 ];
-var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс', template:'Шаблон'};
+var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс', digest:'Подборка', template:'Шаблон'};
 var ROLE = {date:'Дата', title:'Заголовок', caption:'Подпись', text:'Текст', cta:'Призыв'};
 var openId = null, saveTimer = null;
 function kindName(t){ return t.kind === 'carousel' || !t.kind ? (t.format === '9:16' ? 'Сторис' : 'Карусель') : KIND[t.kind]; }
