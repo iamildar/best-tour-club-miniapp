@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T09:44:00.591Z (обновлено из приложения)",
+  "updated_at": "2026-10-02T09:44:03.110Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -1773,6 +1773,19 @@
         "Threads"
       ],
       "format": "Пост",
+      "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
+      "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
+      "status": "Запланировано",
+      "textId": "",
+      "note": ""
+    },
+    {
+      "id": "muqs0128vwrb",
+      "date": "2026-10-02",
+      "platforms": [
+        "Avito"
+      ],
+      "format": "Объявление",
       "tour": "Тур в Грузию: Тбилиси, Батуми + Трабзон (Турция)",
       "link": "https://best-tour-club.ru/vse-tury/tur-v-gruziyu-tbilisi-batumi-trabzon-turciya",
       "status": "Запланировано",
