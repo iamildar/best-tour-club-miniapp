@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-03T03:21:48.165Z (Бестик)",
+  "updated_at": "2026-10-03T03:22:37.349Z (Бестик)",
   "queue": [],
   "ideas": [
     {
@@ -270,7 +270,9 @@
       "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
       "format": "9:16",
       "template": "clean",
-      "images": [],
+      "images": [
+        "assets/media/murtoj3srrdq/1-murttia7def3.jpg"
+      ],
       "ready": false,
       "created": "2026-10-03T03:18:40.312Z",
       "source": "app",
