@@ -1233,7 +1233,7 @@ var SET_LISTS = {
   signatures: {name: 'Подписи и призывы', hint: 'Концовки и призывы, которые Бестик берёт в тексты.', add: 'Новая подпись'},
   platformOrder: {name: 'Порядок площадок', hint: 'В этом порядке площадки идут в конструкторе и в плане.', fixed: true},
   hashtags: {name: 'Хештеги по площадкам', hint: 'Бестик ставит эти хештеги. Через пробел, по площадкам.'},
-  guideName: {name: 'Имя гида', hint: 'Подставляется в сценарий разговорного видео вместо [имя].'}
+  guides: {name: 'Гиды', hint: 'В сценарии разговорного видео — кнопки «Подставить имя» по каждому гиду. Если гид один, Бестик подставит его сам.', add: 'Имя гида'}
 };
 var setView = null, setEdit = false;
 function settings(){ return STATUS.settings || {}; }
@@ -1242,7 +1242,7 @@ function setValue(key){
   if(key === 'checklist') return (s.checklist && s.checklist.length ? s.checklist : CHECKLIST).slice();
   if(key === 'platformOrder') return (s.platformOrder && s.platformOrder.length ? s.platformOrder : ALL_PLATFORMS.map(function(p){ return p[0]; })).slice();
   if(key === 'hashtags') return JSON.parse(JSON.stringify(s.hashtags || {}));
-  if(key === 'guideName') return s.guideName || '';
+  if(key === 'guides') return (s.guides && s.guides.length ? s.guides : s.guideName ? [s.guideName] : []).slice();
   return (s[key] || []).slice();
 }
 function setSave(key, value){ STATUS.settings = STATUS.settings || {}; STATUS.settings[key] = value; applySettings(); return bridge('settings_set', {key: key, value: value}).then(function(ok){ if(!ok) toast('Не сохранилось — проверьте связь'); }); }
@@ -1258,12 +1258,11 @@ function renderSettingsList(){
   if(h1) h1.style.display = setView ? 'none' : ''; if(bk) bk.style.display = setView ? 'none' : '';
   if(!setView){
     root.innerHTML = '<div class="label">Бестик и тексты</div><div class="card" style="overflow:hidden;">' + Object.keys(SET_LISTS).map(function(k){
-      var v = setValue(k), n = k === 'guideName' ? (v || '[имя]') : k === 'hashtags' ? Object.keys(v).filter(function(p){ return (v[p] || []).length; }).length + ' площ.' : v.length;
+      var v = setValue(k), n = k === 'hashtags' ? Object.keys(v).filter(function(p){ return (v[p] || []).length; }).length + ' площ.' : v.length;
       return '<button class="menu-row" data-setopen="' + k + '"><span>' + SET_LISTS[k].name + '</span><b class="lib-count">' + esc(String(n)) + '</b>›</button>'; }).join('') + '</div>';
     return;
   }
   var cfg = SET_LISTS[setView], v = setValue(setView), head = '<div class="lib-head"><button class="back" data-setback="1">‹ Настройки</button>' + (Array.isArray(v) ? '<button class="link-btn" data-setedit="1">' + (setEdit ? 'Готово' : 'Править') + '</button>' : '') + '</div><h1>' + cfg.name + '</h1><p class="sub">' + cfg.hint + '</p>';
-  if(setView === 'guideName'){ root.innerHTML = head + '<input class="dg-title" id="setGuide" placeholder="[имя]" value="' + esc(v) + '"><button class="btn wide" data-setguide="1" style="margin-top:10px;">Сохранить</button>'; return; }
   if(setView === 'hashtags'){ root.innerHTML = head + ALL_PLATFORMS.filter(function(p){ return p[0] !== 'Avito'; }).map(function(p){ return '<div class="label">' + p[1] + '</div><input class="dg-title" data-settag="' + p[0] + '" placeholder="#кавказ #горы" value="' + esc((v[p[0]] || []).join(' ')) + '">'; }).join('') + '<button class="btn wide" data-settags="1" style="margin-top:10px;">Сохранить</button>'; return; }
   root.innerHTML = head + '<div class="card set-list" id="setList">' + (v.map(function(t, i){
     return '<div class="set-row' + (setEdit ? ' editing' : '') + '" data-si="' + i + '">' + (setEdit && !cfg.fixed ? '<button class="lib-minus" data-setdel="' + i + '">−</button>' : '')
@@ -1287,7 +1286,6 @@ document.addEventListener('click', function(e){
     el.innerHTML = '<input class="dg-title" value="' + esc(arr[k]) + '">'; var inp = el.querySelector('input'); inp.focus();
     inp.onblur = inp.onchange = function(){ if(inp.value.trim() && inp.value.trim() !== arr[k]){ arr[k] = inp.value.trim(); setSave(setView, arr); } renderSettingsList(); }; return; }
   if(g('data-setadd') !== null){ var n = $('setNew').value.trim(); if(!n) return; var l2 = setValue(setView); l2.push(n); setSave(setView, l2); renderSettingsList(); toast('Добавлено — Бестик учтёт сразу'); return; }
-  if(g('data-setguide') !== null){ setSave('guideName', $('setGuide').value.trim()); toast('Сохранено'); setView = null; renderSettingsList(); return; }
   if(g('data-settags') !== null){ var h = {}; document.querySelectorAll('[data-settag]').forEach(function(inp){ var tags = inp.value.split(/[\s,]+/).filter(Boolean); if(tags.length) h[inp.dataset.settag] = tags; }); setSave('hashtags', h); toast('Хештеги сохранены'); setView = null; renderSettingsList(); return; }
 });
 
@@ -1534,7 +1532,8 @@ function renderDetail(){
   $('packTabs').innerHTML = tabs.map(function(x){ return '<button class="' + (x.id === t.id ? 'on' : '') + '" data-tab-text="' + esc(x.id) + '">' + kindName(x) + '</button>'; }).join('');
   var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">☑ Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">☐ Опубликовано</button>')
     : '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
-  $('detailRow').innerHTML = t.kind === 'gemini' ? geminiBlock(t) : tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
+  var guideBtns = t.kind === 'talk' && JSON.stringify(t.slides).indexOf('[имя]') >= 0 ? setValue('guides') : [];
+  $('detailRow').innerHTML = guideBtns.length ? '<div class="gem-actions"><span class="sub" style="margin:0;width:100%;">Подставить имя гида вместо [имя]:</span>' + guideBtns.map(function(g){ return '<button class="chip-btn" data-guide="' + esc(g) + '">' + esc(g) + '</button>'; }).join('') + '</div>' : t.kind === 'gemini' ? geminiBlock(t) : tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
     : (car && !t.packId ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '') + pub;
   var n = t.slides.length;
   $('slides').innerHTML = t.slides.map(function(sl, si){
@@ -1573,6 +1572,7 @@ $('textDetail').addEventListener('click', function(e){
     toast('★ В хуках библиотеки'); return; }
   if(b.id === 'saveTpl'){ flush(); toTemplate(t); return; }
   if(b.dataset.copySl !== undefined){ flush(); copyText(t.slides[+b.dataset.copySl].layers[+b.dataset.copyLy].text || ''); return; }
+  if(b.dataset.guide){ var gname = b.dataset.guide; t.slides.forEach(function(sl){ (sl.layers || []).forEach(function(l){ l.text = String(l.text || '').split('[имя]').join(gname); }); }); changed(t, true); toast('Имя подставлено: ' + gname); return; }
   if(b.id === 'gemCopy'){ copyText(t.slides[0].layers[0].text); setTimeout(function(){ openLink(GEMINI_URL); }, 400); return; }
   if(b.id === 'gemReview'){ geminiWait(t, 'review'); return; }
   if(b.id === 'gemAttach'){ geminiWait(t, 'attach'); return; }
