@@ -124,6 +124,11 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .mini:disabled{opacity:.3;}
   .layer{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);}
   .layer:first-of-type{border-top:none;}
+  .ic{width:16px;height:16px;vertical-align:-3px;flex:none;}
+  .copy .ic,.hook .ic{width:17px;height:17px;vertical-align:-4px;}
+  .lib-star .ic{width:20px;height:20px;}
+  .lib-star.on .ic, .hook.on .ic{fill:currentColor;}
+  .verdict .v-ok{color:var(--ok);} .verdict .v-bad{color:var(--bad);} .verdict .v-warn{color:#B07A1E;} .verdict .v-info{color:var(--ink-soft);}
   .gem-actions{display:flex;flex-wrap:wrap;gap:8px;width:100%;margin-bottom:4px;}
   .gem-actions .btn{flex:1 1 100%;}
   .gem-actions .btn.ghost{flex:1 1 40%;}
@@ -202,6 +207,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .st-rules{list-style:none;padding:0;margin:6px 0 0;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;text-align:left;}
   .st-rules li{display:flex;gap:12px;align-items:center;font-size:18px;font-weight:600;background:#fff;border-radius:20px;padding:16px;box-shadow:0 8px 20px -14px rgba(18,51,34,.35);}
   .st-rules span{flex:none;width:28px;height:28px;border-radius:50%;background:#123322;color:#F9EED8;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .st-paused .ic{width:56px;height:56px;}
   .st-paused{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;color:rgba(18,51,34,.45);pointer-events:none;}
   .toast.with-btn{pointer-events:auto;display:flex;align-items:center;gap:10px;}
   .toast-undo{border:none;background:none;color:var(--bg);font-weight:800;text-decoration:underline;font-size:12.4px;cursor:pointer;padding:0;}
@@ -322,7 +328,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
       <div class="label">Ближайшие заезды <span id="upcCount"></span></div>
       <div id="upcList"></div>
       <button class="btn ghost wide" id="upcMore" style="display:none;"></button>
-      <button class="btn ghost wide" id="digestBtn" style="margin-top:6px;">🗂 Подборка «Куда сбежать на выходные»</button>
+      <button class="btn ghost wide" id="digestBtn" style="margin-top:6px;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4"/></svg> Подборка «Куда сбежать на выходные»</button>
       <button class="collapse" id="checkToggle"><span>Чек-лист дня</span><small id="checkCount"></small></button>
       <div class="card" id="checklist" style="display:none;margin-top:8px;"></div>
       </div>
@@ -332,9 +338,9 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
     <section class="screen" id="screen-texts">
       <div id="textsList">
         <h1>Тексты</h1>
-        <p class="sub">Готовое от Бестика и шаблоны. Нажмите 📋 — текст скопирован. Текст правится нажатием.</p>
+        <p class="sub">Готовое от Бестика и шаблоны. Нажмите «Копировать» — текст в буфере. Текст правится нажатием.</p>
         <button class="btn ghost wide" id="openCheck" style="margin-bottom:8px;">Проверить свой текст</button>
-        <button class="btn ghost wide" id="openGemini" style="margin-bottom:14px;">🎨 Картинка в Gemini</button>
+        <button class="btn ghost wide" id="openGemini" style="margin-bottom:14px;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M20 16l-4.5-4.5L6 19"/></svg> Картинка в Gemini</button>
         <div id="textsItems"></div>
       </div>
       <div id="textDetail" style="display:none;">
@@ -378,9 +384,9 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
           <ol class="steps">
             <li><b>Тур на неделю.</b> «Неделя» → «Ближайшие заезды» → нажмите на тур. В конструкторе отметьте форматы (у каждого — свой день) и площадки → «Сделать всё». Бестик напишет весь пакет одним заходом.</li>
             <li><b>Каждый день.</b> «Неделя» → карточки на сегодня. Текст готов — «Открыть текст»: внутри пакета вкладки по форматам.</li>
-            <li><b>Видео.</b> «Рилс · CapCut» — текст на экран для каждого кусочка с секундами, подпись и хештеги: монтируете в CapCut по своим шаблонам. «Разговорное видео» — сценарий для гида: реплики, доп. кадры и памятка по съёмке; внизу «Всё одним сообщением» — 📋 и переслать гиду.</li>
-            <li><b>Выкладываем.</b> В тексте нажимайте 📋 у каждого слоя и вставляйте: в Crsel, CapCut, Recur, ВК/ОК/Telegram/Threads, Авито. Выложили — «Опубликовано».</li>
-            <li><b>Чужое фото с отметкой.</b> «Тексты» → шаблон «Запрос согласия автора» → 📋 → отправьте автору. Без «да» не публикуем.</li>
+            <li><b>Видео.</b> «Рилс · CapCut» — текст на экран для каждого кусочка с секундами, подпись и хештеги: монтируете в CapCut по своим шаблонам. «Разговорное видео» — сценарий для гида: реплики, доп. кадры и памятка по съёмке; внизу «Всё одним сообщением» — «Копировать» и переслать гиду.</li>
+            <li><b>Выкладываем.</b> В тексте нажимайте «Копировать» у каждого слоя и вставляйте: в Crsel, CapCut, Recur, ВК/ОК/Telegram/Threads, Авито. Выложили — «Опубликовано».</li>
+            <li><b>Чужое фото с отметкой.</b> «Тексты» → шаблон «Запрос согласия автора» → «Копировать» → отправьте автору. Без «да» не публикуем.</li>
             <li><b>Своё.</b> Написали сами — «Тексты» → «Проверить свой текст».</li>
             <li><b>Мак выключен.</b> Заказ текста ляжет в «Задачи для Мака», карточка покажет «Ждёт Мака». Включится — Бестик пришлёт список в чат.</li>
           </ol>
@@ -403,7 +409,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
           <p><b>Тон</b> — тёплый, живой, от «мы», к клиентам на «вы». Без пафоса и превосходных степеней («самый», «лучший»), если их нет в отзывах.</p>
           <p><b>Чужие фото и видео</b> с отметками — только с согласия автора (скриншот переписки — в папку «Согласования»).</p>
           <p><b>Авито:</b> одно объявление — один тур; тот же тур повторно не раньше чем через 30 дней; без телефонов и ссылок в тексте; без КАПСа.</p>
-          <p><b>⛔ нет на сайте</b> — тур не предлагаем.</p>
+          <p><b>«нет на сайте»</b> — тур не предлагаем.</p>
         </div>
         <button class="btn ghost wide" id="openOwnRules" style="margin-top:10px;">Свои правила бренда ›</button>
       </div>
@@ -597,7 +603,7 @@ var PF_NAME = {VK:'ВК', OK:'ОК', Telegram:'Telegram', MAX:'MAX', Threads:'Th
 function planText(it){ return it.textId ? TEXTS.find(function(t){ return t.id === it.textId; }) : null; }
 function itemCard(it){
   var p = pending[it.id], t = planText(it), pub = it.status === 'Опубликовано', post = it.status === 'Отложено';
-  var st = pub ? '<span class="st done">✓ Опубликовано</span>' : post ? '<span class="st">Отложено</span>'
+  var st = pub ? '<span class="st done">Опубликовано</span>' : post ? '<span class="st">Отложено</span>'
     : t ? '<span class="st ready">Текст готов</span>' : p ? (p.queued ? '<span class="st wait">Ждёт Мака</span>' : '<span class="st wait">Бестик пишет…</span>')
     : it.textId ? '<span class="st ready">Текст готов</span>' : '<span class="st">Нужен текст</span>';
   var action = '';
@@ -616,8 +622,8 @@ function itemCard(it){
 // Нажатие на формат — меню этой публикации (перенести, отложить, заново…).
 var FMT_SHORT = {'Объявление':'Авито', 'Разговорное видео':'Видео с гидом', 'Рилс':'Рилс'};
 function itemState(it){
-  if(it.status === 'Опубликовано') return ['done', ' ✓'];
-  if(it.status === 'Отложено') return ['off', ' ⏸'];
+  if(it.status === 'Опубликовано') return ['done', ' ' + ico('check')];
+  if(it.status === 'Отложено') return ['off', ' ' + ico('pause')];
   if(planText(it) || it.textId) return ['ready', ' ●'];
   if(pending[it.id]) return ['wait', ' …'];
   return ['', ''];
@@ -708,7 +714,7 @@ $('weekPlan').addEventListener('click', function(e){
   var it = PLAN.find(function(p){ return p.id === id; }); if(!it) return;
   if(b.dataset.make) requestText(it);
   if(b.dataset.openText){ showTab('texts'); openText(it.textId, 'week'); }
-  if(b.dataset.publish){ it.status = 'Опубликовано'; savePlan(it); renderWeek(); toast('Отмечено: опубликовано ✓'); }
+  if(b.dataset.publish){ it.status = 'Опубликовано'; savePlan(it); renderWeek(); toast('Отмечено: опубликовано'); }
   if(b.dataset.menu) openItemSheet(it);
 });
 function requestText(it){
@@ -742,14 +748,14 @@ function renderAddSheet(){
   if(draft.step === 1){
     var tours = up.map(function(u, i){ return '<button class="pick" data-pick-tour="' + i + '"><div class="tour-date" style="width:42px;"><b>' + new Date(u.start + 'T00:00:00').getDate() + '</b><small>' + ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'][new Date(u.start + 'T00:00:00').getMonth()] + '</small></div><div><b>' + esc(u.tour) + '</b><small>' + esc(u.when) + ' · ' + esc(u.price) + '</small></div></button>'; }).join('');
     var idea = ideas.map(function(x, i){ return '<button class="pick" data-pick-idea="' + i + '"><div><b>' + esc(x.title) + '</b><small>Идея Бестика · ' + esc(x.fmt || '') + '</small></div></button>'; }).join('');
-    openSheet('<h2>Какой тур? <button data-close="1">✕</button></h2>'
+    openSheet('<h2>Какой тур? <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
       + '<div class="label">Ближайшие заезды</div>' + (tours || '<div class="empty">Нет заездов на неделе.</div>')
       + (idea ? '<div class="label">Идеи Бестика</div>' + idea : ''));
   } else {
     var chips = function(list, sel, attr){ return '<div class="chips">' + list.map(function(x){ var v = x[0], t = x[1]; return '<button class="chip' + (sel(v) ? ' on' : '') + '" ' + attr + '="' + v + '">' + t + '</button>'; }).join('') + '</div>'; };
     var days = []; for(var i = 0; i < 7; i++){ var d = isoDay(new Date(Date.now() + i*864e5)); days.push([d, i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : WD[new Date(d + 'T00:00:00').getDay()] + ' ' + new Date(d + 'T00:00:00').getDate()]); }
     var av = draft.format === 'Объявление' && avitoRecent(draft.link, draft.tour);
-    openSheet('<h2>' + (draft.editId ? 'Изменить' : 'В план') + ' <button data-close="1">✕</button></h2>'
+    openSheet('<h2>' + (draft.editId ? 'Изменить' : 'В план') + ' <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
       + '<div class="card" style="padding:10px 12px;margin-bottom:6px;"><b style="font-size:13.4px;">' + esc(draft.tour) + '</b>' + (draft.when ? '<div class="pi-meta">' + esc(draft.when) + '</div>' : '') + '</div>'
       + '<div class="label">Формат</div>' + chips([['Карусель','Карусель'],['Сторис','Сторис'],['Рилс','Рилс · CapCut'],['Разговорное видео','Разговорное видео'],['Пост','Пост'],['Объявление','Авито']], function(v){ return v === draft.format; }, 'data-fmt')
       + (av ? '<div class="warn">На Авито этот тур выкладывали ' + av.date.split('-').reverse().join('.') + '. Повторно — не раньше чем через 30 дней, иначе модерация может заблокировать.</div>' : '')
@@ -811,7 +817,7 @@ function renderBuilder(){
   var days = []; for(var i = 0; i < 7; i++){ var d = isoDay(new Date(Date.now() + i*864e5)); days.push([d, i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : WD[new Date(d + 'T00:00:00').getDay()] + ' ' + new Date(d + 'T00:00:00').getDate()]); }
   var items = builderItems(), empty = items.filter(function(x){ return !x.platforms.length; });
   var av = draft.formats['Объявление'] && avitoRecent(draft.link, draft.tour);
-  openSheet('<h2>Контент по туру <button data-close="1">✕</button></h2>'
+  openSheet('<h2>Контент по туру <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
     + '<div class="card" style="padding:10px 12px;margin-bottom:4px;"><b style="font-size:13.6px;">' + esc(draft.tour) + '</b>' + (draft.when ? '<div class="pi-meta">' + esc(draft.when) + '</div>' : '')
     + (draft.link ? '<button class="link-btn" data-site="1">Тур на сайте ↗</button>' : '') + '</div>'
     + '<div class="label">Что делаем и когда публикуем</div>'
@@ -886,7 +892,7 @@ function renderDigest(){
   var list = monthList(), shown = draft.all ? list : list.filter(function(u){ return isWeekend(u) || draft.sel[dgKey(u)]; });
   var n = digestTours().length;
   var days = []; for(var i = 0; i < 7; i++){ var d = isoDay(new Date(Date.now() + i*864e5)); days.push([d, i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : WD[new Date(d + 'T00:00:00').getDay()] + ' ' + new Date(d + 'T00:00:00').getDate()]); }
-  openSheet('<h2>Подборка <button data-close="1">✕</button></h2>'
+  openSheet('<h2>Подборка <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
     + '<div class="label">Заголовок</div><input class="dg-title" id="dgTitle" maxlength="120" value="' + esc(draft.title) + '">'
     + '<div class="label">Туры (' + n + ' выбрано' + (draft.all ? '' : ', заезды на выходные') + ')</div>'
     + (shown.map(function(u){ var k = dgKey(u), d = new Date(u.start + 'T00:00:00');
@@ -928,7 +934,7 @@ $('digestBtn').addEventListener('click', function(){ openDigest(); });
 
 function openItemSheet(it){
   draft = {itemId: it.id};
-  openSheet('<h2>' + esc(it.tour) + ' <button data-close="1">✕</button></h2>'
+  openSheet('<h2>' + esc(it.tour) + ' <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
     + '<button class="pick" data-item-act="edit"><div><b>Изменить формат, день, площадки</b></div></button>'
     + (it.textId || pending[it.id] ? '<button class="pick" data-item-act="remake"><div><b>Сделать текст заново</b><small>Бестик напишет новый вариант</small></div></button>' : '')
     + (it.status === 'Опубликовано' ? '<button class="pick" data-item-act="unpublish"><div><b>Снять отметку «Опубликовано»</b></div></button>' : '')
@@ -975,7 +981,7 @@ function syncChecklistFromStatus(){
 }
 function renderChecklist(){
   $('checklist').innerHTML = CHECKLIST.map(function(t, i){ var on = checked.indexOf(i) >= 0;
-    return '<button class="check' + (on ? ' done' : '') + '" data-i="' + i + '"><i>' + (on ? '✓' : '') + '</i><span>' + esc(t) + '</span></button>'; }).join('');
+    return '<button class="check' + (on ? ' done' : '') + '" data-i="' + i + '"><i>' + (on ? ico('check') : '') + '</i><span>' + esc(t) + '</span></button>'; }).join('');
   $('checkCount').textContent = checked.length + ' из ' + CHECKLIST.length + (store('cc_check_open') === '1' ? ' ▴' : ' ▾');
 }
 $('checkToggle').addEventListener('click', function(){ var open = store('cc_check_open') !== '1'; store('cc_check_open', open ? '1' : '0'); $('checklist').style.display = open ? '' : 'none'; renderChecklist(); });
@@ -985,7 +991,7 @@ $('checklist').addEventListener('click', function(e){
   if(k >= 0) checked.splice(k, 1); else checked.push(i);
   checkTouchedAt = Date.now(); renderChecklist();
   clearTimeout(checkTimer); checkTimer = setTimeout(function(){ bridge('checklist_set', {date: TODAY, done: checked.slice()}); }, 800);
-  if(checked.length === CHECKLIST.length) toast('Чек-лист на сегодня пройден ✓');
+  if(checked.length === CHECKLIST.length) toast('Чек-лист на сегодня пройден');
 });
 
 // ---------- Библиотека (приватное хранилище: STATUS.library, STATUS.settings) ----------
@@ -994,11 +1000,11 @@ $('checklist').addEventListener('click', function(e){
 // после удаления 5 секунд «Отменить».
 var LIB_SECTIONS = [
   {id:'templates', name:'Шаблоны', hint:'Свои тексты с пропусками {ТУР}, {даты}, {цена}, {дни}, {ссылка}, {места} — «Заполнить» подставит из каталога.'},
-  {id:'replies', name:'Ответы клиентам', hint:'Готовые ответы: 📋 и вставить в чат. Пропуски тоже работают.'},
+  {id:'replies', name:'Ответы клиентам', hint:'Готовые ответы: «Копировать» и вставить в чат. Пропуски тоже работают.'},
   {id:'archive', name:'Архив по турам', hint:'Отметили «Опубликовано» — текст попадает сюда сам. Вставьте ссылку на пост.'},
-  {id:'reviews', name:'Отзывы', hint:'Бестик берёт в тексты только отзывы с ✓ согласием и только по нужному туру.'},
-  {id:'hooks', name:'Хуки и фразы', hint:'Удачные первые строки. ★ — Бестик видит их как образец интонации.'},
-  {id:'gemini', name:'Задания для Gemini', hint:'Свои задания для картинок. Встроенные шаблоны — в «🎨 Картинка в Gemini».'},
+  {id:'reviews', name:'Отзывы', hint:'Бестик берёт в тексты только отзывы с отметкой «есть согласие» и только по нужному туру.'},
+  {id:'hooks', name:'Хуки и фразы', hint:'Удачные первые строки. Со звёздочкой — Бестик видит их как образец интонации.'},
+  {id:'gemini', name:'Задания для Gemini', hint:'Свои задания для картинок. Встроенные шаблоны — в «Картинка в Gemini».'},
   {id:'capcut', name:'Шаблоны CapCut / Crsel', hint:'Названия ваших шаблонов и для чего они — Бестик пишет раскладку под них.'},
   {id:'brand', name:'Бренд'}
 ];
@@ -1015,23 +1021,23 @@ function libMatch(x){
 }
 function libTours(){ var t = []; libItems().forEach(function(x){ if(x.tour && t.indexOf(x.tour) < 0) t.push(x.tour); }); return t.sort(); }
 function libFilters(){
-  return '<input class="dg-title" id="libQ" type="search" placeholder="🔍 Поиск' + (libView.section ? ' в разделе' : ' по всему') + '" value="' + esc(libView.q) + '">'
+  return '<input class="dg-title" id="libQ" type="search" placeholder="Поиск' + (libView.section ? ' в разделе' : ' по всему') + '" value="' + esc(libView.q) + '">'
     + '<div class="chips" style="margin-top:6px;"><select class="lib-select" id="libTour"><option value="">Тур: все</option>' + libTours().map(function(t){ return '<option' + (t === libView.tour ? ' selected' : '') + '>' + esc(t) + '</option>'; }).join('') + '</select>'
-    + '<button class="chip' + (libView.fav ? ' on' : '') + '" id="libFav">★ Избранное</button></div>';
+    + '<button class="chip' + (libView.fav ? ' on' : '') + '" id="libFav">' + ico('star') + ' Избранное</button></div>';
 }
 function libCard(x, edit){
   var hasPh = /\{(ТУР|даты|цена|дни|ссылка|места)\}/.test(x.text);
   var meta = [x.tour, x.author, x.section === 'archive' && x.platforms.length ? x.platforms.map(function(p){ return PF_NAME[p] || p; }).join(', ') : ''].filter(Boolean).join(' · ');
   var acts = x.section === 'brand' ? '' : '<div class="lib-acts">'
-    + (hasPh ? '<button class="btn" data-lfill="' + esc(x.id) + '">Заполнить</button>' : '<button class="btn" data-lcopy="' + esc(x.id) + '">📋 Копировать</button>')
+    + (hasPh ? '<button class="btn" data-lfill="' + esc(x.id) + '">Заполнить</button>' : '<button class="btn" data-lcopy="' + esc(x.id) + '">Копировать</button>')
     + '<button class="btn ghost" data-lplan="' + esc(x.id) + '">→ В план</button>'
-    + (x.section === 'reviews' ? '<button class="btn ghost' + (x.consent ? ' on' : '') + '" data-lconsent="' + esc(x.id) + '">' + (x.consent ? '✓ Есть согласие' : 'Нет согласия') + '</button>' : '')
+    + (x.section === 'reviews' ? '<button class="btn ghost' + (x.consent ? ' on' : '') + '" data-lconsent="' + esc(x.id) + '">' + (x.consent ? ico('check') + ' Есть согласие' : 'Нет согласия') + '</button>' : '')
     + (x.section === 'archive' ? '<button class="btn ghost" data-llink="' + esc(x.id) + '">' + (x.link ? 'Пост ↗' : '+ Ссылка на пост') + '</button>' : '')
     + '</div>';
   return '<div class="lib-row' + (edit ? ' editing' : '') + '" data-lid="' + esc(x.id) + '">'
     + (edit ? '<button class="lib-minus" data-ldel="' + esc(x.id) + '" aria-label="Удалить">−</button>' : '')
     + '<div class="card lib-card"><div class="lib-top"><b ' + (edit ? 'data-lrename="' + esc(x.id) + '"' : 'data-lopen="' + esc(x.id) + '"') + '>' + esc(x.title || '(без названия)') + '</b>'
-    + (edit ? '' : '<button class="lib-star' + (x.fav ? ' on' : '') + '" data-lstar="' + esc(x.id) + '" aria-label="Избранное">' + (x.fav ? '★' : '☆') + '</button>') + '</div>'
+    + (edit ? '' : '<button class="lib-star' + (x.fav ? ' on' : '') + '" data-lstar="' + esc(x.id) + '" aria-label="Избранное">' + ico('star') + '</button>') + '</div>'
     + (meta ? '<div class="pi-meta">' + esc(meta) + '</div>' : '')
     + '<div class="lib-text" data-lopen="' + esc(x.id) + '">' + esc(x.text.slice(0, 180)) + (x.text.length > 180 ? '…' : '') + '</div>'
     + (edit ? '' : acts) + '</div>'
@@ -1049,7 +1055,7 @@ function renderLib(){
         || '<div class="empty">Ничего не нашлось.</div>';
     } else {
       html += '<div class="card" style="overflow:hidden;margin-top:8px;">' + LIB_SECTIONS.map(function(s){
-        var n = libItems().filter(function(x){ return x.section === s.id; }), c = s.id === 'reviews' ? n.length + ' (✓' + n.filter(function(x){ return x.consent; }).length + ')' : s.id === 'brand' ? '' : n.length;
+        var n = libItems().filter(function(x){ return x.section === s.id; }), c = s.id === 'reviews' ? n.length + ' (согласие: ' + n.filter(function(x){ return x.consent; }).length + ')' : s.id === 'brand' ? '' : n.length;
         return '<button class="menu-row" data-lsec="' + s.id + '"><span>' + s.name + '</span><b class="lib-count">' + c + '</b>›</button>'; }).join('') + '</div>';
     }
     root.innerHTML = html; return;
@@ -1091,7 +1097,7 @@ function openLibEditor(x){
   x = x || {id: newId(), section: libView.section || 'templates', title: '', text: '', tour: '', author: '', link: '', fav: false, consent: false, platforms: [], planId: '', textId: '', source: 'app'};
   draft = {mode: 'lib', item: JSON.parse(JSON.stringify(x))};
   var it = draft.item, tours = upcomingAllTours();
-  openSheet('<h2>' + (libItems().some(function(y){ return y.id === it.id; }) ? 'Изменить' : 'Новое') + ' · ' + libSec(it.section).name + ' <button data-close="1">✕</button></h2>'
+  openSheet('<h2>' + (libItems().some(function(y){ return y.id === it.id; }) ? 'Изменить' : 'Новое') + ' · ' + libSec(it.section).name + ' <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
     + '<div class="label">Название</div><input class="dg-title" id="leTitle" value="' + esc(it.title) + '">'
     + '<div class="label">Текст' + (it.section === 'templates' || it.section === 'replies' ? ' — пропуски: ' + PLACEHOLDERS.map(function(p){ return '<button class="ph-chip" data-ph="' + p + '">{' + p + '}</button>'; }).join(' ') : '') + '</div>'
     + '<textarea class="input" id="leText" style="min-height:160px;">' + esc(it.text) + '</textarea>'
@@ -1117,12 +1123,12 @@ function renderFill(){
   var out = x.text; need.forEach(function(p){ out = out.split('{' + p + '}').join(draft.vals[p] || '{' + p + '}'); });
   draft.out = out;
   var missing = need.filter(function(p){ return !draft.vals[p]; });
-  openSheet('<h2>Заполнить · ' + esc(x.title.slice(0, 30)) + ' <button data-close="1">✕</button></h2>'
+  openSheet('<h2>Заполнить · ' + esc(x.title.slice(0, 30)) + ' <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
     + '<div class="label">Тур</div><select class="lib-select wide" id="fillTour"><option value="">— выберите тур —</option>' + upcomingAllTours().map(function(t){ return '<option' + (t === draft.tour ? ' selected' : '') + '>' + esc(t) + '</option>'; }).join('') + '</select>'
     + need.map(function(p){ return '<div class="label">{' + p + '}' + (facts[p] ? ' — из каталога' : ' — впишите') + '</div><input class="dg-title" data-fillv="' + p + '" value="' + esc(draft.vals[p] || '') + '">'; }).join('')
     + '<div class="label">Получилось</div><div class="card" style="padding:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;">' + esc(out) + '</div>'
     + (missing.length ? '<div class="warn">Не заполнено: ' + missing.map(function(p){ return '{' + p + '}'; }).join(', ') + '</div>' : '')
-    + '<div class="lib-acts"><button class="btn" data-fillcopy="1">📋 Копировать</button><button class="btn ghost" data-fillplan="1">→ В план</button></div>');
+    + '<div class="lib-acts"><button class="btn" data-fillcopy="1">Копировать</button><button class="btn ghost" data-fillplan="1">→ В план</button></div>');
 }
 // → В план: текст становится готовым текстом в «Текстах» и карточкой на сегодня.
 function libToPlan(x, text, tour){
@@ -1294,6 +1300,9 @@ document.addEventListener('click', function(e){
 // свайп вниз или ✕ — закрыть. Озвучку убрали (синтетический голос звучит
 // неживо): листаем сами, подписи всегда видны.
 // Кадры сняты на демо-данных (tools/stories/capture.mjs).
+// Иконки интерфейса вместо эмодзи (правило владельца): тонкие линии, цвет текста.
+var ICONS = {"copy": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"8\" y=\"8\" width=\"12\" height=\"12\" rx=\"2.5\"/><path d=\"M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2\"/></svg>", "image": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"15\" rx=\"2.5\"/><circle cx=\"9\" cy=\"10\" r=\"1.6\"/><path d=\"M20 16l-4.5-4.5L6 19\"/></svg>", "layers": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4l8 4-8 4-8-4z\"/><path d=\"M4 12l8 4 8-4M4 16l8 4 8-4\"/></svg>", "search": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6\"/><path d=\"M20 20l-4.2-4.2\"/></svg>", "star": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 16.4l-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z\"/></svg>", "check": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12.5l4.2 4.2L19 7\"/></svg>", "cross": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6.5 6.5l11 11M17.5 6.5l-11 11\"/></svg>", "warn": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4l9 16H3z\"/><path d=\"M12 10v4.5M12 17.5v.01\"/></svg>", "info": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"M12 11v5M12 8v.01\"/></svg>", "pause": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 6v12M15 6v12\"/></svg>", "box": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3\"/></svg>", "boxcheck": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3\"/><path d=\"M8.5 12.3l2.5 2.5 4.5-5\"/></svg>", "trash": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12\"/></svg>", "close": "<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 7l10 10M17 7L7 17\"/></svg>"};
+function ico(n){ return ICONS[n] || ''; }
 var ST_ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
 var ST_ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
 var ST = {data: null, i: 0, sound: false, paused: false, skip: false, imgTimer: null, imgIdx: 0, audio: null, raf: 0};
@@ -1328,7 +1337,7 @@ function storiesRender(){
       + '<div class="st-shot">' + s.images.map(function(src, k){ return '<img src="' + esc(src) + '" alt="" class="' + (k === 0 ? 'on' : '') + '" style="object-position:50% ' + Math.round(100 * ((s.focus || [])[k] || 0)) + '%">'; }).join('') + '</div>'
       + '<p class="st-cap">' + esc(s.caption) + '</p>';
   } else if(s.kind === 'rules'){
-    body = '<div class="st-center"><h2>' + esc(s.title) + '</h2><ul class="st-rules">' + s.caption.split('·').map(function(r){ return '<li><span>✓</span>' + esc(r.trim()) + '</li>'; }).join('') + '</ul></div>';
+    body = '<div class="st-center"><h2>' + esc(s.title) + '</h2><ul class="st-rules">' + s.caption.split('·').map(function(r){ return '<li><span>' + ico('check') + '</span>' + esc(r.trim()) + '</li>'; }).join('') + '</ul></div>';
   } else {
     body = '<div class="st-center"><img class="st-logo" src="assets/logos/icon-green.svg" alt=""><h1>' + esc(s.title) + '</h1><p class="st-cap">' + esc(s.caption) + '</p>'
       + (ST.i === n - 1 ? '<div class="st-hint">Свернуть К•К — смахните вниз за верхнюю полоску Telegram.<br>На iPad «⤢ На весь экран» — в шапке приложения.</div>' : '')
@@ -1337,9 +1346,9 @@ function storiesRender(){
   $('stories').innerHTML = '<div class="st-card"><div class="st-bars">' + bars + '</div>'
     + '<div class="st-head">' + (s.kind === 'brand' ? '' : '<img src="assets/logos/icon-green.svg" alt="">') + '<b>Как работать</b><span>' + (ST.i + 1) + ' / ' + n + '</span>'
 
-    + (ST.skip ? '<button class="st-skip" data-st="close">Пропустить</button>' : '<button class="st-btn" data-st="close" aria-label="Закрыть">✕</button>') + '</div>'
+    + (ST.skip ? '<button class="st-skip" data-st="close">Пропустить</button>' : '<button class="st-btn" data-st="close" aria-label="Закрыть">' + ico('close') + '</button>') + '</div>'
     + '<div class="st-body st-k-' + s.kind + '">' + body + '</div>'
-    + (ST.paused ? '<div class="st-paused">❚❚</div>' : '') + '</div>'
+    + (ST.paused ? '<div class="st-paused">' + ico('pause') + '</div>' : '') + '</div>'
     + '<button class="st-nav" data-st="prev" aria-label="Назад" style="left:calc(50% - var(--stw,0px) / 2 - 68px)">‹</button><button class="st-nav" data-st="next" aria-label="Дальше" style="left:calc(50% + var(--stw,0px) / 2 + 24px)">›</button>';
   var cardEl = $('stories').querySelector('.st-card'); $('stories').style.setProperty('--stw', cardEl.getBoundingClientRect().width + 'px');
   // два кадра сменяют друг друга
@@ -1361,7 +1370,7 @@ function storiesPause(on){
   if(ST.paused === on) return; ST.paused = on;
   if(ST.sound && ST.audio){ if(on) ST.audio.pause(); else ST.audio.play().catch(function(){}); }
   var c = $('stories').querySelector('.st-card'); var p = c && c.querySelector('.st-paused');
-  if(on && c && !p) c.insertAdjacentHTML('beforeend', '<div class="st-paused">❚❚</div>'); if(!on && p) p.remove();
+  if(on && c && !p) c.insertAdjacentHTML('beforeend', '<div class="st-paused">' + ico('pause') + '</div>'); if(!on && p) p.remove();
 }
 (function(){
   var down = null, holdTimer = null, held = false;
@@ -1425,12 +1434,12 @@ function renderTextsList(){
   var items = TEXTS.filter(function(t){ if(!t.packId) return true; if(seen[t.packId]) return false; seen[t.packId] = 1; return true; }).map(function(t){
     if(t.packId){
       var parts = packParts(t.packId), ready = parts.every(function(x){ var p = linkedPlan(x); return p ? p.status === 'Опубликовано' : x.ready; });
-      return '<button class="card text-item" data-text="' + esc(parts[0].id) + '"><b><span class="kind' + (ready ? ' ready' : '') + '">' + (ready ? '✓ ' : '') + 'Пакет</span>' + esc(t.tour) + '</b><small>' + parts.map(kindName).join(' · ')
+      return '<button class="card text-item" data-text="' + esc(parts[0].id) + '"><b><span class="kind' + (ready ? ' ready' : '') + '">' + (ready ? ico('check') + ' ' : '') + 'Пакет</span>' + esc(t.tour) + '</b><small>' + parts.map(kindName).join(' · ')
         + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '') + '</small></button>';
     }
     var meta = (t.kind === 'gemini' ? 'Задание ' + (t.format || '') + ((t.images || []).length ? ' · картинок: ' + t.images.length : '') : t.kind === 'avito' ? 'Объявление' : t.kind === 'post' ? 'Тексты для площадок' : t.kind === 'reel' ? 'Сценарий' : t.kind === 'talk' ? 'Сценарий гиду' : (t.format === '9:16' ? 'Сторис 9:16' : 'Пост 4:5') + ' · слайдов: ' + (t.slides || []).length)
       + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '');
-    return '<button class="card text-item" data-text="' + esc(t.id) + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? '✓ ' : '') + kindName(t) + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
+    return '<button class="card text-item" data-text="' + esc(t.id) + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? ico('check') + ' ' : '') + kindName(t) + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
   }).join('');
   $('textsItems').innerHTML = (items || '<div class="empty">Готовых текстов пока нет. Добавьте тур в план на «Неделе» — Бестик пришлёт текст сюда.</div>')
     + '<div class="label">Шаблоны</div>' + TEMPLATES.map(function(t){ return '<button class="card text-item" data-text="' + esc(t.id) + '"><b><span class="kind">Шаблон</span>' + esc(t.tour) + '</b></button>'; }).join('');
@@ -1468,7 +1477,7 @@ function openGemini(src){
 }
 function renderGemini(){
   var t = gemTpl(draft.template), f = draft.format || t.format;
-  openSheet('<h2>Картинка в Gemini <button data-close="1">✕</button></h2>'
+  openSheet('<h2>Картинка в Gemini <button data-close="1" aria-label="Закрыть">' + ico('close') + '</button></h2>'
     + (draft.tour ? '<div class="card" style="padding:10px 12px;margin-bottom:4px;"><b style="font-size:13.6px;">' + esc(draft.tour) + '</b></div>' : '')
     + '<div class="label">Что делаем</div><div class="chips">' + GEMINI_TEMPLATES.map(function(x){ return '<button class="chip' + (x.id === draft.template ? ' on' : '') + '" data-gtpl="' + x.id + '">' + x.name + '</button>'; }).join('') + '</div>'
     + '<div class="label">Формат</div><div class="seg"><button data-gfmt="9:16" class="' + (f === '9:16' ? 'active' : '') + '">9:16 сторис/рилс</button><button data-gfmt="4:5" class="' + (f === '4:5' ? 'active' : '') + '">4:5 пост</button></div>'
@@ -1505,7 +1514,7 @@ function geminiBlock(t){
   var refs = gemTpl(t.template).refs ? '<div class="sub" style="margin:8px 0 0;">Образцы для Gemini — нажмите, откроется картинка, сохраните её и приложите:</div><div class="gem-refs">'
     + STICKER_REFS.map(function(n){ return '<a href="#" data-gref="assets/stickers/' + n + '.webp"><img src="assets/stickers/' + n + '.webp" alt=""></a>'; }).join('') + '</div>' : '';
   var imgs = (t.images || []).length ? '<div class="label">Прикреплённые картинки</div><div class="gem-imgs">' + t.images.map(function(u){ return '<a href="#" data-gref="' + esc(u) + '"><img src="' + esc(u) + '" alt="" loading="lazy"></a>'; }).join('') + '</div>' : '';
-  return '<div class="gem-actions"><button class="btn" id="gemCopy">📋 Скопировать и открыть Gemini</button><button class="btn ghost" id="gemReview">👀 Бестик, глянь</button><button class="btn ghost" id="gemAttach">📎 Прикрепить к карточке</button></div>' + refs + imgs;
+  return '<div class="gem-actions"><button class="btn" id="gemCopy">Скопировать и открыть Gemini</button><button class="btn ghost" id="gemReview">Бестик, глянь</button><button class="btn ghost" id="gemAttach">Прикрепить к карточке</button></div>' + refs + imgs;
 }
 function geminiWait(t, mode){
   taskApi('gemini_wait', {textId: t.id, mode: mode}).then(function(d){
@@ -1530,25 +1539,25 @@ function renderDetail(){
   var tabs = t.packId ? packParts(t.packId) : [];
   $('packTabs').style.display = tabs.length > 1 ? '' : 'none';
   $('packTabs').innerHTML = tabs.map(function(x){ return '<button class="' + (x.id === t.id ? 'on' : '') + '" data-tab-text="' + esc(x.id) + '">' + kindName(x) + '</button>'; }).join('');
-  var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">☑ Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">☐ Опубликовано</button>')
-    : '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
+  var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">' + ico('boxcheck') + ' Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">' + ico('box') + ' Опубликовано</button>')
+    : '<button class="chip-btn" id="readyBtn">' + (t.ready ? ico('boxcheck') : ico('box')) + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
   var guideBtns = t.kind === 'talk' && JSON.stringify(t.slides).indexOf('[имя]') >= 0 ? setValue('guides') : [];
   $('detailRow').innerHTML = guideBtns.length ? '<div class="gem-actions"><span class="sub" style="margin:0;width:100%;">Подставить имя гида вместо [имя]:</span>' + guideBtns.map(function(g){ return '<button class="chip-btn" data-guide="' + esc(g) + '">' + esc(g) + '</button>'; }).join('') + '</div>' : t.kind === 'gemini' ? geminiBlock(t) : tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
     : (car && !t.packId ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '') + pub;
   var n = t.slides.length;
   $('slides').innerHTML = t.slides.map(function(sl, si){
     var head = car && !tpl ? '<div class="slide-top"><b>Слайд ' + (si + 1) + (si === 0 ? ' · обложка' : '') + '</b>'
-      + '<button class="mini" data-up="' + si + '" ' + (si === 0 ? 'disabled' : '') + ' aria-label="Выше">↑</button><button class="mini" data-down="' + si + '" ' + (si === n - 1 ? 'disabled' : '') + ' aria-label="Ниже">↓</button><button class="mini" data-del="' + si + '" aria-label="Удалить слайд">🗑</button></div>' : '';
+      + '<button class="mini" data-up="' + si + '" ' + (si === 0 ? 'disabled' : '') + ' aria-label="Выше">↑</button><button class="mini" data-down="' + si + '" ' + (si === n - 1 ? 'disabled' : '') + ' aria-label="Ниже">↓</button><button class="mini" data-del="' + si + '" aria-label="Удалить слайд">' + ico('trash') + '</button></div>' : '';
     return '<div class="card slide">' + head + (sl.layers || []).map(function(l, li){
       // Длинные подписи (рилс: «0–2 с · кадр: …», реплики) — строкой над текстом.
       return '<div class="layer' + ((l.label || '').length > 14 ? ' wide' : '') + '"><div class="layer-role">' + (l.label ? esc(l.label) : (ROLE[l.role] || 'Текст')) + '</div>'
         + '<div class="layer-text role-' + l.role + '" ' + (tpl ? '' : 'contenteditable="true"') + ' data-sl="' + si + '" data-ly="' + li + '">' + esc(l.text) + '</div>'
-        + '<button class="copy" data-copy-sl="' + si + '" data-copy-ly="' + li + '" aria-label="Копировать">📋</button>'
-        + (tpl ? '' : '<button class="hook" data-hook-sl="' + si + '" data-hook-ly="' + li + '" aria-label="В хуки">☆</button>') + '</div>';
+        + '<button class="copy" data-copy-sl="' + si + '" data-copy-ly="' + li + '" aria-label="Копировать">' + ico('copy') + '</button>'
+        + (tpl ? '' : '<button class="hook" data-hook-sl="' + si + '" data-hook-ly="' + li + '" aria-label="В хуки">' + ico('star') + '</button>') + '</div>';
     }).join('') + '</div>';
   }).join('');
   $('detailBottom').innerHTML = tpl ? '' : (car ? '<button class="chip-btn" id="addSlide">+ Слайд</button>' : '')
-    + (t.link ? '<button class="chip-btn" id="openTour">Тур на сайте</button>' : '') + (t.kind !== 'gemini' && t.tour ? '<button class="chip-btn" id="toGemini">🎨 Картинка в Gemini</button>' : '') + (t.kind !== 'gemini' ? '<button class="chip-btn" id="saveTpl">Сохранить как шаблон</button>' : '') + '<button class="chip-btn" id="delText">Удалить</button>';
+    + (t.link ? '<button class="chip-btn" id="openTour">Тур на сайте</button>' : '') + (t.kind !== 'gemini' && t.tour ? '<button class="chip-btn" id="toGemini">Картинка в Gemini</button>' : '') + (t.kind !== 'gemini' ? '<button class="chip-btn" id="saveTpl">Сохранить как шаблон</button>' : '') + '<button class="chip-btn" id="delText">Удалить</button>';
   $('savedState').textContent = '';
 }
 function copyText(text){
@@ -1569,7 +1578,7 @@ $('textDetail').addEventListener('click', function(e){
   if(b.dataset.tabText){ flush(); openId = b.dataset.tabText; renderDetail(); return; }
   if(b.dataset.hookSl !== undefined){ flush(); var hl = t.slides[+b.dataset.hookSl].layers[+b.dataset.hookLy];
     libSave({id: newId(), section: 'hooks', title: (hl.text || '').split('\n')[0].slice(0, 60), text: hl.text || '', tour: t.tour, author: '', link: '', fav: true, consent: false, platforms: [], planId: '', textId: t.id, source: 'app'});
-    toast('★ В хуках библиотеки'); return; }
+    toast('Сохранено в хуках библиотеки'); return; }
   if(b.id === 'saveTpl'){ flush(); toTemplate(t); return; }
   if(b.dataset.copySl !== undefined){ flush(); copyText(t.slides[+b.dataset.copySl].layers[+b.dataset.copyLy].text || ''); return; }
   if(b.dataset.guide){ var gname = b.dataset.guide; t.slides.forEach(function(sl){ (sl.layers || []).forEach(function(l){ l.text = String(l.text || '').split('[имя]').join(gname); }); }); changed(t, true); toast('Имя подставлено: ' + gname); return; }
@@ -1583,7 +1592,7 @@ $('textDetail').addEventListener('click', function(e){
   if(b.dataset.del !== undefined){ var k = +b.dataset.del; confirmBox('Удалить слайд ' + (k + 1) + '?', function(y){ if(y){ t.slides.splice(k, 1); changed(t, true); } }); return; }
   if(b.dataset.fmt){ t.format = b.dataset.fmt; changed(t, true); return; }
   if(b.id === 'readyBtn'){ t.ready = !t.ready; changed(t, true); toast(t.ready ? 'Отмечено: готово' : 'Отметка снята'); return; }
-  if(b.id === 'pubBtn'){ var p = linkedPlan(t); p.status = p.status === 'Опубликовано' ? 'Готово' : 'Опубликовано'; savePlan(p); renderDetail(); renderWeek(); toast(p.status === 'Опубликовано' ? 'Отмечено: опубликовано ✓' : 'Отметка снята'); return; }
+  if(b.id === 'pubBtn'){ var p = linkedPlan(t); p.status = p.status === 'Опубликовано' ? 'Готово' : 'Опубликовано'; savePlan(p); renderDetail(); renderWeek(); toast(p.status === 'Опубликовано' ? 'Отмечено: опубликовано' : 'Отметка снята'); return; }
   if(b.id === 'addSlide'){
     var last = t.slides.length && t.slides[t.slides.length - 1].layers.some(function(l){ return l.role === 'cta'; }) ? t.slides.length - 1 : t.slides.length;
     t.slides.splice(last, 0, {id:newId(), layers:[{id:newId(), role:'text', text:''}]}); changed(t, true); toast('Слайд добавлен'); return;
@@ -1610,7 +1619,7 @@ function flush(){ if(!saveTimer) return; clearTimeout(saveTimer); saveTimer = nu
 function save(t){
   saveTimer = null; $('savedState').textContent = 'Сохраняю…';
   var copy = JSON.parse(JSON.stringify(t)); delete copy._deleted;
-  bridge('carousel_save', {carousel: copy}).then(function(ok){ var el = $('savedState'); if(el) el.textContent = ok ? 'Сохранено ✓' : 'Не сохранилось — проверьте связь, правки на экране'; });
+  bridge('carousel_save', {carousel: copy}).then(function(ok){ var el = $('savedState'); if(el) el.textContent = ok ? 'Сохранено' : 'Не сохранилось — проверьте связь, правки на экране'; });
 }
 
 // ---------- Проверить свой текст (правила бренда, без ИИ) ----------
@@ -1655,7 +1664,7 @@ $('checkRun').addEventListener('click', function(){
   var bad = out.some(function(o){ return o[0] === '✗'; }), warn = out.some(function(o){ return o[0] === '!'; });
   $('checkResult').style.display = '';
   $('checkResult').innerHTML = '<b style="display:block;margin-bottom:4px;">' + (bad ? 'Стоит подправить' : warn ? 'Можно публиковать, но гляньте замечания' : 'Можно публиковать') + '</b>'
-    + out.map(function(o){ return '<div><i>' + {'✓':'✅','✗':'❌','!':'⚠️','i':'ℹ️'}[o[0]] + '</i><span>' + esc(o[1]) + '</span></div>'; }).join('');
+    + out.map(function(o){ return '<div><i>' + {'✓':'<span class="v-ok">' + ico('check') + '</span>','✗':'<span class="v-bad">' + ico('cross') + '</span>','!':'<span class="v-warn">' + ico('warn') + '</span>','i':'<span class="v-info">' + ico('info') + '</span>'}[o[0]] + '</i><span>' + esc(o[1]) + '</span></div>'; }).join('');
   $('checkResult').scrollIntoView({block:'nearest'});
 });
 
@@ -1679,7 +1688,7 @@ function renderTasks(){
     if(editingTask === t.id) return '<div class="card task"><textarea data-edit="' + esc(t.id) + '">' + esc(t.text) + '</textarea><div class="row" style="margin:8px 0 0;"><button class="btn" data-save="' + esc(t.id) + '">Сохранить</button><button class="btn ghost" data-cancel="1">Отмена</button></div></div>';
     return '<div class="card task"><div class="task-text">' + (i + 1) + '. ' + esc(t.text) + '</div><div class="task-meta">' + when + '</div>'
       + '<div class="row" style="margin:8px 0 0;"><button class="chip-btn" data-edit-btn="' + esc(t.id) + '">Изменить</button><button class="chip-btn" data-del-task="' + esc(t.id) + '">Удалить</button></div></div>';
-  }).join('') || '<div class="empty">Очередь пуста 🐾 Когда Мак выключен, заказы текстов из плана будут ждать здесь.</div>';
+  }).join('') || '<div class="empty">Очередь пуста. Когда Мак выключен, заказы текстов из плана будут ждать здесь.</div>';
 }
 $('taskList').addEventListener('click', function(e){
   var b = e.target.closest('button'); if(!b) return;
