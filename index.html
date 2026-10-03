@@ -109,6 +109,15 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .mini:disabled{opacity:.3;}
   .layer{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);}
   .layer:first-of-type{border-top:none;}
+  .gem-actions{display:flex;flex-wrap:wrap;gap:8px;width:100%;margin-bottom:4px;}
+  .gem-actions .btn{flex:1 1 100%;}
+  .gem-actions .btn.ghost{flex:1 1 40%;}
+  .gem-refs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 2px;}
+  .gem-refs a{display:block;width:76px;height:76px;border-radius:12px;background:#fff;border:1px solid var(--line);overflow:hidden;}
+  .gem-refs img{width:100%;height:100%;object-fit:contain;display:block;}
+  .gem-imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:4px 0 10px;}
+  .gem-imgs a{display:block;border-radius:12px;overflow:hidden;background:var(--surface-2);aspect-ratio:4/5;}
+  .gem-imgs img{width:100%;height:100%;object-fit:cover;display:block;}
   .layer.wide{flex-wrap:wrap;row-gap:4px;}
   .layer.wide .layer-role{width:100%;padding-top:0;text-transform:none;letter-spacing:0;font-size:11.6px;}
   .layer-role{flex:none;width:74px;font-size:10.4px;font-weight:800;color:var(--accent);padding-top:8px;text-transform:uppercase;letter-spacing:.3px;}
@@ -233,7 +242,8 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
       <div id="textsList">
         <h1>Тексты</h1>
         <p class="sub">Готовое от Бестика и шаблоны. Нажмите 📋 — текст скопирован. Текст правится нажатием.</p>
-        <button class="btn ghost wide" id="openCheck" style="margin-bottom:14px;">Проверить свой текст</button>
+        <button class="btn ghost wide" id="openCheck" style="margin-bottom:8px;">Проверить свой текст</button>
+        <button class="btn ghost wide" id="openGemini" style="margin-bottom:14px;">🎨 Картинка в Gemini</button>
         <div id="textsItems"></div>
       </div>
       <div id="textDetail" style="display:none;">
@@ -860,13 +870,13 @@ var TEMPLATES = [
   {id:'tpl2', kind:'template', tour:'Пляжный тур — пост', slides:[{layers:[{role:'text', text:'[Направление] ждёт: [даты]. [X] дней у моря, [что включено]. Выезд из [город] на [транспорт]. Цена: до [X] ₽.'}]}]},
   {id:'tpl3', kind:'template', tour:'Объявление Авито', slides:[{layers:[{role:'title', text:'[Направление] тур из [город] — [что получает клиент]'}, {role:'text', text:'Что входит: [список]\nТрансфер: [город] → [направление]\nГруппа: до [N] человек\n\nЦена: от [X] ₽\nПишите в чат Авито — ответим быстро.'}]}]}
 ];
-var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс · CapCut', talk:'Разговорное видео', digest:'Подборка', template:'Шаблон'};
+var KIND = {carousel:'Карусель', avito:'Авито', post:'Пост', reel:'Рилс · CapCut', talk:'Разговорное видео', gemini:'Картинка Gemini', digest:'Подборка', template:'Шаблон'};
 var ROLE = {date:'Дата', title:'Заголовок', caption:'Подпись', text:'Текст', cta:'Призыв'};
 var openId = null, saveTimer = null;
 function isOldReel(t){ return t.kind === 'reel' && !(t.slides || []).some(function(sl){ return (sl.layers || []).some(function(l){ return /^\d+\s*[–-]\s*\d+\s*с/.test(l.label || ''); }); }); }
 function kindName(t){ return t.kind === 'carousel' || !t.kind ? (t.format === '9:16' ? 'Сторис' : 'Карусель') : isOldReel(t) ? 'Рилс (старый формат)' : KIND[t.kind]; }
 function byId(id){ return TEXTS.concat(TEMPLATES).find(function(t){ return t.id === id; }); }
-var PART_ORDER = {carousel:0, stories:1, reel:2, talk:3, post:4, avito:5};
+var PART_ORDER = {carousel:0, stories:1, reel:2, talk:3, post:4, avito:5, gemini:6};
 function partKey(t){ return (!t.kind || t.kind === 'carousel') && t.format === '9:16' ? 'stories' : (t.kind || 'carousel'); }
 function packParts(packId){ return TEXTS.filter(function(x){ return x.packId === packId; }).sort(function(a, b){ return PART_ORDER[partKey(a)] - PART_ORDER[partKey(b)]; }); }
 function renderTextsList(){
@@ -877,7 +887,7 @@ function renderTextsList(){
       return '<button class="card text-item" data-text="' + esc(parts[0].id) + '"><b><span class="kind' + (ready ? ' ready' : '') + '">' + (ready ? '✓ ' : '') + 'Пакет</span>' + esc(t.tour) + '</b><small>' + parts.map(kindName).join(' · ')
         + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '') + '</small></button>';
     }
-    var meta = (t.kind === 'avito' ? 'Объявление' : t.kind === 'post' ? 'Тексты для площадок' : t.kind === 'reel' ? 'Сценарий' : (t.format === '9:16' ? 'Сторис 9:16' : 'Пост 4:5') + ' · слайдов: ' + (t.slides || []).length)
+    var meta = (t.kind === 'gemini' ? 'Задание ' + (t.format || '') + ((t.images || []).length ? ' · картинок: ' + t.images.length : '') : t.kind === 'avito' ? 'Объявление' : t.kind === 'post' ? 'Тексты для площадок' : t.kind === 'reel' ? 'Сценарий' : t.kind === 'talk' ? 'Сценарий гиду' : (t.format === '9:16' ? 'Сторис 9:16' : 'Пост 4:5') + ' · слайдов: ' + (t.slides || []).length)
       + (t.created ? ' · ' + new Date(t.created).toLocaleDateString('ru-RU', {day:'numeric', month:'short'}) : '');
     return '<button class="card text-item" data-text="' + esc(t.id) + '"><b><span class="kind' + (t.ready ? ' ready' : '') + '">' + (t.ready ? '✓ ' : '') + kindName(t) + '</span>' + esc(t.tour) + '</b><small>' + meta + '</small></button>';
   }).join('');
@@ -890,6 +900,81 @@ function showTextsList(){ flush(); openId = null; $('textsList').style.display =
 function openText(id, from){ backTo = from || 'texts'; openId = id; $('textsList').style.display = 'none'; $('checkView').style.display = 'none'; $('textDetail').style.display = ''; renderDetail(); $('appBody').scrollTop = 0; }
 $('textBack').addEventListener('click', function(){ flush(); if(backTo === 'week'){ openId = null; showTab('week'); } else showTextsList(); });
 function linkedPlan(t){ return t.planId ? PLAN.find(function(p){ return p.id === t.planId; }) : PLAN.find(function(p){ return p.textId === t.id; }); }
+// ---------- Картинка в Gemini (без API: генерирует Лена в приложении Gemini) ----------
+// Шаблон без описания собирается здесь, без запроса к Бестику. С описанием —
+// задание пишет Бестик (gemini_request). Тексты правил — как в bot/mac/gemini.mjs.
+var GEMINI_URL = 'https://gemini.google.com/app';
+var TOUR_PHOTO_RULES = 'This is a REAL photo of a tour location. Do NOT change the place itself: keep the landscape, buildings, mountains, water and sky shapes exactly as they are. Do NOT add any objects, people, animals, text or logos. Allowed only: remove unwanted elements, fix light and color, extend the background at the edges.';
+var STICKER_REFS = ['neutral-front', 'sitting-calm', 'sleeping'];
+var GEMINI_TEMPLATES = [
+  {id:'clean', name:'Убрать людей и мусор', format:'9:16', prompt:function(f){ return TOUR_PHOTO_RULES + ' Remove all people, cars and litter from the photo and fill those areas naturally with the surrounding background. Keep natural daylight colors. Aspect ratio ' + f + '. No text, no logos, no watermarks.'; },
+    attach:['Фото тура, которое нужно почистить'], check:['Место не изменилось: горы, вода, здания на своих местах', 'Нет «пятен» и размытых следов на месте убранного', 'Не появилось новых людей, объектов, надписей']},
+  {id:'extend', name:'Достроить фон под формат', format:'9:16', prompt:function(f){ return TOUR_PHOTO_RULES + ' Extend the background of this photo to a ' + f + ' aspect ratio by naturally continuing the existing sky, ground and landscape at the edges only. The original part of the photo must stay untouched. No text, no logos, no watermarks.'; },
+    attach:['Фото тура (горизонтальное или квадратное)'], check:['Середина кадра не изменилась', 'Достроенные края без повторов и «швов»', 'Нет новых объектов и надписей']},
+  {id:'storybg', name:'Фон под текст для сторис', format:'9:16', prompt:function(f){ return TOUR_PHOTO_RULES + ' Prepare this photo as a background for a story with text: aspect ratio ' + f + ', keep a calm, uncluttered area (sky or soft background) in the upper third for text, slightly soften contrast there, keep the main view sharp. Do not add any text yourself. No logos, no watermarks.'; },
+    attach:['Фото тура для фона'], check:['Сверху есть спокойное место под текст', 'Само место не изменилось', 'Никакого текста на картинке']},
+  {id:'mascot', name:'Бультерьер Бестик (стикер)', format:'4:5', prompt:function(f){ return 'Draw the bull terrier mascot "Bestik" exactly in the style of the attached sticker samples: clean dark outline, flat white fill, no shadows, no gradients, simple cute face with the same proportions and head shape as in the samples. New pose: [describe the pose]. Plain white or transparent background, centered, aspect ratio ' + f + '. No text, no logos, no extra objects.'; },
+    attach:['3 образца стикеров ниже (сохраните их из приложения и приложите)'], check:['Похож на образцы: контур, белая заливка, без теней', 'Морда и пропорции как у Бестика', 'Нет текста и лишних предметов'], refs:true},
+  {id:'animate', name:'Оживить фото (Veo, 2–4 с)', format:'9:16', prompt:function(f){ return 'Animate this exact real photo with Veo. Keep the place exactly as it is. Only subtle natural motion: drifting clouds, moving water, leaves in light wind. Camera static or a very slow push-in. ' + f + ' vertical, 2–4 seconds, no new objects, no people, no text, no logos.'; },
+    attach:['Фото тура, которое оживляем'], check:['Движение мягкое и естественное', 'Место не изменилось, ничего не появилось', 'В CapCut обрезать до 2–4 секунд']},
+  {id:'custom', name:'Своё задание', format:'9:16'}
+];
+function gemTpl(id){ return GEMINI_TEMPLATES.find(function(x){ return x.id === id; }) || GEMINI_TEMPLATES[0]; }
+function openGemini(src){
+  src = src || {};
+  draft = {mode:'gemini', template: src.tour ? 'clean' : 'mascot', format: '', note:'', tour: src.tour || '', link: src.link || '', packId: src.packId || ''};
+  renderGemini();
+}
+function renderGemini(){
+  var t = gemTpl(draft.template), f = draft.format || t.format;
+  openSheet('<h2>Картинка в Gemini <button data-close="1">✕</button></h2>'
+    + (draft.tour ? '<div class="card" style="padding:10px 12px;margin-bottom:4px;"><b style="font-size:13.6px;">' + esc(draft.tour) + '</b></div>' : '')
+    + '<div class="label">Что делаем</div><div class="chips">' + GEMINI_TEMPLATES.map(function(x){ return '<button class="chip' + (x.id === draft.template ? ' on' : '') + '" data-gtpl="' + x.id + '">' + x.name + '</button>'; }).join('') + '</div>'
+    + '<div class="label">Формат</div><div class="seg"><button data-gfmt="9:16" class="' + (f === '9:16' ? 'active' : '') + '">9:16 сторис/рилс</button><button data-gfmt="4:5" class="' + (f === '4:5' ? 'active' : '') + '">4:5 пост</button></div>'
+    + '<div class="label">' + (draft.template === 'custom' ? 'Опишите, что нужно' : 'Уточнение (необязательно)') + '</div>'
+    + '<textarea class="input" id="gNote" placeholder="' + (draft.template === 'custom' ? 'Например: из этого фото сделать обложку для подборки на октябрь' : 'Например: убрать красную машину слева') + '">' + esc(draft.note) + '</textarea>'
+    + '<div class="sub" style="margin:6px 2px 0;">' + (draft.template === 'custom' || draft.note ? 'Задание напишет Бестик — около минуты.' : 'Готовое задание по шаблону — сразу, без Бестика.') + ' Для реальных фото туров: место не меняем, людей и объекты не добавляем.</div>'
+    + '<button class="btn wide" data-make-gem="1" style="margin-top:10px;" ' + (draft.template === 'custom' && !draft.note.trim() ? 'disabled' : '') + '>Сделать задание</button>');
+}
+$('sheet').addEventListener('input', function(e){ if(draft && draft.mode === 'gemini' && e.target.id === 'gNote'){ var had = !!draft.note.trim(); draft.note = e.target.value; if(had !== !!draft.note.trim()) { var pos = e.target.selectionStart; renderGemini(); var n = $('gNote'); n.focus(); n.setSelectionRange(pos, pos); } } });
+$('sheet').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b || !draft || draft.mode !== 'gemini') return;
+  if(b.dataset.gtpl){ draft.template = b.dataset.gtpl; draft.format = ''; renderGemini(); }
+  if(b.dataset.gfmt){ draft.format = b.dataset.gfmt; renderGemini(); }
+  if(b.dataset.makeGem) makeGeminiTask();
+});
+function makeGeminiTask(){
+  var src = draft, t = gemTpl(src.template), f = src.format || t.format, note = src.note.trim();
+  if(src.template !== 'custom' && !note){
+    var lines = function(a){ return a.map(function(x){ return '— ' + x; }).join('\n'); };
+    var item = {id: newId(), kind:'gemini', template: t.id, format: f, packId: src.packId, planId:'', tour: src.tour || t.name, link: src.link, ready:false, created: new Date().toISOString(), source:'app', images: [],
+      slides:[{id:newId(), layers:[{id:newId(), role:'text', label:'Задание для Gemini (EN)', text: t.prompt(f)}, {id:newId(), role:'caption', label:'Приложить', text: lines(t.attach)}, {id:newId(), role:'caption', label:'Проверить в результате', text: lines(t.check)}]}]};
+    TEXTS.unshift(item); touched[item.id] = Date.now(); closeSheet();
+    bridge('carousel_save', {carousel: item});
+    showTab('texts'); openText(item.id, 'texts'); toast('Задание готово — скопируйте и откройте Gemini');
+    return;
+  }
+  closeSheet();
+  taskApi('gemini_request', {template: src.template, format: f, note: note, tour: src.tour, link: src.link, packId: src.packId}).then(function(d){
+    toast(d.queued ? 'Мак выключен — задание в «Задачи для Мака»' : 'Бестик пишет задание — пришлю в чат, появится в «Текстах»');
+    if(d.queued) loadTasks(); else pollForText();
+  }).catch(function(e){ toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось отправить Бестику'); });
+}
+function geminiBlock(t){
+  var refs = gemTpl(t.template).refs ? '<div class="sub" style="margin:8px 0 0;">Образцы для Gemini — нажмите, откроется картинка, сохраните её и приложите:</div><div class="gem-refs">'
+    + STICKER_REFS.map(function(n){ return '<a href="#" data-gref="assets/stickers/' + n + '.webp"><img src="assets/stickers/' + n + '.webp" alt=""></a>'; }).join('') + '</div>' : '';
+  var imgs = (t.images || []).length ? '<div class="label">Прикреплённые картинки</div><div class="gem-imgs">' + t.images.map(function(u){ return '<a href="#" data-gref="' + esc(u) + '"><img src="' + esc(u) + '" alt="" loading="lazy"></a>'; }).join('') + '</div>' : '';
+  return '<div class="gem-actions"><button class="btn" id="gemCopy">📋 Скопировать и открыть Gemini</button><button class="btn ghost" id="gemReview">👀 Бестик, глянь</button><button class="btn ghost" id="gemAttach">📎 Прикрепить к карточке</button></div>' + refs + imgs;
+}
+function geminiWait(t, mode){
+  taskApi('gemini_wait', {textId: t.id, mode: mode}).then(function(d){
+    if(!d.ok){ toast(d.error === 'mac_offline' ? 'Мак выключен — Бестик посмотрит, когда включится' : 'Не получилось'); return; }
+    toast(mode === 'attach' ? 'Пришлите картинку Бестику в чат — прикрепит' : 'Пришлите картинку Бестику в чат — сверит с заданием');
+    setTimeout(function(){ if(tg && typeof tg.openTelegramLink === 'function') tg.openTelegramLink('https://t.me/contcompbot'); }, 700);
+  }).catch(function(e){ toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось'); });
+}
+$('openGemini').addEventListener('click', function(){ openGemini(); });
+
 function renderDetail(){
   var t = byId(openId); if(!t){ showTextsList(); return; }
   var tpl = t.kind === 'template', car = !t.kind || t.kind === 'carousel', plan = linkedPlan(t);
@@ -900,7 +985,7 @@ function renderDetail(){
   $('packTabs').innerHTML = tabs.map(function(x){ return '<button class="' + (x.id === t.id ? 'on' : '') + '" data-tab-text="' + esc(x.id) + '">' + kindName(x) + '</button>'; }).join('');
   var pub = plan ? (plan.status === 'Опубликовано' ? '<button class="chip-btn" id="pubBtn">☑ Опубликовано</button>' : '<button class="chip-btn" id="pubBtn">☐ Опубликовано</button>')
     : '<button class="chip-btn" id="readyBtn">' + (t.ready ? '☑' : '☐') + (car ? ' Готово в Crsel' : ' Готово') + '</button>';
-  $('detailRow').innerHTML = tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
+  $('detailRow').innerHTML = t.kind === 'gemini' ? geminiBlock(t) : tpl ? '<span class="sub" style="margin:0;">Шаблон: скопируйте и замените [скобки].</span>'
     : (car && !t.packId ? '<div class="seg" id="fmtSeg"><button data-fmt="4:5" class="' + (t.format !== '9:16' ? 'active' : '') + '">Пост 4:5</button><button data-fmt="9:16" class="' + (t.format === '9:16' ? 'active' : '') + '">Сторис 9:16</button></div>' : '') + pub;
   var n = t.slides.length;
   $('slides').innerHTML = t.slides.map(function(sl, si){
@@ -914,7 +999,7 @@ function renderDetail(){
     }).join('') + '</div>';
   }).join('');
   $('detailBottom').innerHTML = tpl ? '' : (car ? '<button class="chip-btn" id="addSlide">+ Слайд</button>' : '')
-    + (t.link ? '<button class="chip-btn" id="openTour">Тур на сайте</button>' : '') + '<button class="chip-btn" id="delText">Удалить</button>';
+    + (t.link ? '<button class="chip-btn" id="openTour">Тур на сайте</button>' : '') + (t.kind !== 'gemini' && t.tour ? '<button class="chip-btn" id="toGemini">🎨 Картинка в Gemini</button>' : '') + '<button class="chip-btn" id="delText">Удалить</button>';
   $('savedState').textContent = '';
 }
 function copyText(text){
@@ -930,9 +1015,14 @@ function copyText(text){
 }
 $('textDetail').addEventListener('click', function(e){
   var t = byId(openId); if(!t) return;
+  var ga = e.target.closest('[data-gref]'); if(ga){ e.preventDefault(); openLink(new URL(ga.dataset.gref, location.href).href); return; }
   var b = e.target.closest('button'); if(!b) return;
   if(b.dataset.tabText){ flush(); openId = b.dataset.tabText; renderDetail(); return; }
   if(b.dataset.copySl !== undefined){ flush(); copyText(t.slides[+b.dataset.copySl].layers[+b.dataset.copyLy].text || ''); return; }
+  if(b.id === 'gemCopy'){ copyText(t.slides[0].layers[0].text); setTimeout(function(){ openLink(GEMINI_URL); }, 400); return; }
+  if(b.id === 'gemReview'){ geminiWait(t, 'review'); return; }
+  if(b.id === 'gemAttach'){ geminiWait(t, 'attach'); return; }
+  if(b.id === 'toGemini'){ openGemini({tour: t.tour, link: t.link, packId: t.packId || ''}); return; }
   if(t.kind === 'template') return;
   if(b.dataset.up !== undefined){ var i = +b.dataset.up; t.slides.splice(i - 1, 0, t.slides.splice(i, 1)[0]); changed(t, true); return; }
   if(b.dataset.down !== undefined){ var j = +b.dataset.down; t.slides.splice(j + 1, 0, t.slides.splice(j, 1)[0]); changed(t, true); return; }
@@ -979,7 +1069,8 @@ var BANNED = ['инстаграм', 'instagram', 'соцсет', 'социаль
 var CLICHES = [['погруз', 'погрузитесь в атмосферу'], ['незабываем', 'незабываемые впечатления'], ['откройте для себя', 'откройте для себя'],
   ['уникальная возможность', 'уникальная возможность'], ['живописн', 'живописные пейзажи'], ['не упустите', 'не упустите шанс'],
   ['сказочн', 'сказочная природа'], ['насладит', 'насладитесь'], ['райск', 'райский уголок'], ['захватывающ', 'захватывающие виды'],
-  ['окунит', 'окунитесь'], ['подарите себе', 'подарите себе'], ['море эмоций', 'море эмоций'], ['незабываемых', 'незабываемых']];
+  ['окунит', 'окунитесь'], ['подарите себе', 'подарите себе'], ['море эмоций', 'море эмоций'], ['незабываемых', 'незабываемых'],
+  ['погруж', 'погружение в удивительный мир'], ['удивительный мир', 'удивительный мир'], ['о чем вы мечтали', 'то, о чём вы мечтали'], ['невероятн', 'невероятные пейзажи']];
 var SUPERLATIVE = /(^|[^а-яё])(самы[йеахм]|лучш[иаеу][йхем]?|уникальн|незабываем|гарантирован)/i;
 $('checkRun').addEventListener('click', function(){
   var text = $('checkInput').value.trim(); if(!text){ toast('Вставьте текст'); return; }
