@@ -536,6 +536,7 @@ function loadStatus(fresh){
     TEXTS = mergeList(TEXTS, d.carousels || []);
     LIB = mergeList(LIB, d.library || []);
     applySettings(); seedLibrary();
+    if(window.__openTextId && byId(window.__openTextId)){ var oid = window.__openTextId; window.__openTextId = null; showTab('texts'); openText(oid, 'texts'); }
     clearPendingDone();
     if(currentTab === 'lib' && !draft && !(document.activeElement && document.activeElement.id === 'libQ')) renderLib();
     renderWeek(); renderUpcoming(); renderTextsList(); renderNote(); syncChecklistFromStatus();
@@ -1701,7 +1702,8 @@ function openFromLink(key){
   key = String(key || '').replace(/^#/, '');
   if(!key) return;
   ST.linked = true; // открыли по ссылке — автосправку в этот раз не показываем
-  if(key === 'texts' || key === 'carousels') showTab('texts');
+  if(key.indexOf('text=') === 0){ var tid = key.slice(5).replace(/[^A-Za-z0-9_-]/g, ''); window.__openTextId = tid; showTab('texts'); if(byId(tid)){ openText(tid, 'texts'); window.__openTextId = null; } }
+  else if(key === 'texts' || key === 'carousels') showTab('texts');
   else if(key === 'lib') showTab('lib');
   else if(key === 'week') showTab('week');
   else if(key === 'checklist'){ showTab('week'); if(store('cc_check_open') !== '1') $('checkToggle').click(); setTimeout(function(){ var b = $('appBody'); b.scrollTop = $('checkToggle').offsetTop - b.offsetTop - 20; }, 300); }
