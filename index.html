@@ -42,8 +42,23 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   @media (min-width:560px){
     html:not(.in-tg) body{padding:36px 16px;}
     html:not(.in-tg) .device{height:880px;border-radius:40px;box-shadow:0 40px 90px -30px rgba(0,0,0,.6);}
-    html.in-tg .device{max-width:760px;}
   }
+  /* В Telegram — на всю ширину окна при любом размере (Split View, Stage Manager). */
+  html.in-tg .device{max-width:none;}
+  /* iPad: Split View / Stage Manager — узко (до 560) одна колонка как на iPhone,
+     средне — одна колонка пошире, от 820 — две колонки. */
+  @media (min-width:820px){
+    html.in-tg #screen-week.active{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0 22px;align-items:start;}
+    html.in-tg #screen-week .wk-side > .label:first-child{margin-top:6px;}
+    html.in-tg #textsItems, html.in-tg #libList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;align-items:start;}
+    html.in-tg #textsItems > .label, html.in-tg #textsItems > .empty, html.in-tg #libList > .empty{grid-column:1 / -1;}
+    html.in-tg #textDetail, html.in-tg #checkView, html.in-tg #more-settings, html.in-tg #more-rules, html.in-tg #more-tasks, html.in-tg #moreMenu, html.in-tg #libRoot{max-width:760px;margin:0 auto;}
+    html.in-tg .sheet{left:50%;right:auto;width:min(680px,100%);margin-left:max(-340px,-50%);}
+  }
+  /* Полный экран Telegram (Bot API 8.0): сверху его кнопки, снизу — полоска «домой» */
+  .app-header{padding-top:calc(14px + var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px));}
+  .fs-btn{margin-left:auto;flex:none;height:36px;border:1px solid var(--line);background:var(--surface);color:var(--heading);border-radius:99px;padding:0 12px;font-size:12.6px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .fs-btn svg{width:16px;height:16px;}
   .app-header{flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
   .mascot{width:40px;height:34px;flex:none;}
   .device .logo-dark,.device.dark .logo-light{display:none !important;}
@@ -153,6 +168,41 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .brand-color i{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);}
   .brand-color b{display:block;font-size:12.6px;}
   .brand-color small{display:block;font-size:11px;color:var(--ink-soft);}
+  /* Справка-сторис: iPhone — на весь экран, iPad/Telegram Desktop — карточка 9:16 */
+  .stories{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:#06120C;touch-action:none;-webkit-user-select:none;user-select:none;}
+  .stories.show{display:flex;}
+  html.st-open, html.st-open body{overflow:hidden;}
+  .st-card{position:relative;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#FCF6EA 0%,#F4E8CF 100%);color:#171717;transition:transform .2s,opacity .2s;padding-top:calc(max(env(safe-area-inset-top,0px), var(--tg-safe-area-inset-top,0px)) + var(--tg-content-safe-area-inset-top,0px));}
+  @media (min-width:600px), (min-aspect-ratio:4/5){ .st-card{height:min(calc(100vh - 56px),1100px);width:calc(min(calc(100vh - 56px),1100px) * 9 / 16);border-radius:26px;box-shadow:0 40px 90px -30px rgba(0,0,0,.7);padding-top:0;} }
+  .st-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid rgba(249,238,216,.35);background:rgba(249,238,216,.1);color:#FCF6EA;font-size:22px;cursor:pointer;}
+  @media (min-width:900px){ .st-nav{display:block;} }
+  .st-bars{display:flex;gap:4px;padding:10px 12px 6px;}
+  .st-bars i{flex:1;height:4px;border-radius:4px;background:rgba(18,51,34,.22);overflow:hidden;}
+  .st-bars b{display:block;height:100%;background:#123322;}
+  .st-head{display:flex;align-items:center;gap:8px;padding:2px 12px 6px;}
+  .st-head img{width:28px;height:23px;}
+  .st-head b{font-size:13px;font-weight:700;color:#123322;}
+  .st-head span{font-size:13px;color:#5A5851;margin-right:auto;}
+  .st-btn{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid rgba(18,51,34,.25);background:rgba(18,51,34,.06);font-size:17px;cursor:pointer;color:#123322;display:flex;align-items:center;justify-content:center;padding:0;}
+  .st-btn svg{width:22px;height:22px;}
+  .st-skip{flex:none;height:44px;border:none;background:rgba(18,51,34,.08);color:#123322;border-radius:99px;padding:0 16px;font-weight:600;font-size:15px;cursor:pointer;}
+  .st-body{flex:1;display:flex;flex-direction:column;min-height:0;padding:4px 18px max(calc(env(safe-area-inset-bottom,0px) + 20px), 28px);}
+  .st-text small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1F6B45;}
+  .st-text h2{font-family:var(--font-display);font-weight:400;font-size:27px;line-height:1.08;color:#123322;margin:4px 0 12px;}
+  .st-shot{flex:1;min-height:0;position:relative;border-radius:24px;border:5px solid #123322;overflow:hidden;background:#FCF6EA;box-shadow:0 18px 40px -18px rgba(18,51,34,.5);}
+  .st-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s;}
+  .st-shot img.on{opacity:1;}
+  .st-cap{font-size:17px;line-height:1.4;font-weight:600;margin:14px 0 0;color:#171717;}
+  .st-center{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;padding:0;}
+  .st-center h1{font-family:var(--font-display);font-weight:400;font-size:72px;line-height:1;color:#123322;margin:0;}
+  .st-center h2{font-family:var(--font-display);font-weight:400;font-size:36px;color:#123322;margin:0 0 6px;}
+  .st-logo{width:104px;height:84px;}
+  .st-hint{font-size:16px;line-height:1.45;color:#5A5851;margin-top:22px;}
+  .st-hint svg{width:18px;height:18px;vertical-align:-3px;}
+  .st-rules{list-style:none;padding:0;margin:6px 0 0;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;text-align:left;}
+  .st-rules li{display:flex;gap:12px;align-items:center;font-size:18px;font-weight:600;background:#fff;border-radius:20px;padding:16px;box-shadow:0 8px 20px -14px rgba(18,51,34,.35);}
+  .st-rules span{flex:none;width:28px;height:28px;border-radius:50%;background:#123322;color:#F9EED8;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .st-paused{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;color:rgba(18,51,34,.45);pointer-events:none;}
   .toast.with-btn{pointer-events:auto;display:flex;align-items:center;gap:10px;}
   .toast-undo{border:none;background:none;color:var(--bg);font-weight:800;text-decoration:underline;font-size:12.4px;cursor:pointer;padding:0;}
   .layer.wide .layer-role{width:100%;padding-top:0;text-transform:none;letter-spacing:0;font-size:11.6px;}
@@ -186,7 +236,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   .mac.on{background:var(--ok-soft);color:var(--ok);}
   .mac.on i{background:var(--ok);}
 
-  .tab-bar{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:7px 4px calc(7px + env(safe-area-inset-bottom,0px));}
+  .tab-bar{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:7px 4px calc(7px + max(env(safe-area-inset-bottom,0px), var(--tg-safe-area-inset-bottom,0px)));}
   .tab-btn{flex:1;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.8px;font-weight:700;color:var(--ink-faint);cursor:pointer;padding:4px 0;}
   .tab-btn svg{width:22px;height:22px;}
   .tab-btn.active{color:var(--accent);}
@@ -257,20 +307,25 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   <header class="app-header">
     <div class="mascot"><img class="logo-light" src="assets/logos/icon-green.svg" alt="Бест-Тур"><img class="logo-dark" src="assets/logos/icon-cream.svg" alt="Бест-Тур"></div>
     <div><b>Бестик</b><small>Best Tour Club</small></div>
+    <button class="fs-btn" id="fsBtn" style="display:none;" aria-label="На весь экран"></button>
   </header>
 
   <main class="app-body" id="appBody">
     <!-- ============ НЕДЕЛЯ (план публикаций) ============ -->
     <section class="screen active" id="screen-week">
+      <div class="wk-main">
       <button class="note" id="weekNote" style="display:none;"></button>
       <div id="weekPlan"></div>
       <button class="btn wide add-fab" id="addPlan">+ Тур или идея в план</button>
+      </div>
+      <div class="wk-side">
       <div class="label">Ближайшие заезды <span id="upcCount"></span></div>
       <div id="upcList"></div>
       <button class="btn ghost wide" id="upcMore" style="display:none;"></button>
       <button class="btn ghost wide" id="digestBtn" style="margin-top:6px;">🗂 Подборка «Куда сбежать на выходные»</button>
       <button class="collapse" id="checkToggle"><span>Чек-лист дня</span><small id="checkCount"></small></button>
       <div class="card" id="checklist" style="display:none;margin-top:8px;"></div>
+      </div>
     </section>
 
     <!-- ============ ТЕКСТЫ ============ -->
@@ -310,7 +365,7 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
       <div id="moreMenu">
         <h1>Ещё</h1>
         <div class="card" style="overflow:hidden;">
-          <button class="menu-row" data-open="howto"><span>Как работать</span>›</button>
+          <button class="menu-row" id="openStories"><span>Как работать <small style="color:var(--ink-soft);">· сторис</small></span>›</button>
           <button class="menu-row" data-open="tasks"><span>Задачи для Мака</span><b class="count" id="tasksCount" style="display:none;"></b>›</button>
           <button class="menu-row" data-open="rules"><span>Правила бренда</span>›</button>
           <button class="menu-row" data-open="settings"><span>Настройки</span>›</button>
@@ -372,12 +427,31 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) document.doc
   <div class="sheet-bg" id="sheetBg"></div>
   <div class="sheet" id="sheet"></div>
   <div class="toast" id="toast"></div>
+  <div class="stories" id="stories" role="dialog" aria-label="Как работать"></div>
 </div>
 
 <script>
 var tg = window.Telegram ? window.Telegram.WebApp : null;
 if(tg){ tg.ready(); tg.expand(); if(typeof tg.disableVerticalSwipes === 'function'){ try{ tg.disableVerticalSwipes(); }catch(e){} } }
 var inTg = !!(tg && tg.initData);
+// «На весь экран» — только на iPad и в Telegram 8.0+ (requestFullscreen). Выбор
+// помним: на iPad при следующем открытии сразу разворачиваем.
+var FS_ICON_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>';
+var FS_ICON_CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10h-6V4M4 14h6v6M14 10l7-7M10 14l-7 7"/></svg>';
+function fsSupported(){ return !!(inTg && typeof tg.requestFullscreen === 'function' && typeof tg.isVersionAtLeast === 'function' && tg.isVersionAtLeast('8.0') && Math.min(screen.width, screen.height) >= 600); }
+function fsRender(){
+  var b = document.getElementById('fsBtn'); if(!b) return;
+  if(!fsSupported()){ b.style.display = 'none'; return; }
+  var on = !!tg.isFullscreen; b.style.display = '';
+  b.innerHTML = (on ? FS_ICON_CLOSE + 'Свернуть экран' : FS_ICON_OPEN + 'На весь экран');
+  b.setAttribute('aria-label', on ? 'Свернуть экран' : 'На весь экран');
+  document.documentElement.classList.toggle('tg-fs', on);
+}
+if(fsSupported()){
+  tg.onEvent('fullscreenChanged', fsRender);
+  tg.onEvent('fullscreenFailed', function(e){ toast(e && e.error === 'UNSUPPORTED' ? 'Этот Telegram не умеет полный экран' : 'Не получилось развернуть'); fsRender(); });
+  if(store('cc_fullscreen') === '1' && !tg.isFullscreen){ try{ tg.requestFullscreen(); }catch(e){} }
+}
 var BRIDGE_URL = 'https://best-tour-club-bridge.thebikinya.workers.dev/';
 var BOT_APP_URL = 'https://bestik-bot.thebikinya.workers.dev/app';
 var $ = function(id){ return document.getElementById(id); };
@@ -1216,6 +1290,121 @@ document.addEventListener('click', function(e){
   if(g('data-settags') !== null){ var h = {}; document.querySelectorAll('[data-settag]').forEach(function(inp){ var tags = inp.value.split(/[\s,]+/).filter(Boolean); if(tags.length) h[inp.dataset.settag] = tags; }); setSave('hashtags', h); toast('Хештеги сохранены'); setView = null; renderSettingsList(); return; }
 });
 
+// ---------- Справка «Как работать» — сторис (как в Instagram) ----------
+// Полоски сверху; тап справа — дальше, слева — назад; удержание — пауза;
+// свайп вниз или ✕ — закрыть. Звук по кнопке (по умолчанию выключен): со
+// звуком слайд листается сам по окончании реплики, без звука — сами.
+// Кадры сняты на демо-данных (tools/stories/capture.mjs).
+var ST_ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+var ST_ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
+var ST = {data: null, i: 0, sound: false, paused: false, skip: false, imgTimer: null, imgIdx: 0, audio: null, raf: 0};
+function storiesLoad(){ return ST.data ? Promise.resolve(ST.data) : fetch('assets/stories/stories.json?v=' + Date.now()).then(function(r){ return r.json(); }).then(function(d){ ST.data = d; return d; }); }
+function openStories(opts){
+  opts = opts || {};
+  storiesLoad().then(function(d){
+    ST.i = 0; ST.sound = false; ST.paused = false; ST.skip = !!opts.skip;
+    if(!ST.audio){ ST.audio = new Audio(); ST.audio.preload = 'auto'; ST.audio.addEventListener('ended', function(){ if(ST.sound && !ST.paused) storiesGo(1); }); }
+    store('cc_stories_seen', d.version);
+    $('stories').classList.add('show'); document.documentElement.classList.add('st-open');
+    storiesRender();
+  }).catch(function(){ toast('Не получилось открыть справку — проверьте связь'); });
+}
+function closeStories(){
+  clearInterval(ST.imgTimer); cancelAnimationFrame(ST.raf);
+  if(ST.audio){ ST.audio.pause(); }
+  $('stories').classList.remove('show'); document.documentElement.classList.remove('st-open');
+}
+function storiesGo(step){
+  var n = ST.data.slides.length, j = ST.i + step;
+  if(j >= n){ closeStories(); return; }
+  if(j < 0) j = 0;
+  ST.i = j; ST.paused = false; storiesRender();
+}
+function storiesRender(){
+  var s = ST.data.slides[ST.i], n = ST.data.slides.length;
+  var bars = ST.data.slides.map(function(_, k){ return '<i><b style="width:' + (k < ST.i ? 100 : k === ST.i && !ST.sound ? 100 : 0) + '%"></b></i>'; }).join('');
+  var body;
+  if(s.kind === 'phone'){
+    body = '<div class="st-text"><small>' + esc(s.eyebrow) + '</small><h2>' + esc(s.title) + '</h2></div>'
+      + '<div class="st-shot">' + s.images.map(function(src, k){ return '<img src="' + esc(src) + '" alt="" class="' + (k === 0 ? 'on' : '') + '" style="object-position:50% ' + Math.round(100 * ((s.focus || [])[k] || 0)) + '%">'; }).join('') + '</div>'
+      + '<p class="st-cap">' + esc(s.caption) + '</p>';
+  } else if(s.kind === 'rules'){
+    body = '<div class="st-center"><h2>' + esc(s.title) + '</h2><ul class="st-rules">' + s.caption.split('·').map(function(r){ return '<li><span>✓</span>' + esc(r.trim()) + '</li>'; }).join('') + '</ul></div>';
+  } else {
+    body = '<div class="st-center"><img class="st-logo" src="assets/logos/icon-green.svg" alt=""><h1>' + esc(s.title) + '</h1><p class="st-cap">' + esc(s.caption) + '</p>'
+      + (ST.i === n - 1 ? '<div class="st-hint">Свернуть К•К — смахните вниз за верхнюю полоску Telegram.<br>На iPad «⤢ На весь экран» — в шапке приложения.</div>' : '')
+      + (ST.i === 0 && !ST.sound ? '<div class="st-hint">Нажмите справа — дальше.<br>Слева — назад.<br>' + ST_ICON_ON + ' — голос Бестика</div>' : '') + '</div>';
+  }
+  $('stories').innerHTML = '<div class="st-card"><div class="st-bars">' + bars + '</div>'
+    + '<div class="st-head">' + (s.kind === 'brand' ? '' : '<img src="assets/logos/icon-green.svg" alt="">') + '<b>Как работать</b><span>' + (ST.i + 1) + ' / ' + n + '</span>'
+    + '<button class="st-btn" data-st="sound" aria-label="' + (ST.sound ? 'Выключить звук' : 'Включить звук') + '">' + (ST.sound ? ST_ICON_ON : ST_ICON_OFF) + '</button>'
+    + (ST.skip ? '<button class="st-skip" data-st="close">Пропустить</button>' : '<button class="st-btn" data-st="close" aria-label="Закрыть">✕</button>') + '</div>'
+    + '<div class="st-body st-k-' + s.kind + '">' + body + '</div>'
+    + (ST.paused ? '<div class="st-paused">❚❚</div>' : '') + '</div>'
+    + '<button class="st-nav" data-st="prev" aria-label="Назад" style="left:calc(50% - var(--stw,0px) / 2 - 68px)">‹</button><button class="st-nav" data-st="next" aria-label="Дальше" style="left:calc(50% + var(--stw,0px) / 2 + 24px)">›</button>';
+  var cardEl = $('stories').querySelector('.st-card'); $('stories').style.setProperty('--stw', cardEl.getBoundingClientRect().width + 'px');
+  // два кадра сменяют друг друга
+  clearInterval(ST.imgTimer); ST.imgIdx = 0;
+  if(s.images.length > 1){
+    var every = ST.sound && s.audioSec ? s.audioSec * 500 : 3500;
+    ST.imgTimer = setInterval(function(){ if(ST.paused) return; var imgs = $('stories').querySelectorAll('.st-shot img'); ST.imgIdx = (ST.imgIdx + 1) % imgs.length; imgs.forEach(function(im, k){ im.classList.toggle('on', k === ST.imgIdx); }); }, every);
+  }
+  // звук и полоска текущего слайда
+  cancelAnimationFrame(ST.raf);
+  if(ST.sound && s.audio){
+    ST.audio.src = s.audio; ST.audio.currentTime = 0;
+    ST.audio.play().catch(function(){ ST.sound = false; storiesRender(); });
+    var bar = $('stories').querySelectorAll('.st-bars b')[ST.i];
+    (function tick(){ if(ST.audio.duration) bar.style.width = (100 * ST.audio.currentTime / ST.audio.duration) + '%'; ST.raf = requestAnimationFrame(tick); })();
+  } else if(ST.audio){ ST.audio.pause(); }
+}
+function storiesPause(on){
+  if(ST.paused === on) return; ST.paused = on;
+  if(ST.sound && ST.audio){ if(on) ST.audio.pause(); else ST.audio.play().catch(function(){}); }
+  var c = $('stories').querySelector('.st-card'); var p = c && c.querySelector('.st-paused');
+  if(on && c && !p) c.insertAdjacentHTML('beforeend', '<div class="st-paused">❚❚</div>'); if(!on && p) p.remove();
+}
+(function(){
+  var down = null, holdTimer = null, held = false;
+  var el = $('stories');
+  el.addEventListener('pointerdown', function(e){
+    if(e.target.closest('[data-st]')) return;
+    down = {x: e.clientX, y: e.clientY, t: Date.now()}; held = false;
+    holdTimer = setTimeout(function(){ held = true; storiesPause(true); }, 260);
+  });
+  el.addEventListener('pointermove', function(e){
+    if(!down) return; var dy = e.clientY - down.y, card = el.querySelector('.st-card');
+    if(dy > 10 && card){ clearTimeout(holdTimer); card.style.transform = 'translateY(' + dy + 'px)'; card.style.opacity = String(Math.max(.4, 1 - dy / 500)); }
+  });
+  var up = function(e){
+    if(!down) return; clearTimeout(holdTimer);
+    var dy = e.clientY - down.y, dx = e.clientX - down.x, card = el.querySelector('.st-card');
+    if(card){ card.style.transform = ''; card.style.opacity = ''; }
+    var d = down; down = null;
+    if(dy > 90){ closeStories(); return; }
+    if(held){ storiesPause(false); return; }
+    if(Math.abs(dx) > 40 || Math.abs(dy) > 20) return;
+    var r = (card || el).getBoundingClientRect();
+    storiesGo(d.x < r.left + r.width / 3 ? -1 : 1);
+  };
+  el.addEventListener('pointerup', up);
+  el.addEventListener('pointercancel', function(){ down = null; clearTimeout(holdTimer); if(held) storiesPause(false); });
+  el.addEventListener('click', function(e){
+    var b = e.target.closest('[data-st]'); if(!b) return;
+    if(b.dataset.st === 'close') closeStories();
+    if(b.dataset.st === 'prev') storiesGo(-1);
+    if(b.dataset.st === 'next') storiesGo(1);
+    if(b.dataset.st === 'sound'){ ST.sound = !ST.sound; ST.paused = false; storiesRender(); }
+  });
+  document.addEventListener('keydown', function(e){
+    if(!el.classList.contains('show')) return;
+    if(e.key === 'ArrowRight') storiesGo(1); else if(e.key === 'ArrowLeft') storiesGo(-1); else if(e.key === 'Escape') closeStories(); else if(e.key === ' '){ e.preventDefault(); storiesPause(!ST.paused); }
+  });
+})();
+$('openStories').addEventListener('click', function(){ openStories(); });
+// Один раз при первом открытии новой версии — с «Пропустить».
+setTimeout(function(){ storiesLoad().then(function(d){ if(!ST.linked && store('cc_stories_seen') !== d.version && store('cc_stories_seen') !== 'all') openStories({skip: true}); }).catch(function(){}); }, 1500);
+
 // ---------- Тексты ----------
 var TEMPLATES = [
   {id:'tplUgc', kind:'template', tour:'Запрос согласия автора (чужое фото с отметкой)', slides:[{layers:[{role:'text', text:'Здравствуйте! Мы «Бест тур», туроператор по Кавказу. Хотим опубликовать ваше фото в наших публикациях с указанием вашего аккаунта. Не возражаете?'}]}]},
@@ -1327,6 +1516,11 @@ function geminiWait(t, mode){
   }).catch(function(e){ toast(e.message === 'outside_telegram' ? 'Откройте приложение из Telegram' : 'Не получилось'); });
 }
 $('openGemini').addEventListener('click', function(){ openGemini(); });
+$('fsBtn').addEventListener('click', function(){
+  if(!fsSupported()) return;
+  if(tg.isFullscreen){ store('cc_fullscreen', '0'); tg.exitFullscreen(); } else { store('cc_fullscreen', '1'); tg.requestFullscreen(); }
+});
+fsRender();
 $('openOwnRules').addEventListener('click', function(){ showMore('settings'); setView = 'rules'; renderSettingsList(); });
 
 function renderDetail(){
@@ -1501,7 +1695,20 @@ if(store('cc_check_open') === '1') $('checklist').style.display = '';
 renderChecklist();
 loadStatus().then(function(){ if(Object.keys(pending).length) pollForText(); });
 loadTasks();
-if(location.hash === '#texts' || location.hash === '#carousels') showTab('texts');
+// Открыть сразу нужное место: кнопки бота ведут на ...#lib, #pack и т.п.
+// (или t.me/...?startapp=lib — тогда параметр в initDataUnsafe.start_param).
+function openFromLink(key){
+  key = String(key || '').replace(/^#/, '');
+  if(!key) return;
+  ST.linked = true; // открыли по ссылке — автосправку в этот раз не показываем
+  if(key === 'texts' || key === 'carousels') showTab('texts');
+  else if(key === 'lib') showTab('lib');
+  else if(key === 'week') showTab('week');
+  else if(key === 'checklist'){ showTab('week'); if(store('cc_check_open') !== '1') $('checkToggle').click(); setTimeout(function(){ var b = $('appBody'); b.scrollTop = $('checkToggle').offsetTop - b.offsetTop - 20; }, 300); }
+  else if(key === 'pack' || key === 'ideas'){ showTab('week'); $('addPlan').click(); }
+  else if(key === 'stories'){ ST.linked = true; openStories(); }
+}
+openFromLink(location.hash || (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || '');
 </script>
 </body>
 </html>

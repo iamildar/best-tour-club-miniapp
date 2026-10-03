@@ -1,0 +1,183 @@
+{
+ "version": "2026-10-03",
+ "slides": [
+  {
+   "id": "01-intro",
+   "kind": "brand",
+   "eyebrow": "",
+   "title": "К•К",
+   "caption": "Привет! Я Бестик. За минуту покажу, как работать в К•К.",
+   "images": [],
+   "focus": [],
+   "audio": "assets/stories/audio/01-intro.mp3",
+   "audioSec": 6.288
+  },
+  {
+   "id": "02-week",
+   "kind": "phone",
+   "eyebrow": "Вкладка «Неделя»",
+   "title": "Начинаем день",
+   "caption": "Сверху — что не выложено, ниже план. Один тур — одна карточка.",
+   "images": [
+    "assets/stories/week.webp",
+    "assets/stories/checklist.webp"
+   ],
+   "focus": [
+    0,
+    0.2
+   ],
+   "audio": "assets/stories/audio/02-week.mp3",
+   "audioSec": 8.712
+  },
+  {
+   "id": "03-builder",
+   "kind": "phone",
+   "eyebrow": "Конструктор",
+   "title": "Один тур — весь контент",
+   "caption": "Нажми на тур, отметь форматы и «Сделать всё».",
+   "images": [
+    "assets/stories/upcoming.webp",
+    "assets/stories/builder.webp"
+   ],
+   "focus": [
+    0,
+    0.55
+   ],
+   "audio": "assets/stories/audio/03-builder.mp3",
+   "audioSec": 8.928
+  },
+  {
+   "id": "04-texts",
+   "kind": "phone",
+   "eyebrow": "Вкладка «Тексты»",
+   "title": "Карусель по слоям",
+   "caption": "Нажала копировать — вставила в Crsel.",
+   "images": [
+    "assets/stories/pack-carousel.webp"
+   ],
+   "focus": [
+    0.25
+   ],
+   "audio": "assets/stories/audio/04-texts.mp3",
+   "audioSec": 7.728
+  },
+  {
+   "id": "05-post",
+   "kind": "phone",
+   "eyebrow": "Пост и Авито",
+   "title": "Свой текст для площадки",
+   "caption": "Цены — из каталога, их не трогаем.",
+   "images": [
+    "assets/stories/pack-post.webp",
+    "assets/stories/pack-avito.webp"
+   ],
+   "focus": [
+    0.3,
+    0.2
+   ],
+   "audio": "assets/stories/audio/05-post.mp3",
+   "audioSec": 6.816
+  },
+  {
+   "id": "06-reel",
+   "kind": "phone",
+   "eyebrow": "Рилс · CapCut",
+   "title": "Раскладка по секундам",
+   "caption": "Что снять и какой текст поставить. Первые 2 секунды — крючок.",
+   "images": [
+    "assets/stories/reel.webp"
+   ],
+   "focus": [
+    0.3
+   ],
+   "audio": "assets/stories/audio/06-reel.mp3",
+   "audioSec": 7.584
+  },
+  {
+   "id": "07-guide",
+   "kind": "phone",
+   "eyebrow": "Разговорное видео",
+   "title": "Сценарий для гида",
+   "caption": "Реплики, кадры, памятка — одним сообщением.",
+   "images": [
+    "assets/stories/guide.webp"
+   ],
+   "focus": [
+    0.25
+   ],
+   "audio": "assets/stories/audio/07-guide.mp3",
+   "audioSec": 6.768
+  },
+  {
+   "id": "08-podborka",
+   "kind": "phone",
+   "eyebrow": "Подборка",
+   "title": "Куда сбежать на выходные",
+   "caption": "Туры отмечены сами — остаётся нажать.",
+   "images": [
+    "assets/stories/digest-pick.webp",
+    "assets/stories/digest.webp"
+   ],
+   "focus": [
+    0.45,
+    0.3
+   ],
+   "audio": "assets/stories/audio/08-podborka.mp3",
+   "audioSec": 6.048
+  },
+  {
+   "id": "09-library",
+   "kind": "phone",
+   "eyebrow": "Библиотека",
+   "title": "Шаблоны и архив",
+   "caption": "Шаблоны, ответы клиентам, отзывы и архив.",
+   "images": [
+    "assets/stories/library.webp",
+    "assets/stories/library-fill.webp"
+   ],
+   "focus": [
+    0,
+    0.5
+   ],
+   "audio": "assets/stories/audio/09-library.mp3",
+   "audioSec": 4.896
+  },
+  {
+   "id": "10-gemini",
+   "kind": "phone",
+   "eyebrow": "Картинка в Gemini",
+   "title": "Задание пишет Бестик",
+   "caption": "Место на фото не меняем — только убираем лишнее.",
+   "images": [
+    "assets/stories/gemini.webp"
+   ],
+   "focus": [
+    0.75
+   ],
+   "audio": "assets/stories/audio/10-gemini.mp3",
+   "audioSec": 7.512
+  },
+  {
+   "id": "11-rules",
+   "kind": "rules",
+   "eyebrow": "",
+   "title": "Четыре правила",
+   "caption": "Только реальные факты · Цена — из каталога · Платное — не в кадре · Чужое фото — с согласием",
+   "images": [],
+   "focus": [],
+   "audio": "assets/stories/audio/11-rules.mp3",
+   "audioSec": 10.488
+  },
+  {
+   "id": "12-outro",
+   "kind": "brand",
+   "eyebrow": "",
+   "title": "К•К",
+   "caption": "Справка всегда в «Ещё → Как работать». Вопросы — пиши Бестику в чат.",
+   "images": [],
+   "focus": [],
+   "audio": "assets/stories/audio/12-outro.mp3",
+   "audioSec": 6.264
+  }
+ ]
+}
