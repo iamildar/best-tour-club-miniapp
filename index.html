@@ -1293,8 +1293,8 @@ document.addEventListener('click', function(e){
 
 // ---------- Справка «Как работать» — сторис (как в Instagram) ----------
 // Полоски сверху; тап справа — дальше, слева — назад; удержание — пауза;
-// свайп вниз или ✕ — закрыть. Звук по кнопке (по умолчанию выключен): со
-// звуком слайд листается сам по окончании реплики, без звука — сами.
+// свайп вниз или ✕ — закрыть. Озвучку убрали (синтетический голос звучит
+// неживо): листаем сами, подписи всегда видны.
 // Кадры сняты на демо-данных (tools/stories/capture.mjs).
 var ST_ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
 var ST_ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
@@ -1334,11 +1334,11 @@ function storiesRender(){
   } else {
     body = '<div class="st-center"><img class="st-logo" src="assets/logos/icon-green.svg" alt=""><h1>' + esc(s.title) + '</h1><p class="st-cap">' + esc(s.caption) + '</p>'
       + (ST.i === n - 1 ? '<div class="st-hint">Свернуть К•К — смахните вниз за верхнюю полоску Telegram.<br>На iPad «⤢ На весь экран» — в шапке приложения.</div>' : '')
-      + (ST.i === 0 && !ST.sound ? '<div class="st-hint">Нажмите справа — дальше.<br>Слева — назад.<br>' + ST_ICON_ON + ' — голос Бестика</div>' : '') + '</div>';
+      + (ST.i === 0 && !ST.sound ? '<div class="st-hint">Нажмите справа — дальше.<br>Слева — назад.</div>' : '') + '</div>';
   }
   $('stories').innerHTML = '<div class="st-card"><div class="st-bars">' + bars + '</div>'
     + '<div class="st-head">' + (s.kind === 'brand' ? '' : '<img src="assets/logos/icon-green.svg" alt="">') + '<b>Как работать</b><span>' + (ST.i + 1) + ' / ' + n + '</span>'
-    + '<button class="st-btn" data-st="sound" aria-label="' + (ST.sound ? 'Выключить звук' : 'Включить звук') + '">' + (ST.sound ? ST_ICON_ON : ST_ICON_OFF) + '</button>'
+
     + (ST.skip ? '<button class="st-skip" data-st="close">Пропустить</button>' : '<button class="st-btn" data-st="close" aria-label="Закрыть">✕</button>') + '</div>'
     + '<div class="st-body st-k-' + s.kind + '">' + body + '</div>'
     + (ST.paused ? '<div class="st-paused">❚❚</div>' : '') + '</div>'

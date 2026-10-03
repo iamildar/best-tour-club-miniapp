@@ -9,7 +9,7 @@
    "caption": "Привет! Я Бестик. За минуту покажу, как работать в К•К.",
    "images": [],
    "focus": [],
-   "audio": "assets/stories/audio/01-intro.mp3",
+   "audio": "",
    "audioSec": 6.288
   },
   {
@@ -26,7 +26,7 @@
     0,
     0.2
    ],
-   "audio": "assets/stories/audio/02-week.mp3",
+   "audio": "",
    "audioSec": 8.712
   },
   {
@@ -43,7 +43,7 @@
     0,
     0.55
    ],
-   "audio": "assets/stories/audio/03-builder.mp3",
+   "audio": "",
    "audioSec": 8.928
   },
   {
@@ -58,7 +58,7 @@
    "focus": [
     0.25
    ],
-   "audio": "assets/stories/audio/04-texts.mp3",
+   "audio": "",
    "audioSec": 7.728
   },
   {
@@ -75,7 +75,7 @@
     0.3,
     0.2
    ],
-   "audio": "assets/stories/audio/05-post.mp3",
+   "audio": "",
    "audioSec": 6.816
   },
   {
@@ -90,7 +90,7 @@
    "focus": [
     0.3
    ],
-   "audio": "assets/stories/audio/06-reel.mp3",
+   "audio": "",
    "audioSec": 7.584
   },
   {
@@ -105,7 +105,7 @@
    "focus": [
     0.25
    ],
-   "audio": "assets/stories/audio/07-guide.mp3",
+   "audio": "",
    "audioSec": 6.768
   },
   {
@@ -122,7 +122,7 @@
     0.45,
     0.3
    ],
-   "audio": "assets/stories/audio/08-podborka.mp3",
+   "audio": "",
    "audioSec": 6.048
   },
   {
@@ -139,7 +139,7 @@
     0,
     0.5
    ],
-   "audio": "assets/stories/audio/09-library.mp3",
+   "audio": "",
    "audioSec": 4.896
   },
   {
@@ -154,7 +154,7 @@
    "focus": [
     0.75
    ],
-   "audio": "assets/stories/audio/10-gemini.mp3",
+   "audio": "",
    "audioSec": 7.512
   },
   {
@@ -165,7 +165,7 @@
    "caption": "Только реальные факты · Цена — из каталога · Платное — не в кадре · Чужое фото — с согласием",
    "images": [],
    "focus": [],
-   "audio": "assets/stories/audio/11-rules.mp3",
+   "audio": "",
    "audioSec": 10.488
   },
   {
@@ -176,7 +176,7 @@
    "caption": "Справка всегда в «Ещё → Как работать». Вопросы — пиши Бестику в чат.",
    "images": [],
    "focus": [],
-   "audio": "assets/stories/audio/12-outro.mp3",
+   "audio": "",
    "audioSec": 6.264
   }
  ]
