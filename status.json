@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T18:48:09.947Z (Бестик)",
+  "updated_at": "2026-10-03T03:18:41.046Z (обновлено из приложения)",
   "queue": [],
   "ideas": [
     {
@@ -261,6 +261,45 @@
   ],
   "upcoming_updated": "2026-10-02",
   "carousels": [
+    {
+      "id": "murtoj3srrdq",
+      "kind": "gemini",
+      "planId": "",
+      "packId": "murbdzvcmre6",
+      "tour": "Кисловодск и Медовые водопады",
+      "link": "https://best-tour-club.ru/vse-tury/kislovodsk-i-medovye-vodopady-1-den",
+      "format": "9:16",
+      "template": "clean",
+      "images": [],
+      "ready": false,
+      "created": "2026-10-03T03:18:40.312Z",
+      "source": "app",
+      "slides": [
+        {
+          "id": "murtoj3uazv7",
+          "layers": [
+            {
+              "id": "murtoj3uhwux",
+              "role": "text",
+              "label": "Задание для Gemini (EN)",
+              "text": "This is a REAL photo of a tour location. Do NOT change the place itself: keep the landscape, buildings, mountains, water and sky shapes exactly as they are. Do NOT add any objects, people, animals, text or logos. Allowed only: remove unwanted elements, fix light and color, extend the background at the edges. Remove all people, cars and litter from the photo and fill those areas naturally with the surrounding background. Keep natural daylight colors. Aspect ratio 9:16. No text, no logos, no watermarks."
+            },
+            {
+              "id": "murtoj3utddj",
+              "role": "caption",
+              "label": "Приложить",
+              "text": "— Фото тура, которое нужно почистить"
+            },
+            {
+              "id": "murtoj3ujl18",
+              "role": "caption",
+              "label": "Проверить в результате",
+              "text": "— Место не изменилось: горы, вода, здания на своих местах\n— Нет «пятен» и размытых следов на месте убранного\n— Не появилось новых людей, объектов, надписей"
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "murbfzgjnodi",
       "kind": "digest",
